@@ -1,567 +1,475 @@
+'use client'
+
 import React from 'react'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Separator } from '@/components/ui/separator'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { Switch } from '@/components/ui/switch'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { 
+  Palette, 
+  Type, 
+  Layout, 
+  Smartphone, 
+  Monitor, 
+  Tablet,
+  AlertCircle,
+  CheckCircle,
+  Info,
+  XCircle
+} from 'lucide-react'
 
-const StylingGuidePage = () => {
-  const colorPalettes = {
-    primary: [
-      { name: 'primary-50', value: '#f0f4ff', text: 'text-neutral-800' },
-      { name: 'primary-100', value: '#e0ecff', text: 'text-neutral-800' },
-      { name: 'primary-200', value: '#c7dbff', text: 'text-neutral-800' },
-      { name: 'primary-300', value: '#a4c2ff', text: 'text-neutral-800' },
-      { name: 'primary-400', value: '#8199ff', text: 'text-white' },
-      { name: 'primary-500', value: '#6366f1', text: 'text-white' },
-      { name: 'primary-600', value: '#4f46e5', text: 'text-white' },
-      { name: 'primary-700', value: '#4338ca', text: 'text-white' },
-      { name: 'primary-800', value: '#3730a3', text: 'text-white' },
-      { name: 'primary-900', value: '#312e81', text: 'text-white' },
-    ],
-    secondary: [
-      { name: 'secondary-50', value: '#faf7ff', text: 'text-neutral-800' },
-      { name: 'secondary-100', value: '#f4edff', text: 'text-neutral-800' },
-      { name: 'secondary-200', value: '#e9d8ff', text: 'text-neutral-800' },
-      { name: 'secondary-300', value: '#d8b9ff', text: 'text-neutral-800' },
-      { name: 'secondary-400', value: '#c589ff', text: 'text-white' },
-      { name: 'secondary-500', value: '#a855f7', text: 'text-white' },
-      { name: 'secondary-600', value: '#9333ea', text: 'text-white' },
-      { name: 'secondary-700', value: '#7c2d12', text: 'text-white' },
-      { name: 'secondary-800', value: '#6b21a8', text: 'text-white' },
-      { name: 'secondary-900', value: '#581c87', text: 'text-white' },
-    ],
-    neutral: [
-      { name: 'neutral-50', value: '#f8fafc', text: 'text-neutral-800' },
-      { name: 'neutral-100', value: '#f1f5f9', text: 'text-neutral-800' },
-      { name: 'neutral-200', value: '#e2e8f0', text: 'text-neutral-800' },
-      { name: 'neutral-300', value: '#cbd5e1', text: 'text-neutral-800' },
-      { name: 'neutral-400', value: '#94a3b8', text: 'text-white' },
-      { name: 'neutral-500', value: '#64748b', text: 'text-white' },
-      { name: 'neutral-600', value: '#475569', text: 'text-white' },
-      { name: 'neutral-700', value: '#334155', text: 'text-white' },
-      { name: 'neutral-800', value: '#1e293b', text: 'text-white' },
-      { name: 'neutral-900', value: '#0f172a', text: 'text-white' },
-    ]
-  }
-
-  const typographyScales = [
-    { name: 'text-xs', size: '12px', example: 'Extra small text' },
-    { name: 'text-sm', size: '14px', example: 'Small text' },
-    { name: 'text-base', size: '16px', example: 'Base text' },
-    { name: 'text-lg', size: '18px', example: 'Large text' },
-    { name: 'text-xl', size: '20px', example: 'Extra large text' },
-    { name: 'text-2xl', size: '24px', example: 'Double extra large' },
-    { name: 'text-3xl', size: '30px', example: 'Triple extra large' },
-    { name: 'text-4xl', size: '36px', example: 'Heading 1' },
-    { name: 'text-5xl', size: '48px', example: 'Hero Title' },
+const StyleGuide = () => {
+  const colorPalettes = [
+    {
+      name: 'Brand (Purple-Blue)',
+      description: 'Primary brand colors for main actions and branding',
+      colors: [
+        { name: 'brand-50', value: '#f0f4ff', class: 'bg-brand-50' },
+        { name: 'brand-100', value: '#e0e7ff', class: 'bg-brand-100' },
+        { name: 'brand-200', value: '#c7d2fe', class: 'bg-brand-200' },
+        { name: 'brand-300', value: '#a5b4fc', class: 'bg-brand-300' },
+        { name: 'brand-400', value: '#818cf8', class: 'bg-brand-400' },
+        { name: 'brand-500', value: '#6366f1', class: 'bg-brand-500' },
+        { name: 'brand-600', value: '#4f46e5', class: 'bg-brand-600' },
+        { name: 'brand-700', value: '#4338ca', class: 'bg-brand-700' },
+        { name: 'brand-800', value: '#3730a3', class: 'bg-brand-800' },
+        { name: 'brand-900', value: '#312e81', class: 'bg-brand-900' },
+      ]
+    },
+    {
+      name: 'Accent (Orange)',
+      description: 'Secondary accent colors for highlights and CTAs',
+      colors: [
+        { name: 'accent-50', value: '#fff7ed', class: 'bg-accent-50' },
+        { name: 'accent-100', value: '#ffedd5', class: 'bg-accent-100' },
+        { name: 'accent-200', value: '#fed7aa', class: 'bg-accent-200' },
+        { name: 'accent-300', value: '#fdba74', class: 'bg-accent-300' },
+        { name: 'accent-400', value: '#fb923c', class: 'bg-accent-400' },
+        { name: 'accent-500', value: '#f97316', class: 'bg-accent-500' },
+        { name: 'accent-600', value: '#ea580c', class: 'bg-accent-600' },
+        { name: 'accent-700', value: '#c2410c', class: 'bg-accent-700' },
+        { name: 'accent-800', value: '#9a3412', class: 'bg-accent-800' },
+        { name: 'accent-900', value: '#7c2d12', class: 'bg-accent-900' },
+      ]
+    }
   ]
 
-  const spacingScale = [
-    { name: 'p-1', size: '4px' },
-    { name: 'p-2', size: '8px' },
-    { name: 'p-3', size: '12px' },
-    { name: 'p-4', size: '16px' },
-    { name: 'p-6', size: '24px' },
-    { name: 'p-8', size: '32px' },
-    { name: 'p-12', size: '48px' },
-    { name: 'p-16', size: '64px' },
+  const typographyScale = [
+    { name: 'Display XL', class: 'text-display-xl', size: '72px / 80px', usage: 'Hero headings' },
+    { name: 'Display LG', class: 'text-display-lg', size: '56px / 64px', usage: 'Page headings' },
+    { name: 'Display MD', class: 'text-display-md', size: '46px / 52px', usage: 'Section headings' },
+    { name: 'Display SM', class: 'text-display-sm', size: '36px / 40px', usage: 'Card headings' },
+    { name: '3XL', class: 'text-3xl', size: '30px / 36px', usage: 'Subheadings' },
+    { name: '2XL', class: 'text-2xl', size: '24px / 32px', usage: 'Large text' },
+    { name: 'XL', class: 'text-xl', size: '20px / 28px', usage: 'Emphasized text' },
+    { name: 'LG', class: 'text-lg', size: '18px / 28px', usage: 'Lead paragraphs' },
+    { name: 'Base', class: 'text-base', size: '16px / 24px', usage: 'Body text' },
+    { name: 'SM', class: 'text-sm', size: '14px / 20px', usage: 'Small text' },
+    { name: 'XS', class: 'text-xs', size: '12px / 16px', usage: 'Captions' },
   ]
 
-  const shadowStyles = [
-    { name: 'shadow-soft', class: 'shadow-soft' },
-    { name: 'shadow-medium', class: 'shadow-medium' },
-    { name: 'shadow-large', class: 'shadow-large' },
-    { name: 'shadow-glow', class: 'shadow-glow' },
-    { name: 'shadow-inner', class: 'shadow-inner' },
+  const breakpoints = [
+    { name: 'xs', size: '475px', icon: Smartphone, usage: 'Small phones' },
+    { name: 'sm', size: '640px', icon: Smartphone, usage: 'Large phones' },
+    { name: 'md', size: '768px', icon: Tablet, usage: 'Tablets' },
+    { name: 'lg', size: '1024px', icon: Monitor, usage: 'Small laptops' },
+    { name: 'xl', size: '1280px', icon: Monitor, usage: 'Laptops' },
+    { name: '2xl', size: '1536px', icon: Monitor, usage: 'Desktops' },
+    { name: '3xl', size: '1920px', icon: Monitor, usage: 'Large screens' },
   ]
 
   return (
-    <div className="min-h-screen bg-background-primary">
-      {/* Header */}
-      <header className="bg-gradient-primary shadow-medium">
-        <div className="container mx-auto px-4 py-8 md:py-12">
-          <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
-            Design System Guide
+    <div className="min-h-screen bg-gradient-to-br from-brand-50 to-accent-50">
+      <div className="container mx-auto px-4 py-12">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-display-xl font-bold bg-gradient-to-r from-brand-600 to-accent-600 bg-clip-text text-transparent mb-4">
+            Design System Style Guide
           </h1>
-          <p className="text-primary-100 text-lg md:text-xl max-w-2xl">
-            Complete styling reference including colors, typography, spacing, and components
+          <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
+            A comprehensive guide to our professional color palette, typography, and component system using vibrant yet professional colors.
           </p>
         </div>
-      </header>
 
-      <main className="container mx-auto px-4 py-8 md:py-16">
-        {/* Navigation */}
-        <nav className="mb-12">
-          <div className="flex flex-wrap gap-4 justify-center bg-background-secondary p-6 rounded-2xl shadow-soft">
-            {['Colors', 'Typography', 'Spacing', 'Shadows', 'Components', 'Layout'].map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                className="px-6 py-2 bg-white text-text-primary font-medium rounded-xl shadow-soft hover:shadow-medium transition-all duration-200 hover:scale-105"
-              >
-                {item}
-              </a>
+        <Tabs defaultValue="colors" className="w-full">
+          <TabsList className="grid w-full grid-cols-5 mb-8">
+            <TabsTrigger value="colors" className="flex items-center gap-2">
+              <Palette className="w-4 h-4" />
+              Colors
+            </TabsTrigger>
+            <TabsTrigger value="typography" className="flex items-center gap-2">
+              <Type className="w-4 h-4" />
+              Typography
+            </TabsTrigger>
+            <TabsTrigger value="components" className="flex items-center gap-2">
+              <Layout className="w-4 h-4" />
+              Components
+            </TabsTrigger>
+            <TabsTrigger value="responsive" className="flex items-center gap-2">
+              <Monitor className="w-4 h-4" />
+              Responsive
+            </TabsTrigger>
+            <TabsTrigger value="examples" className="flex items-center gap-2">
+              <CheckCircle className="w-4 h-4" />
+              Examples
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Colors Tab */}
+          <TabsContent value="colors" className="space-y-8">
+            {colorPalettes.map((palette) => (
+              <Card key={palette.name}>
+                <CardHeader>
+                  <CardTitle className="text-2xl">{palette.name}</CardTitle>
+                  <CardDescription>{palette.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-10 gap-4">
+                    {palette.colors.map((color) => (
+                      <div key={color.name} className="space-y-2">
+                        <div
+                          className={`${color.class} h-16 rounded-lg border shadow-sm cursor-pointer transition-transform hover:scale-105`}
+                          title={`${color.name}: ${color.value}`}
+                        />
+                        <div className="text-center">
+                          <p className="text-xs font-medium">{color.name}</p>
+                          <p className="text-xs text-neutral-500">{color.value}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             ))}
-          </div>
-        </nav>
+          </TabsContent>
 
-        {/* Colors Section */}
-        <section id="colors" className="mb-16">
-          <h2 className="text-2xl md:text-4xl font-bold text-text-primary mb-8">Color Palette</h2>
-          
-          {Object.entries(colorPalettes).map(([paletteName, colors]) => (
-            <div key={paletteName} className="mb-12">
-              <h3 className="text-xl md:text-2xl font-semibold text-text-secondary mb-6 capitalize">
-                {paletteName} Colors
-              </h3>
-              <div className="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-10 gap-4">
-                {colors.map((color) => (
-                  <div key={color.name} className="group">
-                    <div 
-                      className={`w-full h-20 md:h-24 rounded-xl shadow-soft group-hover:shadow-medium transition-all duration-200 ${color.text} flex items-center justify-center font-medium text-sm`}
-                      style={{ backgroundColor: color.value }}
-                    >
-                      <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                        {color.name.split('-')[1]}
-                      </span>
-                    </div>
-                    <div className="mt-2 text-center">
-                      <p className="text-xs font-medium text-text-secondary">{color.name}</p>
-                      <p className="text-xs text-text-muted">{color.value}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-
-          {/* Status Colors */}
-          <div className="mb-12">
-            <h3 className="text-xl md:text-2xl font-semibold text-text-secondary mb-6">Status Colors</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-success-50 border border-success-200 p-6 rounded-2xl">
-                <div className="w-8 h-8 bg-success-500 rounded-lg mb-3"></div>
-                <h4 className="font-semibold text-success-700 mb-2">Success</h4>
-                <p className="text-success-600 text-sm">Used for positive actions and confirmations</p>
-                <code className="text-xs bg-success-100 px-2 py-1 rounded mt-2 inline-block">bg-success-500</code>
-              </div>
-              <div className="bg-warning-50 border border-warning-200 p-6 rounded-2xl">
-                <div className="w-8 h-8 bg-warning-500 rounded-lg mb-3"></div>
-                <h4 className="font-semibold text-warning-700 mb-2">Warning</h4>
-                <p className="text-warning-600 text-sm">Used for cautions and important notices</p>
-                <code className="text-xs bg-warning-100 px-2 py-1 rounded mt-2 inline-block">bg-warning-500</code>
-              </div>
-              <div className="bg-error-50 border border-error-200 p-6 rounded-2xl">
-                <div className="w-8 h-8 bg-error-500 rounded-lg mb-3"></div>
-                <h4 className="font-semibold text-error-700 mb-2">Error</h4>
-                <p className="text-error-600 text-sm">Used for errors and destructive actions</p>
-                <code className="text-xs bg-error-100 px-2 py-1 rounded mt-2 inline-block">bg-error-500</code>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Typography Section */}
-        <section id="typography" className="mb-16">
-          <h2 className="text-2xl md:text-4xl font-bold text-text-primary mb-8">Typography Scale</h2>
-          <div className="bg-white p-6 md:p-8 rounded-2xl shadow-soft">
-            {typographyScales.map((type) => (
-              <div key={type.name} className="flex flex-col md:flex-row md:items-center justify-between py-4 border-b border-neutral-200 last:border-b-0">
-                <div className="flex items-center gap-4 mb-2 md:mb-0">
-                  <code className="text-sm bg-neutral-100 px-3 py-1 rounded font-mono text-primary-600">
-                    {type.name}
-                  </code>
-                  <span className="text-sm text-text-muted">{type.size}</span>
-                </div>
-                <div className={`${type.name} text-text-primary font-medium`}>
-                  {type.example}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Spacing Section */}
-        <section id="spacing" className="mb-16">
-          <h2 className="text-2xl md:text-4xl font-bold text-text-primary mb-8">Spacing Scale</h2>
-          <div className="bg-white p-6 md:p-8 rounded-2xl shadow-soft">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {spacingScale.map((space) => (
-                <div key={space.name} className="text-center">
-                  <div className="bg-primary-100 rounded-lg mb-3 flex items-center justify-center">
-                    <div 
-                      className="bg-primary-500 rounded"
-                      style={{ 
-                        width: space.size, 
-                        height: space.size,
-                        minWidth: '16px',
-                        minHeight: '16px'
-                      }}
-                    ></div>
-                  </div>
-                  <code className="text-sm font-mono text-primary-600 block">{space.name}</code>
-                  <span className="text-xs text-text-muted">{space.size}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Shadows Section */}
-        <section id="shadows" className="mb-16">
-          <h2 className="text-2xl md:text-4xl font-bold text-text-primary mb-8">Shadow Styles</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {shadowStyles.map((shadow) => (
-              <div key={shadow.name} className="text-center">
-                <div className={`bg-white p-8 rounded-2xl mb-4 ${shadow.class}`}>
-                  <div className="w-16 h-16 bg-primary-500 rounded-xl mx-auto"></div>
-                </div>
-                <code className="text-sm font-mono text-primary-600">{shadow.name}</code>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Components Section */}
-        <section id="components" className="mb-16">
-          <h2 className="text-2xl md:text-4xl font-bold text-text-primary mb-8">Component Examples</h2>
-          
-          {/* Buttons */}
-          <div className="mb-12">
-            <h3 className="text-xl md:text-2xl font-semibold text-text-secondary mb-6">Buttons</h3>
-            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-soft">
-              <div className="flex flex-wrap gap-4 items-center">
-                <button className="px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl shadow-soft hover:shadow-glow transition-all duration-200">
-                  Primary Button
-                </button>
-                <button className="px-6 py-3 bg-secondary-500 hover:bg-secondary-600 text-white font-semibold rounded-xl shadow-soft hover:shadow-glow-secondary transition-all duration-200">
-                  Secondary Button
-                </button>
-                <button className="px-6 py-3 bg-white hover:bg-neutral-50 text-text-primary font-semibold rounded-xl border border-neutral-200 shadow-soft hover:shadow-medium transition-all duration-200">
-                  Outline Button
-                </button>
-                <button className="px-6 py-3 text-primary-600 hover:text-primary-700 font-semibold hover:bg-primary-50 rounded-xl transition-all duration-200">
-                  Text Button
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Cards */}
-          <div className="mb-12">
-            <h3 className="text-xl md:text-2xl font-semibold text-text-secondary mb-6">Cards</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="bg-white p-6 rounded-2xl shadow-soft hover:shadow-medium transition-all duration-200">
-                <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center mb-4">
-                  <div className="w-6 h-6 bg-primary-500 rounded"></div>
-                </div>
-                <h4 className="text-lg font-semibold text-text-primary mb-2">Basic Card</h4>
-                <p className="text-text-muted text-sm">Simple card with icon, title, and description.</p>
-              </div>
-              
-              <div className="bg-gradient-primary p-6 rounded-2xl text-white shadow-medium">
-                <div className="w-12 h-12 bg-white bg-opacity-20 rounded-xl flex items-center justify-center mb-4">
-                  <div className="w-6 h-6 bg-white rounded"></div>
-                </div>
-                <h4 className="text-lg font-semibold mb-2">Gradient Card</h4>
-                <p className="text-primary-100 text-sm">Card with gradient background and white text.</p>
-              </div>
-              
-              <div className="bg-white p-6 rounded-2xl border border-neutral-200 hover:border-primary-300 transition-all duration-200">
-                <div className="w-12 h-12 bg-secondary-100 rounded-xl flex items-center justify-center mb-4">
-                  <div className="w-6 h-6 bg-secondary-500 rounded"></div>
-                </div>
-                <h4 className="text-lg font-semibold text-text-primary mb-2">Border Card</h4>
-                <p className="text-text-muted text-sm">Card with subtle border and hover effects.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Layout Section */}
-        <section id="layout" className="mb-16">
-          <h2 className="text-2xl md:text-4xl font-bold text-text-primary mb-8">Layout Examples</h2>
-          
-          {/* Grid System */}
-          <div className="mb-12">
-            <h3 className="text-xl md:text-2xl font-semibold text-text-secondary mb-6">Responsive Grid</h3>
-            <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {[1, 2, 3, 4].map((item) => (
-                  <div key={item} className="bg-primary-100 text-primary-700 p-4 rounded-xl text-center font-medium">
-                    Col {item}
-                  </div>
-                ))}
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {[1, 2, 3].map((item) => (
-                  <div key={item} className="bg-secondary-100 text-secondary-700 p-6 rounded-xl text-center font-medium">
-                    Column {item}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Container Sizes */}
-          <div className="mb-12">
-            <h3 className="text-xl md:text-2xl font-semibold text-text-secondary mb-6">Container Sizes</h3>
-            <div className="space-y-4">
-              <div className="bg-neutral-100 p-4 rounded-xl">
-                <code className="text-sm font-mono text-primary-600">container mx-auto</code>
-                <p className="text-text-muted text-sm mt-1">Responsive container with auto margins</p>
-              </div>
-              <div className="bg-neutral-100 p-4 rounded-xl max-w-sm">
-                <code className="text-sm font-mono text-primary-600">max-w-sm</code>
-                <p className="text-text-muted text-sm mt-1">Small max width (384px)</p>
-              </div>
-              <div className="bg-neutral-100 p-4 rounded-xl max-w-md">
-                <code className="text-sm font-mono text-primary-600">max-w-md</code>
-                <p className="text-text-muted text-sm mt-1">Medium max width (448px)</p>
-              </div>
-              <div className="bg-neutral-100 p-4 rounded-xl max-w-lg">
-                <code className="text-sm font-mono text-primary-600">max-w-lg</code>
-                <p className="text-text-muted text-sm mt-1">Large max width (512px)</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Responsive Examples */}
-        <section className="mb-16">
-          <h2 className="text-2xl md:text-4xl font-bold text-text-primary mb-8">Responsive Design</h2>
-          
-          <div className="bg-white p-6 md:p-8 rounded-2xl shadow-soft mb-8">
-            <h3 className="text-xl font-semibold text-text-secondary mb-6">Breakpoint Reference</h3>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left">
-                <thead>
-                  <tr className="border-b border-neutral-200">
-                    <th className="pb-3 font-semibold text-text-primary">Breakpoint</th>
-                    <th className="pb-3 font-semibold text-text-primary">Min Width</th>
-                    <th className="pb-3 font-semibold text-text-primary">Device</th>
-                    <th className="pb-3 font-semibold text-text-primary">Example Usage</th>
-                  </tr>
-                </thead>
-                <tbody className="text-text-muted">
-                  <tr className="border-b border-neutral-100">
-                    <td className="py-3"><code className="text-primary-600 bg-primary-50 px-2 py-1 rounded">xs</code></td>
-                    <td className="py-3">475px</td>
-                    <td className="py-3">Large phones</td>
-                    <td className="py-3"><code className="text-xs">xs:text-sm</code></td>
-                  </tr>
-                  <tr className="border-b border-neutral-100">
-                    <td className="py-3"><code className="text-primary-600 bg-primary-50 px-2 py-1 rounded">sm</code></td>
-                    <td className="py-3">640px</td>
-                    <td className="py-3">Tablets</td>
-                    <td className="py-3"><code className="text-xs">sm:grid-cols-2</code></td>
-                  </tr>
-                  <tr className="border-b border-neutral-100">
-                    <td className="py-3"><code className="text-primary-600 bg-primary-50 px-2 py-1 rounded">md</code></td>
-                    <td className="py-3">768px</td>
-                    <td className="py-3">Small laptops</td>
-                    <td className="py-3"><code className="text-xs">md:text-lg</code></td>
-                  </tr>
-                  <tr className="border-b border-neutral-100">
-                    <td className="py-3"><code className="text-primary-600 bg-primary-50 px-2 py-1 rounded">lg</code></td>
-                    <td className="py-3">1024px</td>
-                    <td className="py-3">Laptops</td>
-                    <td className="py-3"><code className="text-xs">lg:grid-cols-3</code></td>
-                  </tr>
-                  <tr className="border-b border-neutral-100">
-                    <td className="py-3"><code className="text-primary-600 bg-primary-50 px-2 py-1 rounded">xl</code></td>
-                    <td className="py-3">1280px</td>
-                    <td className="py-3">Desktops</td>
-                    <td className="py-3"><code className="text-xs">xl:text-2xl</code></td>
-                  </tr>
-                  <tr>
-                    <td className="py-3"><code className="text-primary-600 bg-primary-50 px-2 py-1 rounded">2xl</code></td>
-                    <td className="py-3">1536px</td>
-                    <td className="py-3">Large screens</td>
-                    <td className="py-3"><code className="text-xs">2xl:grid-cols-4</code></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Live Responsive Example */}
-          <div className="bg-white p-6 md:p-8 rounded-2xl shadow-soft">
-            <h3 className="text-xl font-semibold text-text-secondary mb-6">Live Responsive Example</h3>
-            <div className="bg-background-secondary p-6 rounded-xl">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
-                  <div key={item} className="bg-primary-500 text-white p-4 rounded-lg text-center font-medium">
-                    Item {item}
-                  </div>
-                ))}
-              </div>
-              <p className="text-text-muted text-sm mt-4">
-                <span className="block sm:hidden">📱 Mobile: 1 column</span>
-                <span className="hidden sm:block lg:hidden">📱 Tablet: 2 columns</span>
-                <span className="hidden lg:block xl:hidden">💻 Laptop: 3 columns</span>
-                <span className="hidden xl:block">🖥️ Desktop: 4 columns</span>
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Code Examples */}
-        <section className="mb-16">
-          <h2 className="text-2xl md:text-4xl font-bold text-text-primary mb-8">Usage Examples</h2>
-          
-          <div className="space-y-8">
-            {/* Button Example */}
-            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-soft">
-              <h3 className="text-lg font-semibold text-text-primary mb-4">Primary Button</h3>
-              <div className="mb-4">
-                <button className="px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl shadow-soft hover:shadow-glow transition-all duration-200 transform hover:-translate-y-0.5">
-                  Click Me
-                </button>
-              </div>
-              <div className="bg-neutral-50 p-4 rounded-lg">
-                <code className="text-sm text-neutral-700">
-                  {`<button className="px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl shadow-soft hover:shadow-glow transition-all duration-200 transform hover:-translate-y-0.5">
-  Click Me
-</button>`}
-                </code>
-              </div>
-            </div>
-
-            {/* Card Example */}
-            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-soft">
-              <h3 className="text-lg font-semibold text-text-primary mb-4">Feature Card</h3>
-              <div className="mb-4 max-w-sm">
-                <div className="bg-white p-6 rounded-2xl shadow-soft hover:shadow-medium transition-all duration-300 border border-neutral-100">
-                  <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center mb-4">
-                    <div className="w-6 h-6 bg-primary-500 rounded"></div>
-                  </div>
-                  <h4 className="text-lg font-semibold text-text-primary mb-2">Feature Title</h4>
-                  <p className="text-text-muted text-sm">Description of the feature with supporting details.</p>
-                </div>
-              </div>
-              <div className="bg-neutral-50 p-4 rounded-lg overflow-x-auto">
-                <code className="text-sm text-neutral-700 whitespace-pre">
-                  {`<div className="bg-white p-6 rounded-2xl shadow-soft hover:shadow-medium transition-all duration-300 border border-neutral-100">
-  <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center mb-4">
-    <div className="w-6 h-6 bg-primary-500 rounded"></div>
-  </div>
-  <h4 className="text-lg font-semibold text-text-primary mb-2">Feature Title</h4>
-  <p className="text-text-muted text-sm">Description of the feature...</p>
-</div>`}
-                </code>
-              </div>
-            </div>
-
-            {/* Responsive Layout Example */}
-            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-soft">
-              <h3 className="text-lg font-semibold text-text-primary mb-4">Responsive Layout</h3>
-              <div className="mb-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {[1, 2, 3].map((item) => (
-                    <div key={item} className="bg-secondary-100 text-secondary-700 p-4 rounded-lg text-center font-medium">
-                      Column {item}
+          {/* Typography Tab */}
+          <TabsContent value="typography" className="space-y-8">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-2xl">Typography Scale</CardTitle>
+                <CardDescription>Professional typography system with responsive scaling</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {typographyScale.map((type) => (
+                    <div key={type.name} className="flex flex-col md:flex-row md:items-center gap-4 p-4 border rounded-lg">
+                      <div className="md:w-1/3">
+                        <Badge variant="outline">{type.name}</Badge>
+                        <p className="text-sm text-neutral-500 mt-1">{type.size}</p>
+                        <p className="text-xs text-neutral-400">{type.usage}</p>
+                      </div>
+                      <div className="md:w-2/3">
+                        <p className={`${type.class} text-neutral-900`}>
+                          The quick brown fox jumps over the lazy dog
+                        </p>
+                      </div>
                     </div>
                   ))}
                 </div>
-              </div>
-              <div className="bg-neutral-50 p-4 rounded-lg overflow-x-auto">
-                <code className="text-sm text-neutral-700">
-                  {`<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-  {/* Content automatically adjusts from 1 -> 2 -> 3 columns */}
-</div>`}
-                </code>
-              </div>
-            </div>
-          </div>
-        </section>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-        {/* Best Practices */}
-        <section className="mb-16">
-          <h2 className="text-2xl md:text-4xl font-bold text-text-primary mb-8">Best Practices</h2>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="bg-success-50 border border-success-200 p-6 md:p-8 rounded-2xl">
-              <h3 className="text-lg font-semibold text-success-700 mb-4 flex items-center gap-2">
-                <div className="w-6 h-6 bg-success-500 rounded-full flex items-center justify-center">
-                  <span className="text-white text-sm">✓</span>
+          {/* Components Tab */}
+          <TabsContent value="components" className="space-y-8">
+            <div className="grid gap-8">
+              {/* Buttons */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Buttons</CardTitle>
+                  <CardDescription>Various button styles and variants</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-wrap gap-4">
+                    <Button variant="default">Primary Button</Button>
+                    <Button variant="secondary">Secondary Button</Button>
+                    <Button variant="outline">Outline Button</Button>
+                    <Button variant="ghost">Ghost Button</Button>
+                    <Button variant="destructive">Destructive Button</Button>
+                    <Button disabled>Disabled Button</Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Form Elements */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Form Elements</CardTitle>
+                  <CardDescription>Input fields and form controls</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid gap-4 max-w-md">
+                    <Input placeholder="Email address" />
+                    <Textarea placeholder="Your message..." />
+                    <div className="flex items-center space-x-2">
+                      <Switch id="notifications" />
+                      <label htmlFor="notifications" className="text-sm">Enable notifications</label>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Alerts */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Alerts</CardTitle>
+                  <CardDescription>Status and notification components</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <Alert>
+                      <Info className="h-4 w-4" />
+                      <AlertTitle>Information</AlertTitle>
+                      <AlertDescription>This is an informational alert message.</AlertDescription>
+                    </Alert>
+                    <Alert className="border-green-200 bg-green-50">
+                      <CheckCircle className="h-4 w-4 text-green-600" />
+                      <AlertTitle className="text-green-800">Success</AlertTitle>
+                      <AlertDescription className="text-green-700">Operation completed successfully.</AlertDescription>
+                    </Alert>
+                    <Alert className="border-yellow-200 bg-yellow-50">
+                      <AlertCircle className="h-4 w-4 text-yellow-600" />
+                      <AlertTitle className="text-yellow-800">Warning</AlertTitle>
+                      <AlertDescription className="text-yellow-700">Please review your input before proceeding.</AlertDescription>
+                    </Alert>
+                    <Alert className="border-red-200 bg-red-50">
+                      <XCircle className="h-4 w-4 text-red-600" />
+                      <AlertTitle className="text-red-800">Error</AlertTitle>
+                      <AlertDescription className="text-red-700">An error occurred while processing your request.</AlertDescription>
+                    </Alert>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          {/* Responsive Tab */}
+          <TabsContent value="responsive" className="space-y-8">
+            <Card>
+              <CardHeader>
+                <CardTitle>Breakpoints</CardTitle>
+                <CardDescription>Responsive design breakpoints for different screen sizes</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-4">
+                  {breakpoints.map((bp) => {
+                    const IconComponent = bp.icon
+                    return (
+                      <div key={bp.name} className="flex items-center gap-4 p-4 border rounded-lg">
+                        <IconComponent className="w-6 h-6 text-brand-600" />
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <Badge variant="outline">{bp.name}</Badge>
+                            <span className="font-mono text-sm">{bp.size}+</span>
+                          </div>
+                          <p className="text-sm text-neutral-600 mt-1">{bp.usage}</p>
+                        </div>
+                      </div>
+                    )
+                  })}
                 </div>
-                Do&#39;s
-              </h3>
-              <ul className="space-y-3 text-success-700">
-                <li className="flex items-start gap-2">
-                  <span className="text-success-500 mt-1">•</span>
-                  Use consistent spacing (4px grid system)
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-success-500 mt-1">•</span>
-                  Follow mobile-first responsive design
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-success-500 mt-1">•</span>
-                  Maintain proper color contrast ratios
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-success-500 mt-1">•</span>
-                  Use semantic color meanings consistently
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-success-500 mt-1">•</span>
-                  Keep animations subtle and purposeful
-                </li>
-              </ul>
-            </div>
+              </CardContent>
+            </Card>
 
-            <div className="bg-error-50 border border-error-200 p-6 md:p-8 rounded-2xl">
-              <h3 className="text-lg font-semibold text-error-700 mb-4 flex items-center gap-2">
-                <div className="w-6 h-6 bg-error-500 rounded-full flex items-center justify-center">
-                  <span className="text-white text-sm">✗</span>
+            <Card>
+              <CardHeader>
+                <CardTitle>Spacing Scale</CardTitle>
+                <CardDescription>Consistent spacing system</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {[1, 2, 3, 4, 6, 8, 12, 16, 20, 24, 32].map((space) => (
+                    <div key={space} className="flex items-center gap-4">
+                      <Badge variant="outline" className="w-12">{space}</Badge>
+                      <div className={`bg-brand-200 h-4`} style={{ width: `${space * 4}px` }} />
+                      <span className="text-sm text-neutral-600">{space * 4}px</span>
+                    </div>
+                  ))}
                 </div>
-                Don&#39;ts
-              </h3>
-              <ul className="space-y-3 text-error-700">
-                <li className="flex items-start gap-2">
-                  <span className="text-error-500 mt-1">•</span>
-                  Don&#39;t mix different spacing systems
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-error-500 mt-1">•</span>
-                  Avoid too many bright colors together
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-error-500 mt-1">•</span>
-                  Don&#39;t ignore accessibility guidelines
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-error-500 mt-1">•</span>
-                  Avoid excessive animations or transitions
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-error-500 mt-1">•</span>
-                  Don&#39;t use colors without semantic meaning
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
-      </main>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-      {/* Footer */}
-      <footer className="bg-neutral-900 text-white py-8 md:py-12">
-        <div className="container mx-auto px-4 text-center">
-          <h3 className="text-lg font-semibold mb-4">Design System Guide</h3>
-          <p className="text-neutral-400 mb-4">
-            Built with Tailwind CSS and modern design principles
-          </p>
-          <div className="flex flex-wrap justify-center gap-4 text-sm text-neutral-400">
-            <span>Mobile-First</span>
-            <span>•</span>
-            <span>Accessible</span>
-            <span>•</span>
-            <span>Consistent</span>
-            <span>•</span>
-            <span>Scalable</span>
-          </div>
+          {/* Examples Tab */}
+          <TabsContent value="examples" className="space-y-8">
+            <div className="grid lg:grid-cols-2 gap-8">
+              {/* Example Card 1 */}
+              <Card className="overflow-hidden">
+                <div className="h-32 bg-gradient-to-r from-brand-500 to-brand-600"></div>
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-semibold text-brand-900 mb-2">
+                    Professional Card Design
+                  </h3>
+                  <p className="text-neutral-600 mb-4">
+                    This card demonstrates the use of our vibrant brand colors while maintaining a professional appearance.
+                  </p>
+                  <div className="flex gap-2">
+                    <Button size="sm" className="bg-brand-500 hover:bg-brand-600">
+                      Learn More
+                    </Button>
+                    <Button size="sm" variant="outline" className="border-accent-500 text-accent-600 hover:bg-accent-500 hover:text-white">
+                      Contact Us
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Example Card 2 */}
+              <Card className="overflow-hidden">
+                <div className="h-32 bg-gradient-to-r from-accent-500 to-accent-600"></div>
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-semibold text-accent-900 mb-2">
+                    Accent Color Showcase
+                  </h3>
+                  <p className="text-neutral-600 mb-4">
+                    Orange accent colors create warmth and energy while remaining business-appropriate.
+                  </p>
+                  <div className="flex gap-2">
+                    <Button size="sm" className="bg-accent-500 hover:bg-accent-600">
+                      Get Started
+                    </Button>
+                    <Button size="sm" variant="outline" className="border-brand-500 text-brand-600 hover:bg-brand-500 hover:text-white">
+                      View Details
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Usage Guidelines */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Usage Guidelines</CardTitle>
+                <CardDescription>Best practices for implementing our design system</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="font-semibold text-green-700 mb-3 flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4" />
+                      Do&apos;s
+                    </h4>
+                    <ul className="space-y-2 text-sm">
+                      <li className="flex items-start gap-2">
+                        <span className="w-1 h-1 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                        Use brand colors for primary actions and navigation
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="w-1 h-1 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                        Apply accent colors for CTAs and highlights
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="w-1 h-1 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                        Maintain consistent spacing using our scale
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="w-1 h-1 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                        Use responsive typography for better readability
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="w-1 h-1 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                        Test designs across all breakpoints
+                      </li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-red-700 mb-3 flex items-center gap-2">
+                      <XCircle className="w-4 h-4" />
+                      Don&apos;ts
+                    </h4>
+                    <ul className="space-y-2 text-sm">
+                      <li className="flex items-start gap-2">
+                        <span className="w-1 h-1 bg-red-500 rounded-full mt-2 flex-shrink-0"></span>
+                        Don&apos;t use colors outside the defined palette
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="w-1 h-1 bg-red-500 rounded-full mt-2 flex-shrink-0"></span>
+                        Avoid using too many bright colors together
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="w-1 h-1 bg-red-500 rounded-full mt-2 flex-shrink-0"></span>
+                        Don&apos;t compromise accessibility for aesthetics
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="w-1 h-1 bg-red-500 rounded-full mt-2 flex-shrink-0"></span>
+                        Avoid inconsistent spacing patterns
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="w-1 h-1 bg-red-500 rounded-full mt-2 flex-shrink-0"></span>
+                        Don&apos;t ignore mobile-first design principles
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Code Examples */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Code Examples</CardTitle>
+                <CardDescription>Common patterns and component usage</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  <div>
+                    <h4 className="font-semibold mb-2">Primary Button with Brand Colors</h4>
+                    <div className="bg-neutral-100 p-4 rounded-lg font-mono text-sm">
+                      {`<Button className="bg-brand-500 hover:bg-brand-600 text-white">`}<br/>
+                      {`  Get Started`}<br/>
+                      {`</Button>`}
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-semibold mb-2">Accent Color Card</h4>
+                    <div className="bg-neutral-100 p-4 rounded-lg font-mono text-sm">
+                      {`<Card className="border-accent-200 bg-accent-50">`}<br/>
+                      {`  <CardHeader>`}<br/>
+                      {`    <CardTitle className="text-accent-900">Title</CardTitle>`}<br/>
+                      {`  </CardHeader>`}<br/>
+                      {`</Card>`}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold mb-2">Responsive Typography</h4>
+                    <div className="bg-neutral-100 p-4 rounded-lg font-mono text-sm">
+                      {`<h1 className="text-display-lg md:text-display-xl">`}<br/>
+                      {`  Responsive Heading`}<br/>
+                      {`</h1>`}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold mb-2">Gradient Background</h4>
+                    <div className="bg-neutral-100 p-4 rounded-lg font-mono text-sm">
+                      {`<div className="bg-gradient-to-r from-brand-500 to-accent-500">`}<br/>
+                      {`  Hero Section`}<br/>
+                      {`</div>`}
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+
+        {/* Footer */}
+        <Separator className="my-12" />
+        <div className="text-center text-sm text-neutral-600">
+          <p>Design System v1.0 - Built with Next.js, Tailwind CSS, and Shadcn/UI</p>
+          <p className="mt-1">Professional vibrant colors for modern applications</p>
         </div>
-      </footer>
+      </div>
     </div>
   )
 }
 
-export default StylingGuidePage
+export default StyleGuide

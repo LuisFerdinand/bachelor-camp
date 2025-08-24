@@ -1,204 +1,300 @@
 'use client'
+import React from 'react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 
-import { useState } from 'react';
-import Link from 'next/link';
-
-interface Program {
-  id: number;
-  title: string;
-  description: string;
-  levels: string[];
-  duration: string;
-  price: number;
-  features: string[];
-}
+import { 
+  BookOpen, 
+  Users, 
+  Clock, 
+  Star, 
+  Award,
+  CheckCircle,
+  TrendingUp
+} from 'lucide-react'
 
 export default function SpecialProgramPage() {
-  const [activeProgram, setActiveProgram] = useState<string>('general-english');
-  
-  const programs: Program[] = [
+  const programs = [
     {
       id: 1,
-      title: "General English",
-      description: "Comprehensive English language course covering all skills - reading, writing, listening, and speaking.",
-      levels: ["Beginner (A1)", "Elementary (A2)", "Intermediate (B1)", "Upper Intermediate (B2)"],
-      duration: "4-12 weeks",
-      price: 3500000,
+      name: "General English",
+      description: "Comprehensive English course for all levels",
+      duration: "4-48 weeks",
+      levels: "A1-C2 (CEFR)",
+      price: "Rp 3,500,000/4 weeks",
       features: [
-        "20 hours of instruction per week",
-        "Small class sizes (max 12 students)",
-        "Weekly progress tests",
-        "Certificate upon completion"
-      ]
+        "All CEFR Levels",
+        "Interactive Classes",
+        "Practical Communication",
+        "Cultural Activities"
+      ],
+      popular: true
     },
     {
       id: 2,
-      title: "IELTS Preparation",
-      description: "Intensive preparation course for the International English Language Testing System.",
-      levels: ["Intermediate (B1)", "Upper Intermediate (B2)", "Advanced (C1)"],
-      duration: "4-8 weeks",
-      price: 5000000,
+      name: "IELTS Preparation",
+      description: "Intensive training for IELTS success",
+      duration: "10 weeks",
+      levels: "B1-C1 (CEFR)",
+      price: "Rp 8,000,000/course",
       features: [
-        "Focus on all four IELTS sections",
-        "Practice tests with feedback",
-        "Test-taking strategies",
-        "Mock exams under real conditions"
-      ]
+        "Exam Strategies",
+        "Practice Tests",
+        "Personal Feedback",
+        "Guaranteed Results"
+      ],
+      popular: true
     },
     {
       id: 3,
-      title: "Business English",
-      description: "Professional English course for business environments and workplace communication.",
-      levels: ["Intermediate (B1)", "Upper Intermediate (B2)", "Advanced (C1)"],
-      duration: "2-6 weeks",
-      price: 4500000,
+      name: "Business English",
+      description: "Professional communication skills",
+      duration: "8 weeks",
+      levels: "B2-C1 (CEFR)",
+      price: "Rp 6,500,000/course",
       features: [
-        "Business vocabulary and terminology",
-        "Email and report writing",
-        "Presentation skills",
-        "Negotiation and meeting practice"
-      ]
+        "Business Vocabulary",
+        "Presentation Skills",
+        "Email Writing",
+        "Negotiation Practice"
+      ],
+      popular: false
+    },
+    {
+      id: 4,
+      name: "Academic English",
+      description: "Preparation for university studies",
+      duration: "12 weeks",
+      levels: "B1-C2 (CEFR)",
+      price: "Rp 9,000,000/course",
+      features: [
+        "Academic Writing",
+        "Research Skills",
+        "Note-taking",
+        "Critical Thinking"
+      ],
+      popular: false
     }
-  ];
+  ]
 
   const cefrLevels = [
-    { level: "A1", title: "Beginner", description: "Can understand and use familiar everyday expressions and very basic phrases." },
-    { level: "A2", title: "Elementary", description: "Can communicate in simple and routine tasks requiring a simple exchange of information." },
-    { level: "B1", title: "Intermediate", description: "Can deal with most situations likely to arise whilst travelling and describe experiences." },
-    { level: "B2", title: "Upper Intermediate", description: "Can interact with a degree of fluency and spontaneity with native speakers." },
-    { level: "C1", title: "Advanced", description: "Can use language flexibly and effectively for social, academic and professional purposes." },
-    { level: "C2", title: "Proficient", description: "Can understand with ease virtually everything heard or read and summarize information." }
-  ];
-
-  const formatCurrency = (amount: number): string => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0
-    }).format(amount);
-  };
+    {
+      level: "A1",
+      name: "Beginner",
+      description: "Can understand and use familiar everyday expressions and very basic phrases.",
+      skills: ["Introduction", "Basic Questions", "Simple Directions"]
+    },
+    {
+      level: "A2",
+      name: "Elementary",
+      description: "Can communicate in simple and routine tasks requiring a simple exchange of information.",
+      skills: ["Family Info", "Shopping", "Local Geography"]
+    },
+    {
+      level: "B1",
+      name: "Intermediate",
+      description: "Can deal with most situations likely to arise whilst travelling in an area where the language is spoken.",
+      skills: ["Work Experiences", "Dreams & Hopes", "Opinions"]
+    },
+    {
+      level: "B2",
+      name: "Upper Intermediate",
+      description: "Can interact with a degree of fluency and spontaneity that makes regular interaction with native speakers quite possible.",
+      skills: ["Complex Texts", "Technical Discussions", "Detailed Explanations"]
+    },
+    {
+      level: "C1",
+      name: "Advanced",
+      description: "Can use language flexibly and effectively for social, academic and professional purposes.",
+      skills: ["Academic Articles", "Fluent Spontaneity", "Effective Language"]
+    },
+    {
+      level: "C2",
+      name: "Proficiency",
+      description: "Can understand with ease virtually everything heard or read and summarize information from different sources.",
+      skills: ["Everything Heard", "Spontaneous Fluency", "Nuanced Meanings"]
+    }
+  ]
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-primary text-white py-16 md:py-24">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">Special Programs</h1>
-          <p className="text-xl max-w-3xl mx-auto mb-10">
-            Explore our specialized English programs designed to meet your specific learning goals.
-          </p>
-        </div>
-      </section>
-
-      {/* Program Tabs */}
-      <div className="bg-background-secondary sticky top-16 z-10 shadow-soft">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-wrap justify-center">
-            {programs.map((program) => (
-              <button
-                key={program.id}
-                onClick={() => setActiveProgram(program.title.toLowerCase().replace(/\s+/g, '-'))}
-                className={`px-6 py-4 font-medium ${
-                  activeProgram === program.title.toLowerCase().replace(/\s+/g, '-')
-                    ? 'text-primary-600 border-b-2 border-primary-600'
-                    : 'text-text-muted hover:text-text-primary'
-                }`}
-              >
-                {program.title}
-              </button>
-            ))}
+      
+      <main className="flex-grow">
+        {/* Hero Section */}
+        <section className="relative py-20 md:py-32 bg-gradient-to-br from-brand-50 to-accent-50">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mx-auto text-center">
+              <Badge className="mb-4 bg-accent-100 text-accent-800 hover:bg-accent-200">
+                Specialized Programs
+              </Badge>
+              <h1 className="text-display-md md:text-display-xl font-bold mb-6 bg-gradient-to-r from-brand-600 to-accent-600 bg-clip-text text-transparent">
+                English Programs for Every Goal
+              </h1>
+              <p className="text-lg md:text-xl text-neutral-600 mb-8 max-w-2xl mx-auto">
+                Specialized courses designed to meet specific learning objectives with expert instruction and proven methodologies.
+              </p>
+              <Button size="lg" className="bg-brand-500 hover:bg-brand-600">
+                Find Your Program
+              </Button>
+            </div>
           </div>
-        </div>
-      </div>
+        </section>
 
-      {/* Program Details */}
-      <section className="py-12 bg-background-primary">
-        <div className="container mx-auto px-4 max-w-4xl">
-          {programs.map((program) => (
-            activeProgram === program.title.toLowerCase().replace(/\s+/g, '-') && (
-              <div key={program.id} className="animate-fade-in">
-                <div className="bg-background-secondary rounded-xl shadow-medium p-6 md:p-8 mb-12">
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-                    <h2 className="text-2xl font-bold text-text-primary mb-4 md:mb-0">{program.title}</h2>
-                    <div className="text-xl font-bold text-primary-600">{formatCurrency(program.price)}</div>
-                  </div>
-                  
-                  <p className="text-text-secondary mb-6">{program.description}</p>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <div>
-                      <h3 className="text-lg font-semibold text-text-primary mb-3">CEFR Levels</h3>
-                      <ul className="space-y-2">
-                        {program.levels.map((level, index) => (
-                          <li key={index} className="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-success-500 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                            </svg>
-                            <span className="text-text-secondary">{level}</span>
-                          </li>
-                        ))}
-                      </ul>
+        {/* Programs Section */}
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <h2 className="text-display-sm md:text-display-md font-bold mb-4">Our Special Programs</h2>
+              <p className="text-lg text-neutral-600">
+                Choose from our specialized courses designed for specific learning objectives.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+              {programs.map((program) => (
+                <Card key={program.id} className={`border-0 shadow-md hover:shadow-lg transition-shadow overflow-hidden ${program.popular ? 'ring-2 ring-accent-500' : ''}`}>
+                  {program.popular && (
+                    <div className="bg-accent-500 py-1 px-4 text-white text-sm font-medium text-center">
+                      MOST POPULAR
+                    </div>
+                  )}
+                  <CardHeader>
+                    <div className="flex justify-between items-start">
+                      <CardTitle className="text-xl">{program.name}</CardTitle>
+                      {program.popular && <Star className="h-5 w-5 text-accent-500 fill-accent-500" />}
+                    </div>
+                    <CardDescription>{program.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-2 gap-4 mb-6">
+                      <div className="flex items-center">
+                        <Clock className="h-5 w-5 text-brand-500 mr-2" />
+                        <span>{program.duration}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <TrendingUp className="h-5 w-5 text-brand-500 mr-2" />
+                        <span>{program.levels}</span>
+                      </div>
                     </div>
                     
-                    <div>
-                      <h3 className="text-lg font-semibold text-text-primary mb-3">Duration</h3>
-                      <p className="text-text-secondary">{program.duration}</p>
-                      
-                      <h3 className="text-lg font-semibold text-text-primary mb-3 mt-6">Program Features</h3>
-                      <ul className="space-y-2">
-                        {program.features.map((feature, index) => (
-                          <li key={index} className="flex items-start">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" />
-                            </svg>
-                            <span className="text-text-secondary">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
+                    <div className="mb-6">
+                      <span className="text-2xl font-bold text-brand-600">{program.price}</span>
                     </div>
-                  </div>
-                  
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <Link href="/booking" className="bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 px-8 rounded-lg transition-colors text-center">
-                      Book This Program
-                    </Link>
-                    <Link href="/contact-us" className="bg-background-primary border border-neutral-300 text-text-primary font-medium py-3 px-8 rounded-lg transition-colors hover:bg-primary-50 text-center">
-                      Ask a Question
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            )
-          ))}
-          
-          {/* CEFR Levels Section */}
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold text-center text-text-primary mb-12">CEFR Levels Explained</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {cefrLevels.map((level, index) => (
-                <div key={index} className="bg-background-secondary rounded-xl shadow-medium p-6 hover:shadow-glow transition-shadow">
-                  <div className="flex items-center mb-4">
-                    <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center mr-4">
-                      <span className="font-bold text-primary-600">{level.level}</span>
-                    </div>
-                    <h3 className="text-xl font-semibold text-text-primary">{level.title}</h3>
-                  </div>
-                  <p className="text-text-secondary">{level.description}</p>
-                </div>
+                    
+                    <ul className="space-y-2 mb-6">
+                      {program.features.map((feature, index) => (
+                        <li key={index} className="flex items-center">
+                          <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    
+                    <Button className={`w-full ${program.popular ? 'bg-accent-500 hover:bg-accent-600' : 'bg-brand-500 hover:bg-brand-600'}`}>
+                      Learn More
+                    </Button>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </div>
-          
-          {/* CTA Section */}
-          <div className="bg-gradient-secondary rounded-xl p-8 text-center text-white">
-            <h2 className="text-2xl font-bold mb-4">Not Sure Which Program is Right for You?</h2>
-            <p className="max-w-2xl mx-auto mb-6">Take our free placement test to determine your current English level and get personalized recommendations.</p>
-            <Link href="/contact-us" className="bg-accent-500 hover:bg-accent-600 text-white font-medium py-3 px-8 rounded-lg transition-colors shadow-medium inline-block">
-              Take Placement Test
-            </Link>
+        </section>
+
+        {/* CEFR Levels Section */}
+        <section className="py-16 bg-neutral-50">
+          <div className="container mx-auto px-4">
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <h2 className="text-display-sm md:text-display-md font-bold mb-4">CEFR Framework</h2>
+              <p className="text-lg text-neutral-600">
+                Our courses follow the Common European Framework of Reference for Languages (CEFR).
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {cefrLevels.map((level) => (
+                <Card key={level.level} className="border-0 shadow-md hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <Badge className="bg-brand-100 text-brand-800">{level.level}</Badge>
+                      <span className="font-semibold">{level.name}</span>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-neutral-600 mb-4">{level.description}</p>
+                    <h4 className="font-medium mb-2">Key Skills:</h4>
+                    <ul className="space-y-1">
+                      {level.skills.map((skill, index) => (
+                        <li key={index} className="flex items-center">
+                          <div className="w-1.5 h-1.5 rounded-full bg-brand-500 mr-2"></div>
+                          <span className="text-sm">{skill}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* Pricing Section */}
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <h2 className="text-display-sm md:text-display-md font-bold mb-4">Program Pricing</h2>
+              <p className="text-lg text-neutral-600">
+                Transparent pricing with no hidden fees. Flexible payment options available.
+              </p>
+            </div>
+            
+            <div className="max-w-4xl mx-auto bg-gradient-to-br from-brand-50 to-accent-50 rounded-xl p-8 shadow-lg">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="text-center">
+                  <h3 className="font-bold text-lg mb-4">General English</h3>
+                  <div className="mb-4">
+                    <span className="text-3xl font-bold text-brand-600">Rp 3.5M</span>
+                    <span className="text-neutral-600">/4 weeks</span>
+                  </div>
+                  <p className="text-neutral-600 mb-4">All levels from A1 to C2</p>
+                  <Button variant="outline" className="w-full border-brand-500 text-brand-600 hover:bg-brand-500 hover:text-white">
+                    Enroll Now
+                  </Button>
+                </div>
+                
+                <div className="text-center">
+                  <h3 className="font-bold text-lg mb-4">IELTS Prep</h3>
+                  <div className="mb-4">
+                    <span className="text-3xl font-bold text-accent-600">Rp 8M</span>
+                    <span className="text-neutral-600">/course</span>
+                  </div>
+                  <p className="text-neutral-600 mb-4">10-week intensive program</p>
+                  <Button className="w-full bg-accent-500 hover:bg-accent-600">
+                    Enroll Now
+                  </Button>
+                </div>
+                
+                <div className="text-center">
+                  <h3 className="font-bold text-lg mb-4">Business English</h3>
+                  <div className="mb-4">
+                    <span className="text-3xl font-bold text-brand-600">Rp 6.5M</span>
+                    <span className="text-neutral-600">/course</span>
+                  </div>
+                  <p className="text-neutral-600 mb-4">8-week professional program</p>
+                  <Button variant="outline" className="w-full border-brand-500 text-brand-600 hover:bg-brand-500 hover:text-white">
+                    Enroll Now
+                  </Button>
+                </div>
+              </div>
+              
+              <div className="mt-8 text-center">
+                <p className="text-neutral-600">Need a custom package? <a href="#" className="text-brand-600 hover:underline">Contact us</a> for special pricing.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+      
     </div>
-  );
+  )
 }

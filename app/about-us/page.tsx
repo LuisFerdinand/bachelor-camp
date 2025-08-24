@@ -1,285 +1,293 @@
 'use client'
-
-import { useState } from 'react';
-import Link from 'next/link';
-
-interface Milestone {
-  year: string;
-  title: string;
-  description: string;
-}
-
-interface Accreditation {
-  id: number;
-  name: string;
-  logo: string;
-}
+import React from 'react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { 
+  Award, 
+  Users, 
+  Globe, 
+  BookOpen, 
+  CheckCircle,
+  Star,
+  TrendingUp,
+  Calendar
+} from 'lucide-react'
 
 export default function AboutUsPage() {
-  const [activeTab, setActiveTab] = useState<string>('story');
-  
-  const milestones: Milestone[] = [
-    {
-      year: "2010",
-      title: "Founded",
-      description: "Established with a vision to provide quality English education in Indonesia."
-    },
-    {
-      year: "2012",
-      title: "First Campus",
-      description: "Opened our first campus in Jakarta with state-of-the-art facilities."
-    },
-    {
-      year: "2015",
-      title: "International Recognition",
-      description: "Received accreditation from international education bodies."
-    },
-    {
-      year: "2018",
-      title: "Expansion",
-      description: "Expanded to three major cities across Indonesia."
-    },
-    {
-      year: "2020",
-      title: "Digital Transformation",
-      description: "Launched online learning platforms during the global pandemic."
-    },
-    {
-      year: "2023",
-      title: "10th Anniversary",
-      description: "Celebrating a decade of excellence in English education."
-    }
-  ];
-  
-  const accreditations: Accreditation[] = [
+  const accreditations = [
     {
       id: 1,
       name: "British Council",
-      logo: "/accreditations/british-council.png"
+      description: "Authorized IELTS test center",
+      logo: "BC"
     },
     {
       id: 2,
       name: "Cambridge English",
-      logo: "/accreditations/cambridge.png"
+      description: "Official preparation center",
+      logo: "CE"
     },
     {
       id: 3,
-      name: "IELTS Official Test Center",
-      logo: "/accreditations/ielts.png"
+      name: "EAQUALS",
+      description: "Excellence in language education",
+      logo: "EQ"
     },
     {
       id: 4,
-      name: "Ministry of Education",
-      logo: "/accreditations/education-ministry.png"
+      name: "Quality English",
+      description: "High-quality language schools",
+      logo: "QE"
     }
-  ];
+  ]
+
+  const milestones = [
+    {
+      year: "2010",
+      title: "Founded",
+      description: "Established with a vision to provide quality English education"
+    },
+    {
+      year: "2015",
+      title: "First Campus",
+      description: "Opened our first dedicated campus in Jakarta"
+    },
+    {
+      year: "2018",
+      title: "International Expansion",
+      description: "Started welcoming students from across Asia"
+    },
+    {
+      year: "2020",
+      title: "Digital Transformation",
+      description: "Launched online learning platforms"
+    },
+    {
+      year: "2023",
+      title: "New Facilities",
+      description: "Opened state-of-the-art campus expansion"
+    }
+  ]
+
+  const stats = [
+    { id: 1, value: "15,000+", label: "Students" },
+    { id: 2, value: "98%", label: "Satisfaction Rate" },
+    { id: 3, value: "50+", label: "Expert Instructors" },
+    { id: 4, value: "30+", label: "Nationalities" }
+  ]
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-primary text-white py-16 md:py-24">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">About Us</h1>
-          <p className="text-xl max-w-3xl mx-auto mb-10">
-            Learn about our journey, mission, and commitment to providing quality English education.
-          </p>
-        </div>
-      </section>
-
-      {/* Tabs Navigation */}
-      <div className="bg-background-secondary sticky top-16 z-10 shadow-soft">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-wrap justify-center">
-            <button
-              onClick={() => setActiveTab('story')}
-              className={`px-6 py-4 font-medium ${activeTab === 'story' ? 'text-primary-600 border-b-2 border-primary-600' : 'text-text-muted hover:text-text-primary'}`}
-            >
-              Our Story
-            </button>
-            <button
-              onClick={() => setActiveTab('mission')}
-              className={`px-6 py-4 font-medium ${activeTab === 'mission' ? 'text-primary-600 border-b-2 border-primary-600' : 'text-text-muted hover:text-text-primary'}`}
-            >
-              Mission & Vision
-            </button>
-            <button
-              onClick={() => setActiveTab('team')}
-              className={`px-6 py-4 font-medium ${activeTab === 'team' ? 'text-primary-600 border-b-2 border-primary-600' : 'text-text-muted hover:text-text-primary'}`}
-            >
-              Our Team
-            </button>
-            <button
-              onClick={() => setActiveTab('accreditations')}
-              className={`px-6 py-4 font-medium ${activeTab === 'accreditations' ? 'text-primary-600 border-b-2 border-primary-600' : 'text-text-muted hover:text-text-primary'}`}
-            >
-              Accreditations
-            </button>
+      
+      <main className="flex-grow">
+        {/* Hero Section */}
+        <section className="relative py-20 md:py-32 bg-gradient-to-br from-brand-50 to-accent-50">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mx-auto text-center">
+              <Badge className="mb-4 bg-accent-100 text-accent-800 hover:bg-accent-200">
+                About Our Institution
+              </Badge>
+              <h1 className="text-display-md md:text-display-xl font-bold mb-6 bg-gradient-to-r from-brand-600 to-accent-600 bg-clip-text text-transparent">
+                Excellence in English Education
+              </h1>
+              <p className="text-lg md:text-xl text-neutral-600 mb-8 max-w-2xl mx-auto">
+                For over a decade, we&apos;ve been providing world-class English education with a focus on practical skills and cultural immersion.
+              </p>
+              <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <Button size="lg" className="bg-brand-500 hover:bg-brand-600">
+                  Our Mission
+                </Button>
+                <Button size="lg" variant="outline" className="border-accent-500 text-accent-600 hover:bg-accent-500 hover:text-white">
+                  Meet Our Team
+                </Button>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </section>
 
-      {/* Tab Content */}
-      <section className="py-12 bg-background-primary flex-grow">
-        <div className="container mx-auto px-4 max-w-4xl">
-          {/* Our Story Tab */}
-          {activeTab === 'story' && (
-            <div className="animate-fade-in">
-              <div className="bg-background-secondary rounded-xl shadow-medium p-6 md:p-8 mb-12">
-                <h2 className="text-2xl font-bold text-text-primary mb-6">Our Journey</h2>
-                <p className="text-text-secondary mb-6">
-                  Founded in 2010, our institution began with a simple mission: to provide high-quality English education that empowers individuals to achieve their personal and professional goals. Over the years, we've grown from a small language center to a comprehensive educational institution with multiple campuses across Indonesia.
-                </p>
-                <p className="text-text-secondary mb-6">
-                  Our commitment to excellence has been recognized through numerous awards and accreditations. We've helped thousands of students improve their English skills, prepare for international exams, and succeed in their academic and professional pursuits.
-                </p>
-                <p className="text-text-secondary">
-                  Today, we continue to innovate and expand our programs to meet the evolving needs of our students in an increasingly globalized world.
-                </p>
+        {/* Stats Section */}
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              {stats.map((stat) => (
+                <div key={stat.id} className="text-center">
+                  <div className="text-4xl font-bold text-brand-600 mb-2">{stat.value}</div>
+                  <div className="text-neutral-600">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Accreditations Section */}
+        <section className="py-16 bg-neutral-50">
+          <div className="container mx-auto px-4">
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <h2 className="text-display-sm md:text-display-md font-bold mb-4">Accreditations & Partnerships</h2>
+              <p className="text-lg text-neutral-600">
+                We&apos;re proud to be recognized by leading international organizations for our quality standards.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {accreditations.map((accreditation) => (
+                <Card key={accreditation.id} className="border-0 shadow-md hover:shadow-lg transition-shadow">
+                  <CardContent className="p-6 text-center">
+                    <div className="w-16 h-16 rounded-full bg-brand-100 flex items-center justify-center mx-auto mb-4">
+                      <span className="text-xl font-bold text-brand-600">{accreditation.logo}</span>
+                    </div>
+                    <h3 className="font-bold text-lg mb-2">{accreditation.name}</h3>
+                    <p className="text-neutral-600 text-sm">{accreditation.description}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Testimonial Video Section */}
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <h2 className="text-display-sm md:text-display-md font-bold mb-4">Hear From Our Students</h2>
+              <p className="text-lg text-neutral-600">
+                Watch testimonials from students who have transformed their English skills with us.
+              </p>
+            </div>
+            
+            <div className="max-w-4xl mx-auto">
+              <div className="aspect-video bg-gradient-to-r from-brand-400 to-accent-400 rounded-xl shadow-lg flex items-center justify-center">
+                <div className="text-center text-white">
+                  <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-4">
+                    <div className="w-0 h-0 border-t-8 border-b-8 border-l-12 border-t-transparent border-b-transparent border-l-white ml-1"></div>
+                  </div>
+                  <p className="text-lg font-medium">Student Testimonials</p>
+                </div>
               </div>
               
-              <h2 className="text-3xl font-bold text-center text-text-primary mb-12">Our Milestones</h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                <div className="p-4 bg-neutral-50 rounded-lg">
+                  <div className="flex items-center mb-3">
+                    <Star className="h-4 w-4 text-yellow-400 fill-yellow-400 mr-1" />
+                    <Star className="h-4 w-4 text-yellow-400 fill-yellow-400 mr-1" />
+                    <Star className="h-4 w-4 text-yellow-400 fill-yellow-400 mr-1" />
+                    <Star className="h-4 w-4 text-yellow-400 fill-yellow-400 mr-1" />
+                    <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                  </div>
+                  <p className="text-sm italic mb-2">&quot;The instructors are incredibly knowledgeable and supportive.&quot;</p>
+                  <p className="text-sm font-medium">- Michael T.</p>
+                </div>
+                
+                <div className="p-4 bg-neutral-50 rounded-lg">
+                  <div className="flex items-center mb-3">
+                    <Star className="h-4 w-4 text-yellow-400 fill-yellow-400 mr-1" />
+                    <Star className="h-4 w-4 text-yellow-400 fill-yellow-400 mr-1" />
+                    <Star className="h-4 w-4 text-yellow-400 fill-yellow-400 mr-1" />
+                    <Star className="h-4 w-4 text-yellow-400 fill-yellow-400 mr-1" />
+                    <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                  </div>
+                  <p className="text-sm italic mb-2">&quot;I improved my IELTS score by 1.5 bands in just 8 weeks!&quot;</p>
+                  <p className="text-sm font-medium">- Priya K.</p>
+                </div>
+                
+                <div className="p-4 bg-neutral-50 rounded-lg">
+                  <div className="flex items-center mb-3">
+                    <Star className="h-4 w-4 text-yellow-400 fill-yellow-400 mr-1" />
+                    <Star className="h-4 w-4 text-yellow-400 fill-yellow-400 mr-1" />
+                    <Star className="h-4 w-4 text-yellow-400 fill-yellow-400 mr-1" />
+                    <Star className="h-4 w-4 text-yellow-400 fill-yellow-400 mr-1" />
+                    <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                  </div>
+                  <p className="text-sm italic mb-2">&quot;The camp experience was life-changing. I made friends from around the world.&quot;</p>
+                  <p className="text-sm font-medium">- Juan P.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Milestones Section */}
+        <section className="py-16 bg-neutral-50">
+          <div className="container mx-auto px-4">
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <h2 className="text-display-sm md:text-display-md font-bold mb-4">Our Journey</h2>
+              <p className="text-lg text-neutral-600">
+                Key milestones in our mission to provide exceptional English education.
+              </p>
+            </div>
+            
+            <div className="max-w-3xl mx-auto">
               <div className="relative">
-                {/* Timeline */}
-                <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-primary-200"></div>
+                {/* Timeline line */}
+                <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-brand-200"></div>
                 
-                <div className="space-y-12">
-                  {milestones.map((milestone, index) => (
-                    <div key={index} className={`relative flex ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}>
-                      <div className="w-1/2 pr-8">
-                        <div className="bg-background-secondary rounded-xl shadow-medium p-6">
-                          <div className="text-primary-600 font-bold text-lg mb-2">{milestone.year}</div>
-                          <h3 className="text-xl font-semibold text-text-primary mb-2">{milestone.title}</h3>
-                          <p className="text-text-secondary">{milestone.description}</p>
-                        </div>
-                      </div>
-                      <div className="w-1/2 flex justify-center items-center">
-                        <div className="w-8 h-8 rounded-full bg-primary-600 border-4 border-background-primary z-10"></div>
-                      </div>
-                      <div className="w-1/2 pl-8"></div>
+                {milestones.map((milestone, index) => (
+                  <div key={milestone.year} className={`relative mb-12 ${index % 2 === 0 ? 'text-right' : 'text-left'}`}>
+                    <div className={`absolute left-1/2 transform -translate-x-1/2 w-6 h-6 rounded-full bg-brand-500 border-4 border-white z-10`}></div>
+                    <div className={`w-5/12 ${index % 2 === 0 ? 'ml-auto' : 'mr-auto'}`}>
+                      <Card className="border-0 shadow-md">
+                        <CardContent className="p-6">
+                          <Badge className="mb-2 bg-brand-100 text-brand-800">{milestone.year}</Badge>
+                          <h3 className="font-bold text-lg mb-2">{milestone.title}</h3>
+                          <p className="text-neutral-600">{milestone.description}</p>
+                        </CardContent>
+                      </Card>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
             </div>
-          )}
+          </div>
+        </section>
 
-          {/* Mission & Vision Tab */}
-          {activeTab === 'mission' && (
-            <div className="animate-fade-in">
-              <div className="bg-background-secondary rounded-xl shadow-medium p-6 md:p-8 mb-12">
-                <h2 className="text-2xl font-bold text-text-primary mb-6">Our Mission</h2>
-                <p className="text-text-secondary mb-8">
-                  To provide exceptional English language education that empowers individuals to achieve their personal, academic, and professional goals in a globalized world.
-                </p>
-                
-                <h2 className="text-2xl font-bold text-text-primary mb-6">Our Vision</h2>
-                <p className="text-text-secondary mb-8">
-                  To be the leading English education institution in Indonesia, recognized for our innovative teaching methods, outstanding student outcomes, and commitment to excellence.
-                </p>
-                
-                <h2 className="text-2xl font-bold text-text-primary mb-6">Our Values</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-background-primary rounded-lg p-6">
-                    <h3 className="text-lg font-semibold text-text-primary mb-2">Excellence</h3>
-                    <p className="text-text-secondary">We strive for the highest standards in teaching, curriculum, and student support.</p>
-                  </div>
-                  <div className="bg-background-primary rounded-lg p-6">
-                    <h3 className="text-lg font-semibold text-text-primary mb-2">Innovation</h3>
-                    <p className="text-text-secondary">We embrace new technologies and methodologies to enhance learning outcomes.</p>
-                  </div>
-                  <div className="bg-background-primary rounded-lg p-6">
-                    <h3 className="text-lg font-semibold text-text-primary mb-2">Integrity</h3>
-                    <p className="text-text-secondary">We operate with honesty, transparency, and ethical behavior in all we do.</p>
-                  </div>
-                  <div className="bg-background-primary rounded-lg p-6">
-                    <h3 className="text-lg font-semibold text-text-primary mb-2">Community</h3>
-                    <p className="text-text-secondary">We foster a supportive, inclusive environment where everyone can thrive.</p>
-                  </div>
-                </div>
-              </div>
+        {/* Values Section */}
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <h2 className="text-display-sm md:text-display-md font-bold mb-4">Our Values</h2>
+              <p className="text-lg text-neutral-600">
+                The principles that guide everything we do at our institution.
+              </p>
             </div>
-          )}
-
-          {/* Our Team Tab */}
-          {activeTab === 'team' && (
-            <div className="animate-fade-in">
-              <div className="bg-background-secondary rounded-xl shadow-medium p-6 md:p-8 mb-12">
-                <h2 className="text-2xl font-bold text-text-primary mb-6">Meet Our Leadership Team</h2>
-                <p className="text-text-secondary mb-8">
-                  Our team consists of experienced educators, administrators, and support staff who are passionate about English education and committed to helping our students succeed.
-                </p>
-                
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  <div className="text-center">
-                    <div className="w-32 h-32 rounded-full bg-gradient-subtle mx-auto mb-4"></div>
-                    <h3 className="text-lg font-semibold text-text-primary mb-1">Dr. Sarah Johnson</h3>
-                    <p className="text-text-secondary mb-3">Founder & Director</p>
-                    <p className="text-text-sm text-text-muted">PhD in Applied Linguistics with over 20 years of experience in English education.</p>
-                  </div>
-                  
-                  <div className="text-center">
-                    <div className="w-32 h-32 rounded-full bg-gradient-subtle mx-auto mb-4"></div>
-                    <h3 className="text-lg font-semibold text-text-primary mb-1">Michael Chen</h3>
-                    <p className="text-text-secondary mb-3">Academic Director</p>
-                    <p className="text-text-sm text-text-muted">Former IELTS examiner with 15 years of teaching experience across Asia.</p>
-                  </div>
-                  
-                  <div className="text-center">
-                    <div className="w-32 h-32 rounded-full bg-gradient-subtle mx-auto mb-4"></div>
-                    <h3 className="text-lg font-semibold text-text-primary mb-1">Emily Williams</h3>
-                    <p className="text-text-secondary mb-3">Operations Manager</p>
-                    <p className="text-text-sm text-text-muted">MBA with expertise in educational management and student services.</p>
-                  </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-full bg-brand-100 flex items-center justify-center mx-auto mb-4">
+                  <BookOpen className="h-8 w-8 text-brand-600" />
                 </div>
+                <h3 className="font-bold text-lg mb-2">Excellence</h3>
+                <p className="text-neutral-600">We strive for the highest standards in teaching and learning.</p>
               </div>
               
-              <div className="bg-gradient-secondary rounded-xl p-8 text-center text-white">
-                <h2 className="text-2xl font-bold mb-4">Join Our Team</h2>
-                <p className="max-w-2xl mx-auto mb-6">We're always looking for passionate educators and professionals to join our team.</p>
-                <Link href="/contact-us" className="bg-accent-500 hover:bg-accent-600 text-white font-medium py-3 px-8 rounded-lg transition-colors shadow-medium inline-block">
-                  View Open Positions
-                </Link>
-              </div>
-            </div>
-          )}
-
-          {/* Accreditations Tab */}
-          {activeTab === 'accreditations' && (
-            <div className="animate-fade-in">
-              <div className="bg-background-secondary rounded-xl shadow-medium p-6 md:p-8 mb-12">
-                <h2 className="text-2xl font-bold text-text-primary mb-6">Our Accreditations</h2>
-                <p className="text-text-secondary mb-8">
-                  We are proud to be accredited by leading international and national educational organizations. These accreditations reflect our commitment to maintaining the highest standards of English language education.
-                </p>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {accreditations.map((accreditation) => (
-                    <div key={accreditation.id} className="bg-background-primary rounded-lg p-6 flex flex-col items-center">
-                      <div className="w-24 h-24 bg-gradient-subtle rounded-lg mb-4"></div>
-                      <h3 className="text-lg font-semibold text-text-primary mb-2">{accreditation.name}</h3>
-                      <p className="text-text-secondary text-center">Recognized for excellence in English language teaching and assessment.</p>
-                    </div>
-                  ))}
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-full bg-accent-100 flex items-center justify-center mx-auto mb-4">
+                  <Users className="h-8 w-8 text-accent-600" />
                 </div>
+                <h3 className="font-bold text-lg mb-2">Community</h3>
+                <p className="text-neutral-600">We foster a supportive and inclusive learning environment.</p>
               </div>
               
-              <div className="bg-background-secondary rounded-xl shadow-medium p-6 md:p-8 mb-12">
-                <h2 className="text-2xl font-bold text-text-primary mb-6">Testimonial Video</h2>
-                <div className="aspect-video bg-gradient-subtle rounded-lg flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="w-16 h-16 rounded-full bg-primary-600 flex items-center justify-center mx-auto mb-4">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <p className="text-text-secondary">Play testimonial video</p>
-                  </div>
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
+                  <Globe className="h-8 w-8 text-green-600" />
                 </div>
+                <h3 className="font-bold text-lg mb-2">Innovation</h3>
+                <p className="text-neutral-600">We embrace new teaching methods and technologies.</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-4">
+                  <Award className="h-8 w-8 text-purple-600" />
+                </div>
+                <h3 className="font-bold text-lg mb-2">Integrity</h3>
+                <p className="text-neutral-600">We operate with honesty and transparency in all we do.</p>
               </div>
             </div>
-          )}
-        </div>
-      </section>
+          </div>
+        </section>
+      </main>
+      
     </div>
-  );
+  )
 }

@@ -2,92 +2,119 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom styles */
-@layer components {
-    .container {
-        @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+@layer base {
+    :root {
+        --background: 0 0% 100%;
+        --foreground: 0 0% 3.9%;
+        --card: 0 0% 100%;
+        --card-foreground: 0 0% 3.9%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 0 0% 3.9%;
+        --primary: 243 75% 59%;
+        /* brand-500 */
+        --primary-foreground: 0 0% 98%;
+        --secondary: 0 0% 96.1%;
+        --secondary-foreground: 0 0% 9%;
+        --muted: 0 0% 96.1%;
+        --muted-foreground: 0 0% 45.1%;
+        --accent: 24 95% 53%;
+        /* accent-500 orange */
+        --accent-foreground: 0 0% 98%;
+        --destructive: 0 84% 60%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 0 0% 89.8%;
+        --input: 0 0% 89.8%;
+        --ring: 243 75% 59%;
+        --radius: 0.5rem;
     }
 
-    .btn {
-        @apply font-medium py-2 px-4 rounded-lg transition-colors;
+    .dark {
+        --background: 0 0% 3.9%;
+        --foreground: 0 0% 98%;
+        --card: 0 0% 3.9%;
+        --card-foreground: 0 0% 98%;
+        --popover: 0 0% 3.9%;
+        --popover-foreground: 0 0% 98%;
+        --primary: 243 75% 59%;
+        --primary-foreground: 0 0% 3.9%;
+        --secondary: 0 0% 14.9%;
+        --secondary-foreground: 0 0% 98%;
+        --muted: 0 0% 14.9%;
+        --muted-foreground: 0 0% 63.9%;
+        --accent: 24 95% 53%;
+        --accent-foreground: 0 0% 3.9%;
+        --destructive: 0 62.8% 30.6%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 0 0% 14.9%;
+        --input: 0 0% 14.9%;
+        --ring: 243 75% 59%;
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border;
     }
 
+    body {
+        @apply bg-background text-foreground;
+        font-feature-settings: "rlig" 1, "calt" 1;
+    }
+
+    /* Professional typography */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-semibold tracking-tight;
+    }
+
+    h1 {
+        @apply text-display-lg md:text-display-xl;
+    }
+
+    h2 {
+        @apply text-display-md md:text-display-lg;
+    }
+
+    h3 {
+        @apply text-display-sm md:text-display-md;
+    }
+
+    h4 {
+        @apply text-2xl md:text-3xl;
+    }
+
+    h5 {
+        @apply text-xl md:text-2xl;
+    }
+
+    h6 {
+        @apply text-lg md:text-xl;
+    }
+
+    /* Smooth scrolling */
+    html {
+        @apply scroll-smooth;
+    }
+
+    /* Focus ring for accessibility */
+    .focus-ring {
+        @apply focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2;
+    }
+
+    /* Professional button variants */
     .btn-primary {
-        @apply bg-primary-600 hover:bg-primary-700 text-white;
+        @apply bg-brand-500 text-white hover:bg-brand-600 focus:ring-brand-500 transition-colors duration-200;
     }
 
     .btn-secondary {
-        @apply bg-background-secondary border border-neutral-300 text-text-primary hover:bg-primary-50;
+        @apply bg-accent-500 text-white hover:bg-accent-600 focus:ring-accent-500 transition-colors duration-200;
     }
 
-    .card {
-        @apply bg-background-secondary rounded-xl shadow-medium overflow-hidden;
+    .btn-outline {
+        @apply border-2 border-brand-500 text-brand-500 hover:bg-brand-500 hover:text-white focus:ring-brand-500 transition-colors duration-200;
     }
-
-    .input {
-        @apply w-full px-4 py-3 rounded-lg border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent;
-    }
-}
-
-/* Custom animations */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes scaleIn {
-    from {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-.animate-fade-in {
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-.animate-slide-up {
-    animation: slideUp 0.5s ease-out;
-}
-
-.animate-slide-down {
-    animation: slideDown 0.5s ease-out;
-}
-
-.animate-scale-in {
-    animation: scaleIn 0.3s ease-out;
 }

@@ -1,27 +1,32 @@
-import './globals.css';
-import type { Metadata } from 'next';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import React from 'react'
+import { Inter } from 'next/font/google'
+import './globals.css'
+import FloatingWA from '@/components/common/FloatingWA'
+import Header from '@/components/layout/Header'
+import Footer from '@/components/layout/Footer'
 
-export const metadata: Metadata = {
-  title: 'English Learning Center',
-  description: 'Premium English courses, camps, and test preparation programs',
-};
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata = {
+  title: 'EduCamp - English Learning Center',
+  description: 'Premium English learning experience with professional facilities and expert instructors',
+}
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="en">
-      <body className="font-sans text-text-primary bg-background-primary">
+      <body className={inter.className}>
         <Header />
-        <main className="flex-grow">
+        <main className="relative">
           {children}
         </main>
+        <FloatingWA />
         <Footer />
       </body>
     </html>
-  );
+  )
 }
