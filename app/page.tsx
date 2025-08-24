@@ -1,103 +1,138 @@
-import Image from "next/image";
+import Link from 'next/link';
+import FloatingWA from '@/components/FloatingWA';
+import TestimonialCard from '@/components/TestimonialCard';
 
-export default function Home() {
+interface Testimonial {
+  id: number;
+  name: string;
+  role: string;
+  content: string;
+  avatar: string;
+}
+
+export default function HomePage() {
+  const testimonials: Testimonial[] = [
+    {
+      id: 1,
+      name: "John Doe",
+      role: "Parent",
+      content: "The camp experience was transformative for my child. Highly recommended!",
+      avatar: "/avatars/john.jpg"
+    },
+    {
+      id: 2,
+      name: "Jane Smith",
+      role: "Student",
+      content: "The IELTS preparation course helped me achieve my target score.",
+      avatar: "/avatars/jane.jpg"
+    },
+    {
+      id: 3,
+      name: "Robert Johnson",
+      role: "Teacher",
+      content: "Working here has been incredibly rewarding. The facilities are top-notch.",
+      avatar: "/avatars/robert.jpg"
+    }
+  ];
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="min-h-screen flex flex-col">
+      {/* Hero Section */}
+      <section className="relative bg-gradient-primary text-white py-20 md:py-32">
+        <div className="container mx-auto px-4 text-center">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
+            Transform Your Learning Journey
+          </h1>
+          <p className="text-xl md:text-2xl mb-10 max-w-3xl mx-auto animate-slide-up">
+            Experience our premium camps, courses, and test preparation programs designed for your success.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4 animate-scale-in">
+            <Link href="/booking" className="bg-accent-500 hover:bg-accent-600 text-white font-medium py-3 px-8 rounded-lg transition-colors shadow-medium">
+              Book Now
+            </Link>
+            <Link href="/special-program" className="bg-transparent border-2 border-white hover:bg-white/10 text-white font-medium py-3 px-8 rounded-lg transition-colors">
+              Explore Programs
+            </Link>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      {/* Three Pillars Section */}
+      <section className="py-16 bg-background-secondary">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center text-text-primary mb-12">Our Offerings</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Camp Pillar */}
+            <div className="bg-background-primary rounded-xl shadow-medium p-6 hover:shadow-glow transition-shadow">
+              <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-text-primary mb-3">Premium Camps</h3>
+              <p className="text-text-muted mb-4">Immersive learning experiences in state-of-the-art facilities with comfortable accommodations.</p>
+              <Link href="/camp" className="text-primary-600 font-medium hover:text-primary-700 transition-colors">
+                Explore Camps →
+              </Link>
+            </div>
+            
+            {/* Course Pillar */}
+            <div className="bg-background-primary rounded-xl shadow-medium p-6 hover:shadow-glow transition-shadow">
+              <div className="w-16 h-16 bg-secondary-100 rounded-full flex items-center justify-center mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-secondary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M12 14l9-5-9-5-9 5 9 5z" />
+                  <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-text-primary mb-3">Specialized Courses</h3>
+              <p className="text-text-muted mb-4">Comprehensive programs for General English, IELTS prep, and CEFR certification.</p>
+              <Link href="/special-program" className="text-primary-600 font-medium hover:text-primary-700 transition-colors">
+                View Courses →
+              </Link>
+            </div>
+            
+            {/* Test Pillar */}
+            <div className="bg-background-primary rounded-xl shadow-medium p-6 hover:shadow-glow transition-shadow">
+              <div className="w-16 h-16 bg-accent-100 rounded-full flex items-center justify-center mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-accent-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-text-primary mb-3">Test Preparation</h3>
+              <p className="text-text-muted mb-4">Expert guidance and resources to help you excel in your English proficiency exams.</p>
+              <Link href="/special-program" className="text-primary-600 font-medium hover:text-primary-700 transition-colors">
+                Prepare Now →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-16 bg-background-primary">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center text-text-primary mb-12">What People Say</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial) => (
+              <TestimonialCard key={testimonial.id} testimonial={testimonial} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16 bg-gradient-secondary text-white">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-6">Ready to Start Your Journey?</h2>
+          <p className="text-xl max-w-2xl mx-auto mb-10">Join thousands of satisfied students who have transformed their learning experience with us.</p>
+          <Link href="/booking" className="bg-accent-500 hover:bg-accent-600 text-white font-medium py-3 px-8 rounded-lg transition-colors shadow-medium">
+            Book Your Spot Today
+          </Link>
+        </div>
+      </section>
+
+      <FloatingWA />
     </div>
   );
 }
