@@ -46,10 +46,13 @@ const Header = () => {
     { href: '/contact-us', label: 'Contact' },
   ];
 
+  // Determine if header should have solid styling (scrolled OR mobile menu open)
+  const shouldUseSolidStyling = isScrolled || isMenuOpen;
+
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out py-4 ${
-      isScrolled 
-        ? 'bg-white/95 backdrop-blur-md shadow-lg' 
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out py-4 ${
+      shouldUseSolidStyling 
+        ? 'bg-white backdrop-blur-md shadow-lg' 
         : 'bg-transparent'
     }`}>
       <div className="container mx-auto px-4 lg:px-6">
@@ -60,8 +63,8 @@ const Header = () => {
             className="flex items-center space-x-2"
           >
             <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-brand-500 to-accent-500"></div>
-            <span className={`text-xl font-bold transition-colors duration-300 ${
-              isScrolled ? 'text-gray-900' : 'text-white'
+            <span className={`text-xl font-bold transition-all duration-500 ease-in-out ${
+              shouldUseSolidStyling ? 'text-gray-900' : 'text-white'
             }`}>
               EduCamp
             </span>
@@ -73,10 +76,10 @@ const Header = () => {
               <Link 
                 key={link.href}
                 href={link.href} 
-                className={`font-medium transition-colors duration-300 ${
+                className={`font-medium transition-all duration-500 ease-in-out ${
                   pathname === link.href 
-                    ? (isScrolled ? 'text-brand-600' : 'text-accent-300') 
-                    : (isScrolled ? 'text-gray-700 hover:text-brand-600' : 'text-white/90 hover:text-white')
+                    ? (shouldUseSolidStyling ? 'text-brand-600' : 'text-accent-300') 
+                    : (shouldUseSolidStyling ? 'text-gray-700 hover:text-brand-600' : 'text-white/90 hover:text-white')
                 }`}
               >
                 {link.label}
@@ -90,8 +93,8 @@ const Header = () => {
             <div className="hidden lg:block relative">
               <button 
                 onClick={toggleBookMenu}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-300 ${
-                  isScrolled 
+                className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-500 ease-in-out ${
+                  shouldUseSolidStyling 
                     ? 'bg-brand-600 text-white hover:bg-brand-700' 
                     : 'bg-white/20 backdrop-blur-sm text-white border border-white/30 hover:bg-white/30'
                 }`}
@@ -180,14 +183,14 @@ const Header = () => {
             
             {/* Mobile menu button */}
             <button 
-              className={`lg:hidden p-2 rounded-lg transition-colors duration-300 ${
-                isScrolled ? 'text-gray-700' : 'text-white'
+              className={`lg:hidden p-2 rounded-lg transition-all duration-500 ease-in-out ${
+                shouldUseSolidStyling ? 'text-gray-700' : 'text-white'
               }`}
               onClick={toggleMenu}
             >
               <svg 
                 xmlns="http://www.w3.org/2000/svg" 
-                className={`h-6 w-6 transition-transform duration-300 ${isMenuOpen ? 'rotate-90' : ''}`} 
+                className={`h-6 w-6 transition-transform duration-500 ease-in-out ${isMenuOpen ? 'rotate-90' : ''}`} 
                 fill="none" 
                 viewBox="0 0 24 24" 
                 stroke="currentColor"
@@ -204,18 +207,21 @@ const Header = () => {
       </div>
       
       {/* Mobile Navigation */}
-      <div className={`lg:hidden bg-white/95 backdrop-blur-md border-t border-gray-200/50 overflow-hidden transition-all duration-300 ${isMenuOpen ? 'max-h-screen py-4' : 'max-h-0'}`}>
+      <div className={`lg:hidden bg-white/95 backdrop-blur-md overflow-hidden transition-all duration-500 ease-in-out ${isMenuOpen ? 'max-h-screen py-4 opacity-100' : 'max-h-0 opacity-0'}`}>
         <div className="container mx-auto px-4">
-          <nav className="flex flex-col space-y-1">
-            {navLinks.map((link) => (
+          <nav className={`flex flex-col space-y-1 transition-all duration-500 ease-in-out delay-150 ${isMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0'}`}>
+            {navLinks.map((link, index) => (
               <Link 
                 key={link.href}
                 href={link.href} 
-                className={`px-4 py-3 rounded-lg transition-colors duration-200 ${
+                className={`px-4 py-3 rounded-lg transition-all duration-300 ease-in-out ${
                   pathname === link.href 
                     ? 'text-brand-600 bg-brand-50' 
                     : 'text-gray-600 hover:text-brand-600 hover:bg-gray-50'
-                }`}
+                } ${isMenuOpen ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0'}`}
+                style={{
+                  transitionDelay: isMenuOpen ? `${200 + (index * 50)}ms` : '0ms'
+                }}
                 onClick={closeMenus}
               >
                 {link.label}
@@ -223,11 +229,12 @@ const Header = () => {
             ))}
             
             {/* Mobile Book Section */}
-            <div className="border-t border-gray-200 mt-4 pt-4">
+            <div className={`border-t border-gray-200 mt-4 pt-4 transition-all duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0'}`} style={{ transitionDelay: isMenuOpen ? '500ms' : '0ms' }}>
               <div className="space-y-1">
                 <Link 
                   href="/booking" 
-                  className="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0'}`}
+                  style={{ transitionDelay: isMenuOpen ? '550ms' : '0ms' }}
                   onClick={closeMenus}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -237,7 +244,8 @@ const Header = () => {
                 </Link>
                 <Link 
                   href="/booking" 
-                  className="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0'}`}
+                  style={{ transitionDelay: isMenuOpen ? '600ms' : '0ms' }}
                   onClick={closeMenus}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -248,7 +256,8 @@ const Header = () => {
                 <div className="border-t border-gray-200 my-2"></div>
                 <Link 
                   href="/login" 
-                  className="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0'}`}
+                  style={{ transitionDelay: isMenuOpen ? '650ms' : '0ms' }}
                   onClick={closeMenus}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -258,7 +267,8 @@ const Header = () => {
                 </Link>
                 <Link 
                   href="/register" 
-                  className="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0'}`}
+                  style={{ transitionDelay: isMenuOpen ? '700ms' : '0ms' }}
                   onClick={closeMenus}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -268,7 +278,8 @@ const Header = () => {
                 </Link>
                 <Link 
                   href="/profile" 
-                  className="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0'}`}
+                  style={{ transitionDelay: isMenuOpen ? '750ms' : '0ms' }}
                   onClick={closeMenus}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

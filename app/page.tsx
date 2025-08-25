@@ -115,7 +115,7 @@ export default function HomePage() {
       <main className="flex-grow">
         {/* Hero Section with Background Image */}
         <section 
-          className="relative py-20 md:py-32 min-h-[600px] md:min-h-[700px] flex items-center"
+          className="relative py-20 md:py-32 min-h-screen flex items-center"
           style={{
             backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${heroData.backgroundImage})`,
             backgroundSize: 'cover',
