@@ -539,9 +539,9 @@ export default function BuildingDetailPage({
                       <h3 className="font-bold text-lg mb-2">
                         {relatedBuilding.name}
                       </h3>
-                      <p className="text-neutral-600 mb-4">
+                      {/* <p className="text-neutral-600 mb-4">
                         {relatedBuilding.shortDescription}
-                      </p>
+                      </p> */}
                       <Link href={`/camp/${relatedBuilding.slug}`}>
                         <Button
                           variant="outline"
