@@ -96,7 +96,7 @@ const TestimonialSlider: React.FC<TestimonialSliderProps> = ({
           {testimonials.map((testimonial) => (
             <div 
               key={testimonial.id}
-              className={`flex-shrink-0 px-2 ${
+              className={`flex-shrink-0 px-2 pb-8 pt-4 ${
                 itemsPerSlide === 1 ? 'w-full' : 
                 itemsPerSlide === 2 ? 'w-1/2' : 'w-1/3'
               }`}
