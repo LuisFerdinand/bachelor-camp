@@ -1,33 +1,16 @@
 "use client";
 import React from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
 import {
   Award,
   Users,
   Globe,
   BookOpen,
-  CheckCircle,
   Star,
-  TrendingUp,
-  Calendar,
-  MapPin,
-  Phone,
-  Mail,
-  User,
   MessageSquare,
-  CheckCircle2,
-  AlertCircle,
-  Info,
   History,
 } from "lucide-react";
 

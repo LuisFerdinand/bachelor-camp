@@ -2,31 +2,14 @@
 "use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
 import {
   MapPin,
-  Users,
-  Home,
-  Wifi,
-  Coffee,
-  Shield,
-  BookOpen,
   Star,
   Calendar,
-  Clock,
-  Bed,
-  Bath,
-  AirVent,
-  Shirt,
   CheckCircle2,
   Phone,
   MessageSquare,
@@ -36,8 +19,6 @@ import {
   Navigation,
   Mail,
   Camera,
-  Grid,
-  Info,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -54,15 +35,22 @@ interface BuildingDetailPageProps {
 export default function BuildingDetailPage({
   params,
 }: BuildingDetailPageProps) {
+  // Move all hooks to the top, before any conditional logic
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [activeTab, setActiveTab] = useState("overview");
+
   // Find the building based on the slug
   const building = getBuildingBySlug(params.slug);
 
+  // Early return AFTER hooks are called
   if (!building) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Building Not Found</h1>
-          <p className="mb-6">The building you're looking for doesn't exist.</p>
+          <p className="mb-6">
+            The building you&apos;re looking for doesn&apos;t exist.
+          </p>
           <Link href="/camp">
             <Button>Back to Camp</Button>
           </Link>
@@ -73,12 +61,6 @@ export default function BuildingDetailPage({
 
   // Get related buildings
   const relatedBuildings = getRelatedBuildings(building.id, 2);
-
-  // State for image gallery
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  // State for active tab
-  const [activeTab, setActiveTab] = useState("overview");
 
   // Functions for gallery navigation
   const nextImage = () => {

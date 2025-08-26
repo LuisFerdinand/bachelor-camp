@@ -318,8 +318,8 @@ export default function ContactPage({ cmsData }: ContactPageProps) {
                   Get In Touch
                 </h2>
                 <p className="text-lg text-neutral-600">
-                  Fill out the form below and we'll get back to you as soon as
-                  possible.
+                  Fill out the form below and we&apos;ll get back to you as soon
+                  as possible.
                 </p>
               </div>
 
@@ -330,7 +330,7 @@ export default function ContactPage({ cmsData }: ContactPageProps) {
                     <CardHeader>
                       <CardTitle className="text-xl">Send a Message</CardTitle>
                       <CardDescription>
-                        We'll respond to your inquiry within 24 hours
+                        We&apos;ll respond to your inquiry within 24 hours
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -341,8 +341,8 @@ export default function ContactPage({ cmsData }: ContactPageProps) {
                             Message Sent Successfully!
                           </h3>
                           <p className="text-green-700">
-                            Thank you for contacting us. We'll get back to you
-                            soon.
+                            Thank you for contacting us. We&apos;ll get back to
+                            you soon.
                           </p>
                           <Button
                             onClick={() => setFormSubmitted(false)}
