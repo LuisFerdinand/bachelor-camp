@@ -8,15 +8,12 @@ import {
   MapPin, 
   Users, 
   Home, 
-  Wifi, 
   Coffee, 
   Shield, 
   BookOpen,
   Star,
   Calendar,
-  Clock,
   Bed,
-  Bath,
   AirVent,
   Shirt,
   CheckCircle2,
@@ -166,7 +163,7 @@ export default function CampPage({ cmsData }: CampPageProps) {
                 className="object-cover"
                 priority
                 sizes="100vw"
-                onError={(e) => {
+                onError={() => {
                   console.error('Failed to load mobile hero image:', heroImages.mobile.src);
                 }}
               />
@@ -182,7 +179,7 @@ export default function CampPage({ cmsData }: CampPageProps) {
                 className="object-cover"
                 priority
                 sizes="100vw"
-                onError={(e) => {
+                onError={() => {
                   console.error('Failed to load desktop hero image:', heroImages.desktop.src);
                 }}
               />
@@ -244,7 +241,7 @@ export default function CampPage({ cmsData }: CampPageProps) {
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  onError={(e) => {
+                  onError={() => {
                     console.error('Failed to load building image:', buildingImage.src);
                   }}
                 />
@@ -493,7 +490,7 @@ export default function CampPage({ cmsData }: CampPageProps) {
                 Ready to Secure Your Room?
               </h2>
               <p className="text-xl text-white/90 mb-10 leading-relaxed max-w-3xl mx-auto">
-                Don't wait - rooms fill up quickly, especially during peak seasons. Contact us today to check availability, 
+                Don&apos;t wait - rooms fill up quickly, especially during peak seasons. Contact us today to check availability, 
                 get personalized rates, and reserve your preferred accommodation.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -515,7 +512,7 @@ export default function CampPage({ cmsData }: CampPageProps) {
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 max-w-2xl mx-auto">
                   <div className="text-3xl mb-3">💡</div>
                   <p className="text-white/90 font-medium">
-                    <strong className="text-white">Pro tip:</strong> Mention "website inquiry" for special rates and bundling options with our course programs
+                    <strong className="text-white">Pro tip:</strong> Mention &quot;website inquiry&quot; for special rates and bundling options with our course programs
                   </p>
                 </div>
               </div>
