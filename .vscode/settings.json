@@ -1,0 +1,15 @@
+{
+  "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+
+  // Format settings
+  "editor.formatOnType": false,
+  "editor.formatOnPaste": false,
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
+
+  // Auto-save behavior (optional)
+  "files.autoSave": "onFocusChange",
+
+  // Make Prettier run AFTER ESLint
+  "vs-code-prettier-eslint.prettierLast": true
+}
