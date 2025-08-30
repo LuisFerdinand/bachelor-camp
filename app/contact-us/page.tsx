@@ -166,6 +166,17 @@ export default function ContactPage({ cmsData }: ContactPageProps) {
     },
   ];
 
+  const kediriCampus = {
+    id: 1,
+    name: "Kediri Campus",
+    address: "Jl. Veteran No. 15, Kediri City, East Java 64127",
+    phone: "+62 354 123456",
+    email: "kediri@englishlearning.com",
+    hours:
+      "Monday - Friday: 8:00 AM - 8:00 PM<br>Saturday: 9:00 AM - 5:00 PM<br>Sunday: Closed",
+    mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.7853475894884!2d112.01534431533453!3d-7.819599994318812!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7857d5e5e5e5e5%3A0x5e5e5e5e5e5e5e5e!2sKediri%2C%20East%20Java!5e0!3m2!1sen!2sid!4v1629789386789!5m2!1sen!2sid"
+  };
+
   const [formData, setFormData] = React.useState({
     name: "",
     email: "",
@@ -607,6 +618,116 @@ export default function ContactPage({ cmsData }: ContactPageProps) {
                   </Card>
                 ))}
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Campus Map Section */}
+        <section className="py-16 bg-gradient-to-b from-neutral-50 to-white">
+          <div className="container mx-auto px-4">
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <Badge className="mb-4 bg-brand-100 text-brand-800 border-0">
+                <MapPin className="w-4 h-4 mr-2" />
+                Our Location
+              </Badge>
+              <h2 className="text-display-sm md:text-display-md font-bold mb-4">
+                Visit Our Kediri Campus
+              </h2>
+              <p className="text-lg text-neutral-600">
+                Our main campus is located in the heart of Kediri City, easily accessible by public transportation.
+              </p>
+            </div>
+            
+            <div className="max-w-4xl mx-auto">
+              <Card className="border-0 shadow-lg overflow-hidden">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+                  {/* Contact Information */}
+                  <div className="p-8 bg-gradient-to-br from-brand-50 to-accent-50">
+                    <div className="mb-6">
+                      <h3 className="text-2xl font-bold text-neutral-900 mb-2 flex items-center">
+                        <Building className="h-6 w-6 mr-2 text-brand-500" />
+                        {kediriCampus.name}
+                      </h3>
+                      <p className="text-neutral-600">
+                        Our flagship campus in Kediri offers state-of-the-art facilities and a supportive learning environment.
+                      </p>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div className="flex items-start">
+                        <MapPin className="h-5 w-5 text-brand-500 mr-3 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <h4 className="font-medium">Address</h4>
+                          <p className="text-neutral-600">{kediriCampus.address}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center">
+                        <Phone className="h-5 w-5 text-brand-500 mr-3 flex-shrink-0" />
+                        <div>
+                          <h4 className="font-medium">Phone</h4>
+                          <a href={`tel:${kediriCampus.phone}`} className="text-neutral-600 hover:text-brand-500 transition-colors">
+                            {kediriCampus.phone}
+                          </a>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center">
+                        <Mail className="h-5 w-5 text-brand-500 mr-3 flex-shrink-0" />
+                        <div>
+                          <h4 className="font-medium">Email</h4>
+                          <a href={`mailto:${kediriCampus.email}`} className="text-neutral-600 hover:text-brand-500 transition-colors">
+                            {kediriCampus.email}
+                          </a>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start">
+                        <Clock className="h-5 w-5 text-brand-500 mr-3 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <h4 className="font-medium">Office Hours</h4>
+                          <div 
+                            className="text-neutral-600" 
+                            dangerouslySetInnerHTML={{ __html: kediriCampus.hours }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-8 flex flex-col sm:flex-row gap-3">
+                      <Button 
+                        className="flex-1 bg-brand-500 hover:bg-brand-600"
+                        onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(kediriCampus.address)}`, '_blank')}
+                      >
+                        <MapPin className="h-4 w-4 mr-2" />
+                        Get Directions
+                      </Button>
+                      <Button 
+                        variant="outline"
+                        className="flex-1"
+                        onClick={() => window.open(`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(kediriCampus.address)}`, '_blank')}
+                      >
+                        Navigate to Campus
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  {/* Map */}
+                  <div className="relative h-96 lg:h-auto min-h-[400px]">
+                    <iframe
+                      title="Map of Kediri Campus"
+                      width="100%"
+                      height="100%"
+                      frameBorder="0"
+                      style={{ border: 0 }}
+                      referrerPolicy="no-referrer-when-downgrade"
+                      src={kediriCampus.mapEmbedUrl}
+                      allowFullScreen
+                      className="absolute inset-0"
+                    ></iframe>
+                  </div>
+                </div>
+              </Card>
             </div>
           </div>
         </section>

@@ -66,7 +66,7 @@ const Header = () => {
             <span className={`text-xl font-bold transition-all duration-500 ease-in-out ${
               shouldUseSolidStyling ? 'text-gray-900' : 'text-white'
             }`}>
-              EduCamp
+              Bachelor Camp
             </span>
           </Link>
           
