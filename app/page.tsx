@@ -154,7 +154,7 @@ export default function HomePage() {
       icon: Globe,
       title: "Cultural Center",
       description: "International community activities",
-      image: "https://images.unsplash.com/photo-1523580846011-d3982bc74bee?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+      image: "https://images.unsplash.com/photo-1659287590518-81891c997956?q=80&w=872&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     }
   ]
   
@@ -239,7 +239,7 @@ export default function HomePage() {
               <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
                 <div className="relative h-48 overflow-hidden">
                   <Image 
-                    src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                    src="https://images.unsplash.com/photo-1756547275349-7c7d668f3ce3?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                     alt="Camp Programs"
                     fill
                     className="object-cover transition-transform group-hover:scale-110"
@@ -494,7 +494,7 @@ export default function HomePage() {
             
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
               {[
-                { src: "https://images.unsplash.com/photo-1523580846011-d3982bc74bee?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80", alt: "Group Activities" },
+                { src: "https://images.unsplash.com/photo-1659287590518-81891c997956?q=80&w=872&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", alt: "Group Activities" },
                 { src: "https://images.unsplash.com/photo-1521017432531-fbd92d768814?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80", alt: "Study Groups" },
                 { src: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80", alt: "Technology Lab" },
                 { src: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80", alt: "Outdoor Learning" },

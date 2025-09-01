@@ -1,3 +1,4 @@
+
 // app/util/blogData.ts
 export interface BlogPost {
   id: number
@@ -20,6 +21,12 @@ export interface BlogPost {
     imageAlt: string
     category: string
     date: string
+  }[]
+  // Add table of contents property
+  tableOfContents?: {
+    id: string
+    title: string
+    level: number
   }[]
 }
 
@@ -704,4 +711,171 @@ export function getAllTags(): string[] {
   })
   
   return Array.from(tagSet)
+}
+
+// Function to generate table of contents from HTML content
+export function generateTableOfContents(htmlContent: string): { id: string; title: string; level: number }[] {
+  // Check if we're in a browser environment
+  if (typeof window === 'undefined') {
+    return []
+  }
+
+  // Create a temporary div element to parse the HTML
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = htmlContent;
+  
+  // Find all heading elements (h1, h2, h3, etc.)
+  const headings = tempDiv.querySelectorAll('h1, h2, h3, h4, h5, h6');
+  
+  const tableOfContents: { id: string; title: string; level: number }[] = [];
+  
+  headings.forEach((heading) => {
+    // Get the heading level (1 for h1, 2 for h2, etc.)
+    const level = parseInt(heading.tagName.charAt(1));
+    
+    // Get the heading text
+    const title = heading.textContent || '';
+    
+    // Generate an ID for the heading based on the text
+    const id = title
+      .toLowerCase()
+      .replace(/[^\w\s]/g, '') // Remove special characters
+      .replace(/\s+/g, '-') // Replace spaces with hyphens
+      .trim();
+    
+    // Ensure the ID is unique
+    const existingIds = tableOfContents.map(item => item.id);
+    let uniqueId = id;
+    let counter = 1;
+    
+    while (existingIds.includes(uniqueId)) {
+      uniqueId = `${id}-${counter}`;
+      counter++;
+    }
+    
+    // Add the heading to the table of contents
+    tableOfContents.push({
+      id: uniqueId,
+      title,
+      level
+    });
+  });
+  
+  return tableOfContents;
+}
+
+// Function to get a blog post with generated table of contents
+export function getBlogPostWithTOC(slug: string): BlogPost | undefined {
+  const post = getBlogPostBySlug(slug);
+  
+  if (!post) {
+    return undefined;
+  }
+  
+  // Generate table of contents if it doesn't exist
+  if (!post.tableOfContents) {
+    post.tableOfContents = generateTableOfContents(post.content);
+  }
+  
+  return post;
+}
+
+// Function to add IDs to headings in HTML content
+export function addIdsToHeadings(htmlContent: string, tableOfContents: { id: string; title: string; level: number }[]): string {
+  // Check if we're in a browser environment
+  if (typeof window === 'undefined') {
+    return htmlContent;
+  }
+
+  const modifiedContent = htmlContent;
+  
+  // Create a temporary div element to parse the HTML
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = htmlContent;
+  
+  // Find all heading elements (h1, h2, h3, etc.)
+  const headings = tempDiv.querySelectorAll('h1, h2, h3, h4, h5, h6');
+  
+  headings.forEach((heading) => {
+    // Get the heading level (1 for h1, 2 for h2, etc.)
+    const level = parseInt(heading.tagName.charAt(1));
+    
+    // Get the heading text
+    const title = heading.textContent || '';
+    
+    // Find the corresponding TOC item
+    const tocItem = tableOfContents.find(item => 
+      item.title === title && item.level === level
+    );
+    
+    if (tocItem) {
+      // Add the ID to the heading
+      heading.id = tocItem.id;
+      
+      // Add a class for styling
+      heading.classList.add('scroll-mt-24');
+    }
+  });
+  
+  return tempDiv.innerHTML;
+}
+
+// Function to generate a static table of contents for server-side rendering
+export function generateStaticTableOfContents(htmlContent: string): { id: string; title: string; level: number }[] {
+  // Simple regex-based parser for server-side rendering
+  const headingRegex = /<h([1-6])(?:\s+[^>]*)?>(.*?)<\/h[1-6]>/g;
+  const tableOfContents: { id: string; title: string; level: number }[] = [];
+  let match;
+  
+  while ((match = headingRegex.exec(htmlContent)) !== null) {
+    const level = parseInt(match[1]);
+    // Extract text content from HTML
+    const textContent = match[2].replace(/<[^>]*>/g, '');
+    
+    // Generate an ID for the heading based on the text
+    const id = textContent
+      .toLowerCase()
+      .replace(/[^\w\s]/g, '') // Remove special characters
+      .replace(/\s+/g, '-') // Replace spaces with hyphens
+      .trim();
+    
+    // Ensure the ID is unique
+    const existingIds = tableOfContents.map(item => item.id);
+    let uniqueId = id;
+    let counter = 1;
+    
+    while (existingIds.includes(uniqueId)) {
+      uniqueId = `${id}-${counter}`;
+      counter++;
+    }
+    
+    tableOfContents.push({
+      id: uniqueId,
+      title: textContent,
+      level
+    });
+  }
+  
+  return tableOfContents;
+}
+
+// Function to add IDs to headings in HTML content for server-side rendering
+export function addIdsToHeadingsStatic(htmlContent: string, tableOfContents: { id: string; title: string; level: number }[]): string {
+  let modifiedContent = htmlContent;
+  
+  // Process each heading in the table of contents
+  tableOfContents.forEach(tocItem => {
+    // Create a regex to find the heading
+    const headingRegex = new RegExp(`<h${tocItem.level}(\\s+[^>]*)?>${escapeRegExp(tocItem.title)}</h${tocItem.level}>`, 'g');
+    
+    // Replace the heading with one that has an ID and class
+    modifiedContent = modifiedContent.replace(headingRegex, `<h${tocItem.level}$1 id="${tocItem.id}" class="scroll-mt-24">${tocItem.title}</h${tocItem.level}>`);
+  });
+  
+  return modifiedContent;
+}
+
+// Helper function to escape special characters in regex
+function escapeRegExp(string: string): string {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }

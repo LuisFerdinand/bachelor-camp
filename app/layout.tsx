@@ -8,7 +8,7 @@ import Footer from "@/components/layout/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "EduCamp - English Learning Center",
+  title: "Bachelor Camp",
   description:
     "Premium English learning experience with professional facilities and expert instructors",
   icons: {
@@ -19,14 +19,14 @@ export const metadata = {
     apple: "/weblog.jpeg",
   },
   openGraph: {
-    title: "EduCamp - English Learning Center",
+    title: "Bachelor Camp",
     description:
       "Premium English learning experience with professional facilities and expert instructors",
     images: ["/weblog.jpeg"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "EduCamp - English Learning Center",
+    title: "Bachelor Camp",
     description:
       "Premium English learning experience with professional facilities and expert instructors",
     images: ["/weblog.jpeg"],
