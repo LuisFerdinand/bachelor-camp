@@ -418,15 +418,23 @@ export default function CampPage({ cmsData }: CampPageProps) {
                 From budget-friendly shared spaces to premium private rooms.
               </p>
             </div>
-
+            
+            {/* Updated grid with consistent card heights */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {buildings.map((building) => (
                 <Card
                   key={building.id}
-                  className={`border-0 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden ${building.id === 1 ? "ring-2 ring-accent-200 scale-105" : ""}`}
+                  className={`
+                    border-0 shadow-lg hover:shadow-xl transition-all duration-300 
+                    relative overflow-hidden flex flex-col h-full
+                    ${building.id === 1 ? "ring-2 ring-accent-200 lg:scale-105" : ""}
+                    ${building.id === 1 ? "lg:order-2 order-1" : ""}
+                    ${building.id === 2 ? "lg:order-1 order-2" : ""}
+                    ${building.id === 3 ? "lg:order-3 order-3" : ""}
+                  `}
                 >
                   {/* Building Image */}
-                  <div className="relative h-48 overflow-hidden">
+                  <div className="relative h-48 overflow-hidden flex-shrink-0">
                     <Image
                       src={building.image}
                       alt={building.imageAlt}
@@ -434,7 +442,6 @@ export default function CampPage({ cmsData }: CampPageProps) {
                       className="object-cover transition-transform duration-500 hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-
                     {building.badge && (
                       <div className="absolute top-4 left-4">
                         <Badge
@@ -445,12 +452,10 @@ export default function CampPage({ cmsData }: CampPageProps) {
                       </div>
                     )}
                   </div>
-
                   <div
-                    className={`h-2 ${building.id === 1 ? "bg-gradient-to-r from-accent-400 to-accent-500" : building.id === 2 ? "bg-gradient-to-r from-success-400 to-success-500" : "bg-gradient-to-r from-brand-500 to-brand-600"}`}
+                    className={`h-2 flex-shrink-0 ${building.id === 1 ? "bg-gradient-to-r from-accent-400 to-accent-500" : building.id === 2 ? "bg-gradient-to-r from-success-400 to-success-500" : "bg-gradient-to-r from-brand-500 to-brand-600"}`}
                   ></div>
-
-                  <CardHeader className="pb-4">
+                  <CardHeader className="pb-4 flex-shrink-0">
                     <CardTitle className="text-xl text-neutral-900">
                       {building.name}
                     </CardTitle>
@@ -462,62 +467,65 @@ export default function CampPage({ cmsData }: CampPageProps) {
                       {building.rooms}
                     </div>
                   </CardHeader>
-
-                  <CardContent className="space-y-6">
-                    <div>
-                      <h4 className="font-semibold mb-4 text-neutral-800">
-                        Pricing Options:
-                      </h4>
-                      <div className="space-y-3">
-                        {building.pricing.map((price) => (
-                          <div
-                            key={price.id}
-                            className={`p-4 rounded-xl border-2 transition-all ${price.highlight ? "bg-gradient-to-r from-brand-50 to-accent-50 border-brand-200 shadow-sm" : "bg-neutral-50 border-neutral-200"}`}
-                          >
-                            <div className="text-sm text-neutral-600 mb-1">
-                              {price.type}
-                            </div>
+                  <CardContent className="flex flex-col flex-grow p-6 pt-0">
+                    <div className="flex-grow">
+                      <div className="mb-6">
+                        <h4 className="font-semibold mb-4 text-neutral-800">
+                          Pricing Options:
+                        </h4>
+                        <div className="space-y-3">
+                          {building.pricing.map((price) => (
                             <div
-                              className={`font-bold ${price.highlight ? "text-brand-700 text-lg" : "text-neutral-800"}`}
+                              key={price.id}
+                              className={`p-4 rounded-xl border-2 transition-all ${price.highlight ? "bg-gradient-to-r from-brand-50 to-accent-50 border-brand-200 shadow-sm" : "bg-neutral-50 border-neutral-200"}`}
                             >
-                              {price.price}
+                              <div className="text-sm text-neutral-600 mb-1">
+                                {price.type}
+                              </div>
+                              <div
+                                className={`font-bold ${price.highlight ? "text-brand-700 text-lg" : "text-neutral-800"}`}
+                              >
+                                {price.price}
+                              </div>
+                              <div className="text-xs text-neutral-500 mt-1">
+                                {price.description}
+                              </div>
                             </div>
-                            <div className="text-xs text-neutral-500 mt-1">
-                              {price.description}
-                            </div>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-4 text-neutral-800">
+                          Features:
+                        </h4>
+                        <ul className="space-y-3">
+                          {building.features.map((feature, index) => (
+                            <li key={index} className="flex items-center text-sm">
+                              <CheckCircle2 className="w-4 h-4 text-success-500 mr-3 flex-shrink-0" />
+                              <span className="text-neutral-700">{feature}</span>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
                     </div>
-
-                    <div>
-                      <h4 className="font-semibold mb-4 text-neutral-800">
-                        Features:
-                      </h4>
-                      <ul className="space-y-3">
-                        {building.features.map((feature, index) => (
-                          <li key={index} className="flex items-center text-sm">
-                            <CheckCircle2 className="w-4 h-4 text-success-500 mr-3 flex-shrink-0" />
-                            <span className="text-neutral-700">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div className="flex gap-2">
-                      <Link href={`/camp/${building.slug}`} className="flex-1">
-                        <Button
-                          className={`w-full py-3 font-semibold text-base transition-all ${building.id === 1 ? "bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 shadow-accent" : building.id === 2 ? "bg-gradient-to-r from-success-500 to-success-600 hover:from-success-600 hover:to-success-700 shadow-sm" : "bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 shadow-brand"} text-white`}
-                        >
-                          View Details
-                        </Button>
-                      </Link>
-                      <Button
-                        variant="outline"
-                        className="border-brand-500 text-brand-600 hover:bg-brand-50"
-                      >
-                        Book
-                      </Button>
+                    <div className="mt-6 pt-4 border-t border-neutral-100">
+                      <div className="flex gap-2">
+                        <Link href={`/camp/${building.slug}`} className="flex-1">
+                          <Button
+                            className={`w-full py-3 font-semibold text-base transition-all ${building.id === 1 ? "bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 shadow-accent" : building.id === 2 ? "bg-gradient-to-r from-success-500 to-success-600 hover:from-success-600 hover:to-success-700 shadow-sm" : "bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 shadow-brand"} text-white`}
+                          >
+                            View Details
+                          </Button>
+                        </Link>
+                        <Link href={`/booking?building=${building.slug}`}>
+                          <Button
+                            variant="outline"
+                            className="border-brand-500 text-brand-600 hover:bg-brand-50"
+                          >
+                            Book
+                          </Button>
+                        </Link>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
