@@ -486,7 +486,7 @@ export default function HomePage() {
         <section className="py-16 bg-gradient-to-b from-neutral-50 to-white">
           <div className="container mx-auto px-4">
             <div className="text-center max-w-2xl mx-auto mb-16">
-              <h2 className="text-display-sm md:text-display-md font-bold mb-4">Student Life at Kediri</h2>
+              <h2 className="text-display-sm md:text-display-md font-bold mb-4">Student Life at Bachelor Camp</h2>
               <p className="text-lg text-neutral-600">
                 Experience the vibrant community and rich activities that make learning English enjoyable and memorable.
               </p>

@@ -28,10 +28,7 @@ import {
   BookOpen,
   Users,
   Award,
-  ChevronRight,
-  Search,
-  Filter,
-  X,
+
   Tag,
   Printer,
   FileText,
@@ -207,6 +204,7 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
   };
   
   // Table of contents from article headings
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const tableOfContents = blogPost.tableOfContents || [];
   
   // Handle navigation to section
