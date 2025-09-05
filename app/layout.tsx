@@ -1,9 +1,8 @@
 import React from "react";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import FloatingWA from "@/components/common/FloatingWA";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import { ClerkProvider } from "@clerk/nextjs";
+import { TRPCProvider } from "@/trpc/client";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -39,13 +38,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <Header />
-        <main className="relative">{children}</main>
-        <FloatingWA />
-        <Footer />
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={inter.className}>
+          <TRPCProvider>{children}</TRPCProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

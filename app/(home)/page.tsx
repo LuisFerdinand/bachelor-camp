@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { Suspense } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
@@ -20,6 +20,8 @@ import {
   Globe,
   Heart
 } from 'lucide-react'
+import {ErrorBoundary } from "react-error-boundary"
+
 export default function HomePage() {
   // Hero section data - easily replaceable with CMS data
   const heroData = {
@@ -160,6 +162,7 @@ export default function HomePage() {
   
   return (
     <div className="min-h-screen flex flex-col">
+        
       <main className="flex-grow">
         {/* Hero Section with Background Image */}
         <section 
@@ -224,6 +227,9 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+        <section>
+
+          </section>
         
         {/* Three Pillars Section with Background Images */}
         <section className="py-16 bg-white">

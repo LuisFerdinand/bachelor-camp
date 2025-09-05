@@ -11,5 +11,8 @@
   "files.autoSave": "onFocusChange",
 
   // Make Prettier run AFTER ESLint
-  "vs-code-prettier-eslint.prettierLast": true
+  "vs-code-prettier-eslint.prettierLast": true,
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }
