@@ -1,53 +1,38 @@
 "use client";
 
 import { useSignIn } from "@clerk/nextjs";
-import { useState } from "react";
 
-export default function CustomSignIn() {
-  const { signIn, setActive, isLoaded } = useSignIn();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export default function SignInPage() {
+  const { signIn, isLoaded } = useSignIn();
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  const handleGoogle = async () => {
     if (!isLoaded) return;
-
-    try {
-      const result = await signIn.create({
-        identifier: email,
-        password,
-      });
-
-      if (result.status === "complete") {
-        await setActive({ session: result.createdSessionId });
-      }
-    } catch (err: any) {
-      console.error(err.errors[0].message);
-    }
-  }
+    await signIn!.authenticateWithRedirect({
+      strategy: "oauth_google",
+      redirectUrl: "/sso-callback", // halaman callback (step #6)
+      redirectUrlComplete: "/dashboard", // tujuan akhir setelah sukses
+    });
+  };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-        className="border p-2 w-full rounded"
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-        className="border p-2 w-full rounded"
-      />
-      <button
-        type="submit"
-        className="bg-blue-600 text-white px-4 py-2 rounded"
-      >
-        Sign In
-      </button>
-    </form>
+    <main className="min-h-screen grid place-items-center bg-gray-50">
+      <div className="w-full max-w-md rounded-xl bg-white p-6 shadow">
+        <h1 className="text-2xl font-semibold mb-4 text-center">
+          Create your account
+        </h1>
+        <button
+          onClick={handleGoogle}
+          className="w-full rounded-lg bg-red-500 px-4 py-2 text-white hover:bg-red-600 transition"
+        >
+          Continue with Google
+        </button>
+        <p className="mt-4 text-center text-sm text-gray-600">
+          Already have an account?{" "}
+          <a href="/sign-in" className="text-blue-600 underline">
+            Sign in
+          </a>
+        </p>
+      </div>
+    </main>
   );
 }
