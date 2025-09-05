@@ -14,22 +14,22 @@ export const metadata = {
   icons: {
     icon: [
       { url: "/favicon.ico" },
-      { url: "/weblog.jpeg", type: "image/jpeg" },
+      { url: "/Logo.png", type: "image/png" },
     ],
-    apple: "/weblog.jpeg",
+    apple: "/Logo.png",
   },
   openGraph: {
     title: "Bachelor Camp",
     description:
       "Premium English learning experience with professional facilities and expert instructors",
-    images: ["/weblog.jpeg"],
+    images: ["/Logo.png"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Bachelor Camp",
     description:
       "Premium English learning experience with professional facilities and expert instructors",
-    images: ["/weblog.jpeg"],
+    images: ["/Logo.png"],
   },
 };
 

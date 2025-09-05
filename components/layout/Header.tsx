@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -57,17 +58,37 @@ const Header = () => {
     }`}>
       <div className="container mx-auto px-4 lg:px-6">
         <div className="flex justify-between items-center">
-          {/* Logo */}
+          {/* Logo with dual state */}
           <Link 
             href="/" 
-            className="flex items-center space-x-2"
+            className="flex items-center space-x-2 relative"
           >
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-brand-500 to-accent-500"></div>
-            <span className={`text-xl font-bold transition-all duration-500 ease-in-out ${
-              shouldUseSolidStyling ? 'text-gray-900' : 'text-white'
-            }`}>
-              Bachelor Camp
-            </span>
+            <div className="relative w-32 h-10">
+              {/* Logo for when not scrolled (top of page) */}
+              <Image 
+                src="/Logo2.png" 
+                width={180}
+                height={180}
+                alt="Bachelor Camp Logo" 
+                className={`absolute inset-0 h-12 rounded-lg object-cover transition-all duration-500 ease-in-out ${
+                  shouldUseSolidStyling 
+                    ? 'opacity-0 scale-95 rotate-6' 
+                    : 'opacity-100 scale-100 rotate-0'
+                }`}
+              />
+              {/* Logo for when scrolled/menu open */}
+              <Image 
+                src="/Logo1.png" 
+                width={180}
+                height={180}
+                alt="Bachelor Camp Logo Dark" 
+                className={`absolute inset-0 h-12 rounded-lg object-cover transition-all duration-500 ease-in-out ${
+                  shouldUseSolidStyling 
+                    ? 'opacity-100 scale-100 rotate-0' 
+                    : 'opacity-0 scale-95 -rotate-6'
+                }`}
+              />
+            </div>
           </Link>
           
           {/* Desktop Navigation */}

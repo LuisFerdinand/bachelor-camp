@@ -52,31 +52,60 @@ module.exports = {
           foreground: "hsl(var(--card-foreground))",
         },
         // Custom vibrant professional colors
+        // Our Custom color
+        // brand: {
+        //   50: '#f0f4ff',
+        //   100: '#e0e7ff',
+        //   200: '#c7d2fe',
+        //   300: '#a5b4fc',
+        //   400: '#818cf8',
+        //   500: '#6366f1', // Primary brand purple-blue
+        //   600: '#4f46e5',
+        //   700: '#4338ca',
+        //   800: '#3730a3',
+        //   900: '#312e81',
+        //   950: '#1e1b4b',
+        // },
+        // accent: {
+        //   50: '#fff7ed',
+        //   100: '#ffedd5',
+        //   200: '#fed7aa',
+        //   300: '#fdba74',
+        //   400: '#fb923c',
+        //   500: '#f97316', // Primary accent orange
+        //   600: '#ea580c',
+        //   700: '#c2410c',
+        //   800: '#9a3412',
+        //   900: '#7c2d12',
+        //   950: '#431407',
+        // },
+        // Updated Tailwind config colors based on your logo
         brand: {
-          50: '#f0f4ff',
-          100: '#e0e7ff',
-          200: '#c7d2fe',
-          300: '#a5b4fc',
-          400: '#818cf8',
-          500: '#6366f1', // Primary brand purple-blue
-          600: '#4f46e5',
-          700: '#4338ca',
-          800: '#3730a3',
-          900: '#312e81',
-          950: '#1e1b4b',
+          50: '#eff6ff',
+          100: '#dbeafe',
+          200: '#bfdbfe',
+          300: '#93c5fd',
+          400: '#60a5fa',
+          500: '#1E5ADB', // Primary brand blue from your logo
+          600: '#1d4ed8',
+          700: '#1e40af',
+          800: '#1e3a8a',
+          900: '#1e3a8a',
+          950: '#172554',
         },
+
         accent: {
-          50: '#fff7ed',
-          100: '#ffedd5',
-          200: '#fed7aa',
-          300: '#fdba74',
-          400: '#fb923c',
-          500: '#f97316', // Primary accent orange
-          600: '#ea580c',
-          700: '#c2410c',
-          800: '#9a3412',
-          900: '#7c2d12',
-          950: '#431407',
+          50: '#fefce8',
+          100: '#fef9c3',
+          200: '#fef08a',
+          300: '#fde047',
+          400: '#facc15',
+          500: '#E6D535', // Primary accent yellow from your logo (more yellowish)
+          600: '#ca8a04',
+          700: '#a16207',
+          800: '#854d0e',
+          900: '#713f12',
+          950: '#422006',
         },
         success: {
           50: '#f0fdf4',

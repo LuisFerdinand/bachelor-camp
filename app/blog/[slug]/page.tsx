@@ -28,7 +28,6 @@ import {
   BookOpen,
   Users,
   Award,
-
   Tag,
   Printer,
   FileText,
@@ -46,9 +45,9 @@ import {
 } from "@/app/util/blogData";
 
 interface BlogDetailPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 interface TOCItem {
@@ -79,7 +78,10 @@ interface Reply {
 }
 
 export default function BlogDetailPage({ params }: BlogDetailPageProps) {
-  // State hooks must be called first
+  // Unwrap the params Promise using React.use()
+  const { slug } = use(params);
+
+  // State hooks must be called after unwrapping params
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [showShareMenu, setShowShareMenu] = useState(false);
@@ -126,8 +128,8 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
   const [isTOCOpen, setIsTOCOpen] = useState(true);
   const [activeSection, setActiveSection] = useState<string | null>(null);
   
-  // Get the blog post with table of contents
-  const blogPost = getBlogPostWithTOC(params.slug);
+  // Get the blog post with table of contents using the unwrapped slug
+  const blogPost = getBlogPostWithTOC(slug);
   
   // Now you can conditionally return after all hooks have been called
   if (!blogPost) {

@@ -4,6 +4,7 @@ import React from 'react'
 import Link from 'next/link'
 import { Separator } from '@/components/ui/separator'
 import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from 'lucide-react'
+import Image from 'next/image'
 
 const Footer = () => {
   return (
@@ -12,8 +13,15 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-brand-500 to-accent-500"></div>
-              <span className="font-bold text-xl">Bachelor Camp</span>
+              <div className="flex items-center space-x-2">
+                <Image 
+                  src="/Logo2.png" 
+                  alt="Bachelor Camp Logo" 
+                  width={180}
+                  height={80}
+                  className="h-12 rounded-lg object-cover"
+                />
+              </div>
             </div>
             <p className="text-neutral-400 mb-4">
               Premium English learning experience with professional facilities and expert instructors.
