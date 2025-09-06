@@ -16,7 +16,7 @@ export const HomeNavbar = () => {
   const pathname = usePathname();
   const { isSignedIn } = useAuth();
 
-  // Scroll effect
+  // Scroll effect - Fixed with proper error handling
   useEffect(() => {
     let timeout: NodeJS.Timeout;
     const handleScroll = () => {
@@ -25,7 +25,13 @@ export const HomeNavbar = () => {
         setIsScrolled(window.scrollY > 50);
       }, 10);
     };
-    window.addEventListener("scroll", handleScroll);
+
+    // Add scroll listener with passive option
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    
+    // Initial check for scroll position
+    setIsScrolled(window.scrollY > 50);
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
       clearTimeout(timeout);
@@ -58,32 +64,42 @@ export const HomeNavbar = () => {
     >
       <div className="container mx-auto px-4 lg:px-6">
         <div className="flex justify-between items-center">
-          {/* Logo */}
+          {/* Logo - Fixed */}
           <Link href="/" className="flex items-center space-x-2 relative">
-            <div className="relative w-32 h-10">
+            <div className="relative w-32 h-12">
               {/* Logo for when not scrolled (top of page) */}
               <Image
                 src="/Logo2.png"
-                width={180}
-                height={180}
+                width={128}
+                height={48}
                 alt="Bachelor Camp Logo"
-                className={`absolute inset-0 h-12 rounded-lg object-cover transition-all duration-500 ease-in-out ${
+                className={`absolute inset-0 w-32 h-12 rounded-lg object-contain transition-all duration-500 ease-in-out ${
                   shouldUseSolidStyling
                     ? "opacity-0 scale-95 rotate-6"
                     : "opacity-100 scale-100 rotate-0"
                 }`}
+                priority
+                onError={(e) => {
+                  console.error("Failed to load Logo2.png");
+                  e.currentTarget.style.display = 'none';
+                }}
               />
               {/* Logo for when scrolled/menu open */}
               <Image
                 src="/Logo1.png"
-                width={180}
-                height={180}
+                width={128}
+                height={48}
                 alt="Bachelor Camp Logo Dark"
-                className={`absolute inset-0 h-12 rounded-lg object-cover transition-all duration-500 ease-in-out ${
+                className={`absolute inset-0 w-32 h-12 rounded-lg object-contain transition-all duration-500 ease-in-out ${
                   shouldUseSolidStyling
                     ? "opacity-100 scale-100 rotate-0"
                     : "opacity-0 scale-95 -rotate-6"
                 }`}
+                priority
+                onError={(e) => {
+                  console.error("Failed to load Logo1.png");
+                  e.currentTarget.style.display = 'none';
+                }}
               />
             </div>
           </Link>
@@ -112,6 +128,7 @@ export const HomeNavbar = () => {
                 shouldUseSolidStyling ? "text-gray-700" : "text-white"
               }`}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Toggle mobile menu"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -140,19 +157,25 @@ export const HomeNavbar = () => {
               </svg>
             </button>
 
-            {/* Auth Button (Clerk UI) */}
-            <AuthButton />
+            {/* Auth Button (Clerk UI) - Fixed for desktop only */}
+            <div className="hidden lg:block">
+              <AuthButton />
+            </div>
           </div>
         </div>
       </div>
 
       {/* Mobile Navigation */}
       <div
-        className={`lg:hidden bg-white/95 backdrop-blur-md overflow-hidden transition-all duration-500 ease-in-out ${isMenuOpen ? "max-h-screen py-4 opacity-100" : "max-h-0 opacity-0"}`}
+        className={`lg:hidden bg-white/95 backdrop-blur-md overflow-hidden transition-all duration-500 ease-in-out ${
+          isMenuOpen ? "max-h-screen py-4 opacity-100" : "max-h-0 opacity-0"
+        }`}
       >
         <div className="container mx-auto px-4">
           <nav
-            className={`flex flex-col space-y-1 transition-all duration-500 ease-in-out delay-150 ${isMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-4 opacity-0"}`}
+            className={`flex flex-col space-y-1 transition-all duration-500 ease-in-out delay-150 ${
+              isMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-4 opacity-0"
+            }`}
           >
             {navLinks.map((link, index) => (
               <Link
@@ -174,13 +197,17 @@ export const HomeNavbar = () => {
 
             {/* Mobile Book Section */}
             <div
-              className={`border-t border-gray-200 mt-4 pt-4 transition-all duration-300 ease-in-out ${isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"}`}
+              className={`border-t border-gray-200 mt-4 pt-4 transition-all duration-300 ease-in-out ${
+                isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"
+              }`}
               style={{ transitionDelay: isMenuOpen ? "500ms" : "0ms" }}
             >
               <div className="space-y-1">
                 <Link
                   href="/booking"
-                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"}`}
+                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${
+                    isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"
+                  }`}
                   style={{ transitionDelay: isMenuOpen ? "550ms" : "0ms" }}
                   onClick={closeMenus}
                 >
@@ -202,7 +229,9 @@ export const HomeNavbar = () => {
                 </Link>
                 <Link
                   href="/booking"
-                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"}`}
+                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${
+                    isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"
+                  }`}
                   style={{ transitionDelay: isMenuOpen ? "600ms" : "0ms" }}
                   onClick={closeMenus}
                 >
@@ -223,72 +252,95 @@ export const HomeNavbar = () => {
                   <span>Book Accommodation</span>
                 </Link>
                 <div className="border-t border-gray-200 my-2"></div>
-                <Link
-                  href="/login"
-                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"}`}
-                  style={{ transitionDelay: isMenuOpen ? "650ms" : "0ms" }}
-                  onClick={closeMenus}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
+
+                {/* Mobile Auth Links - Fixed conditional rendering */}
+                {!isSignedIn ? (
+                  <>
+                    <Link
+                      href="/login"
+                      className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${
+                        isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"
+                      }`}
+                      style={{ transitionDelay: isMenuOpen ? "650ms" : "0ms" }}
+                      onClick={closeMenus}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+                        />
+                      </svg>
+                      <span>Sign In</span>
+                    </Link>
+                    <Link
+                      href="/register"
+                      className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${
+                        isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"
+                      }`}
+                      style={{ transitionDelay: isMenuOpen ? "700ms" : "0ms" }}
+                      onClick={closeMenus}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                        />
+                      </svg>
+                      <span>Sign Up</span>
+                    </Link>
+                  </>
+                ) : (
+                  <Link
+                    href="/profile"
+                    className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${
+                      isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"
+                    }`}
+                    style={{ transitionDelay: isMenuOpen ? "650ms" : "0ms" }}
+                    onClick={closeMenus}
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
-                    />
-                  </svg>
-                  <span>Sign In</span>
-                </Link>
-                <Link
-                  href="/register"
-                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"}`}
-                  style={{ transitionDelay: isMenuOpen ? "700ms" : "0ms" }}
-                  onClick={closeMenus}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
-                    />
-                  </svg>
-                  <span>Sign Up</span>
-                </Link>
-                <Link
-                  href="/profile"
-                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"}`}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <span>My Profile</span>
+                  </Link>
+                )}
+                
+                {/* Mobile Auth Button */}
+                <div 
+                  className={`px-4 py-2 transition-all duration-300 ease-in-out ${
+                    isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"
+                  }`}
                   style={{ transitionDelay: isMenuOpen ? "750ms" : "0ms" }}
-                  onClick={closeMenus}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  <span>My Profile</span>
-                </Link>
+                  <AuthButton />
+                </div>
               </div>
             </div>
           </nav>

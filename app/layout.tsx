@@ -11,21 +11,21 @@ export const metadata = {
   description:
     "Premium English learning experience with professional facilities and expert instructors",
   icons: {
-    icon: [{ url: "/favicon.ico" }, { url: "/Logo.png", type: "image/png" }],
-    apple: "/Logo.png",
+    icon: [{ url: "/favicon.ico" }, { url: "/Logo.ico", type: "image/ico" }],
+    apple: "/Logo.ico",
   },
   openGraph: {
     title: "Bachelor Camp",
     description:
       "Premium English learning experience with professional facilities and expert instructors",
-    images: ["/Logo.png"],
+    images: ["/Logo.ico"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Bachelor Camp",
     description:
       "Premium English learning experience with professional facilities and expert instructors",
-    images: ["/Logo.png"],
+    images: ["/Logo.ico"],
   },
 };
 

@@ -2,7 +2,7 @@ import Link from "next/link";
 
 type Props = {
   navLinks: { href: string; label: string }[];
-  pathname: string;
+  pathname: string | null;
   closeMenus: () => void;
   shouldUseSolidStyling: boolean;
 };

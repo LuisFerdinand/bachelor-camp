@@ -1,6 +1,6 @@
 import FloatingWhatsApp from "@/components/common/FloatingWA";
 import Footer from "@/components/layout/Footer";
-import { TRPCProvider } from "@/trpc/client";
+// import { TRPCProvider } from "@/trpc/client";
 import React from "react";
 import { HomeNavbar } from "../components/HomeNavbar";
 
