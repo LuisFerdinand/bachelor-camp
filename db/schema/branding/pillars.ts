@@ -9,3 +9,8 @@ export const pillars = pgTable("pillars", {
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
+
+// ctaLink
+// ctaText
+// jsob features
+// imageUrl
