@@ -3,6 +3,7 @@ import { clearTables } from "./utils";
 import { db } from "..";
 import { users } from "../schema/users";
 import { seedBanners } from "./banners.seed";
+import { seedPostCategories } from "./posts.seed";
 
 async function main() {
   // 1. Clear tables
@@ -18,14 +19,17 @@ async function main() {
   ]);
 
   // 2. Seed users
-//   await seedUsers(10);
-//   const userIds = (await db.select({ id: users.id }).from(users)).map(u => u.id);
+  //   await seedUsers(10);
+  //   const userIds = (await db.select({ id: users.id }).from(users)).map(u => u.id);
 
   // 3. Seed posts
-//   await seedPosts(userIds, 30);
+  //   await seedPosts(userIds, 30);
 
-// Seed Banners
-await seedBanners()
+  // Seed Banners
+  await seedBanners();
+
+  // Seed Posts
+  await seedPostCategories();
 
   console.log("✅ Seeding complete!");
 }

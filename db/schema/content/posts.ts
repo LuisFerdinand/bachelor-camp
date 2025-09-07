@@ -1,17 +1,27 @@
-import { integer, jsonb, pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
+import {
+  integer,
+  jsonb,
+  pgTable,
+  text,
+  timestamp,
+  uniqueIndex,
+  uuid,
+  varchar,
+} from "drizzle-orm/pg-core";
 import { booleanTypeEnum, collectionTypeEnum, postStatusEnum } from "../enums";
 import { users } from "../users";
 
 export const posts = pgTable("posts", {
-  id: uuid("id").primaryKey(),	
-  title: varchar("title", { length: 200 }).notNull(),	
+  id: uuid("id").primaryKey(),
+  title: varchar("title", { length: 200 }).notNull(),
   slug: varchar("slug", { length: 200 }).unique().notNull(),
   excerpt: text("excerpt"), // ringkasan singkat
-   content: jsonb("content").notNull(), // Store editor JSON for flexibility
+  content: jsonb("content").notNull(), // Store editor JSON for flexibility
   coverImage: varchar("cover_image", { length: 255 }), // optional
-  authorId: uuid("author_id")
-    .references(() => users.id, { onDelete: "set null" }), // relasi ke user
-     status: postStatusEnum("status").default("draft").notNull(),
+  authorId: uuid("author_id").references(() => users.id, {
+    onDelete: "set null",
+  }), // relasi ke user
+  status: postStatusEnum("status").default("draft").notNull(),
   isPublished: booleanTypeEnum("is_published").default("false").notNull(),
   publishedAt: timestamp("published_at"), // kapan dipublish
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -30,23 +40,29 @@ export const postTocs = pgTable("post_tocs", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-export const postCategories = pgTable("post_categories", {
-  id: uuid("id").primaryKey(),
-  name: varchar("name", { length: 100 }).notNull(),
-  slug: varchar("slug", { length: 100 }).unique().notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
-});
+export const postCategories = pgTable(
+  "post_categories",
+  {
+    id: uuid("id").primaryKey(),
+    name: varchar("name", { length: 100 }).notNull(),
+    description: text("description"),
+    slug: varchar("slug", { length: 100 }).unique().notNull(),
+    iconUrl: varchar("icon_url", { length: 255 }),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (t) => [uniqueIndex("name_idx").on(t.name)]
+);
 
 export const postSeo = pgTable("post_seo", {
   id: uuid("id").primaryKey(),
   postId: uuid("post_id")
     .references(() => posts.id, { onDelete: "cascade" })
     .notNull(),
-  metaTitle: varchar("meta_title", { length: 200 }),      // SEO page title
+  metaTitle: varchar("meta_title", { length: 200 }), // SEO page title
   metaDescription: varchar("meta_description", { length: 300 }), // SEO meta description
   metaKeywords: varchar("meta_keywords", { length: 300 }), // Optional
-  ogImage: varchar("og_image", { length: 255 }),          // Open Graph image
+  ogImage: varchar("og_image", { length: 255 }),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
@@ -70,7 +86,6 @@ export const collectionPosts = pgTable("collection_posts", {
     .notNull(),
   addedAt: timestamp("added_at").defaultNow().notNull(),
 });
-
 
 export const postCategoryRelations = pgTable("post_category_relations", {
   postId: uuid("post_id")

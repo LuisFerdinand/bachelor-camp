@@ -4,17 +4,16 @@ import { HydrateClient, trpc } from "@/trpc/server";
 import { ErrorBoundary } from "react-error-boundary";
 import { PageClient } from "./client";
 
-// app/test/page.tsx
-// or
-export const revalidate = 0;
-
 const Test = () => {
+  void trpc.banners.getMany.prefetch({ type: "Home" });
+  void trpc.posts.getCategories.prefetch();
   return (
     <HydrateClient>
-      <Suspense fallback={<p>Loading</p>}></Suspense>
-      <ErrorBoundary fallback={<p>Error</p>}>
-        <PageClient></PageClient>
-      </ErrorBoundary>
+      <Suspense fallback={<p>Loading...</p>}>
+        <ErrorBoundary fallback={<p>Error loading banners</p>}>
+          <PageClient />
+        </ErrorBoundary>
+      </Suspense>
     </HydrateClient>
   );
 };

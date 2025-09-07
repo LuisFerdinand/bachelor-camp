@@ -9,7 +9,7 @@ interface HomeLayoutProps {
 }
 export const HomeLayout = ({ children }: HomeLayoutProps) => {
   return (
-    <div>
+    <div className="overflow-x-clip">
       <HomeNavbar />
       <main className="relative">{children}</main>
       <FloatingWhatsApp />

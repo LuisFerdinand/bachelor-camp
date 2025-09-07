@@ -135,8 +135,7 @@ export default function BlogPage({ cmsData }: BlogPageProps) {
                 English Learning Hub
               </h1>
               <p className="text-lg md:text-xl text-white/90 mb-8 max-w-3xl mx-auto drop-shadow-md leading-relaxed">
-                Discover expert tips, proven strategies, and actionable insights
-                to accelerate your English learning journey.
+                Discover expert tips, proven strategies, and actionable insights to accelerate your English learning journey.
               </p>
 
               {/* Enhanced Search Bar */}
@@ -238,8 +237,8 @@ export default function BlogPage({ cmsData }: BlogPageProps) {
                     >
                       <h3
                         className={`font-bold mb-3 line-clamp-2 group-hover:text-brand-600 transition-colors ${
-                          index === 0 
-                            ? "text-xl sm:text-2xl md:text-xl lg:text-2xl" 
+                          index === 0
+                            ? "text-xl sm:text-2xl md:text-xl lg:text-2xl"
                             : "text-base sm:text-lg"
                         }`}
                       >
@@ -247,27 +246,31 @@ export default function BlogPage({ cmsData }: BlogPageProps) {
                       </h3>
                       <p
                         className={`text-neutral-600 mb-4 ${
-                          index === 0 
-                            ? "line-clamp-3 sm:line-clamp-4 text-sm sm:text-base" 
+                          index === 0
+                            ? "line-clamp-3 sm:line-clamp-4 text-sm sm:text-base"
                             : "line-clamp-3 text-sm"
                         }`}
                       >
                         {post.excerpt}
                       </p>
-                      
+
                       {/* Improved metadata layout for better responsive behavior */}
                       <div className="flex flex-wrap items-center justify-between gap-y-2 text-sm text-neutral-500 mb-4">
                         <div className="flex items-center flex-wrap gap-x-3 gap-y-1">
                           <div className="flex items-center">
                             <User className="h-4 w-4 mr-1" />
                             <span className="truncate max-w-[100px] sm:max-w-none">
-                              {index === 0 ? post.author : post.author.split(' ')[0]}
+                              {index === 0
+                                ? post.author
+                                : post.author.split(" ")[0]}
                             </span>
                           </div>
                           <div className="flex items-center">
                             <Calendar className="h-4 w-4 mr-1" />
                             <span className="whitespace-nowrap">
-                              {index === 0 ? post.date : post.date.split(' ')[0]}
+                              {index === 0
+                                ? post.date
+                                : post.date.split(" ")[0]}
                             </span>
                           </div>
                         </div>
@@ -276,7 +279,7 @@ export default function BlogPage({ cmsData }: BlogPageProps) {
                           <span>{post.readTime}</span>
                         </div>
                       </div>
-                      
+
                       <div className="flex items-center justify-between text-brand-600 hover:text-brand-800 transition-colors">
                         <span className="font-medium text-sm sm:text-base">
                           {index === 0 ? "Read Full Article" : "Read Article"}
@@ -327,7 +330,7 @@ export default function BlogPage({ cmsData }: BlogPageProps) {
                         </Button>
                       </div>
                     </div>
-                    
+
                     {/* Search Bar */}
                     <div className="relative max-w-xl">
                       <Input
@@ -343,17 +346,28 @@ export default function BlogPage({ cmsData }: BlogPageProps) {
                           onClick={() => setSearchTerm("")}
                           className="absolute right-12 top-1/2 transform -translate-y-1/2 text-neutral-400 hover:text-neutral-600"
                         >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                              clipRule="evenodd"
+                            />
                           </svg>
                         </button>
                       )}
                     </div>
-                    
+
                     {/* Active Filters Display */}
                     {(searchTerm || selectedCategory) && (
                       <div className="mt-4 flex flex-wrap gap-2">
-                        <span className="text-sm text-neutral-500">Active filters:</span>
+                        <span className="text-sm text-neutral-500">
+                          Active filters:
+                        </span>
                         {searchTerm && (
                           <Badge variant="secondary" className="gap-1">
                             Search: {searchTerm}
@@ -361,8 +375,17 @@ export default function BlogPage({ cmsData }: BlogPageProps) {
                               onClick={() => setSearchTerm("")}
                               className="ml-1 rounded-full hover:bg-neutral-200"
                             >
-                              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-3 w-3"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                  clipRule="evenodd"
+                                />
                               </svg>
                             </button>
                           </Badge>
@@ -374,8 +397,17 @@ export default function BlogPage({ cmsData }: BlogPageProps) {
                               onClick={() => setSelectedCategory(null)}
                               className="ml-1 rounded-full hover:bg-neutral-200"
                             >
-                              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-3 w-3"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                  clipRule="evenodd"
+                                />
                               </svg>
                             </button>
                           </Badge>
@@ -392,7 +424,7 @@ export default function BlogPage({ cmsData }: BlogPageProps) {
                       </div>
                     )}
                   </div>
-                  
+
                   <div
                     className={
                       viewMode === "grid"
@@ -456,7 +488,9 @@ export default function BlogPage({ cmsData }: BlogPageProps) {
                                 </div>
                               </div>
                               <div className="flex items-center justify-between text-brand-600 hover:text-brand-800 transition-colors">
-                                <span className="font-medium">Read Article</span>
+                                <span className="font-medium">
+                                  Read Article
+                                </span>
                                 <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                               </div>
                             </div>

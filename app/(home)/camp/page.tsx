@@ -124,7 +124,7 @@ export default function CampPage({ cmsData }: CampPageProps) {
   const prevSlide = () => {
     setCurrentSlide(
       (prev) =>
-        (prev - 1 + buildingSliderImages.length) % buildingSliderImages.length,
+        (prev - 1 + buildingSliderImages.length) % buildingSliderImages.length
     );
   };
 
@@ -222,7 +222,7 @@ export default function CampPage({ cmsData }: CampPageProps) {
                 onError={(e) => {
                   console.error(
                     "Failed to load mobile hero image:",
-                    heroImages.mobile.src,
+                    heroImages.mobile.src
                   );
                 }}
               />
@@ -240,7 +240,7 @@ export default function CampPage({ cmsData }: CampPageProps) {
                 onError={(e) => {
                   console.error(
                     "Failed to load desktop hero image:",
-                    heroImages.desktop.src,
+                    heroImages.desktop.src
                   );
                 }}
               />
@@ -318,7 +318,7 @@ export default function CampPage({ cmsData }: CampPageProps) {
                     onError={(e) => {
                       console.error(
                         "Failed to load building image:",
-                        buildingSliderImages[currentSlide].image,
+                        buildingSliderImages[currentSlide].image
                       );
                     }}
                   />
@@ -418,7 +418,7 @@ export default function CampPage({ cmsData }: CampPageProps) {
                 From budget-friendly shared spaces to premium private rooms.
               </p>
             </div>
-            
+
             {/* Updated grid with consistent card heights */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {buildings.map((building) => (
@@ -500,9 +500,14 @@ export default function CampPage({ cmsData }: CampPageProps) {
                         </h4>
                         <ul className="space-y-3">
                           {building.features.map((feature, index) => (
-                            <li key={index} className="flex items-center text-sm">
+                            <li
+                              key={index}
+                              className="flex items-center text-sm"
+                            >
                               <CheckCircle2 className="w-4 h-4 text-success-500 mr-3 flex-shrink-0" />
-                              <span className="text-neutral-700">{feature}</span>
+                              <span className="text-neutral-700">
+                                {feature}
+                              </span>
                             </li>
                           ))}
                         </ul>
@@ -510,7 +515,10 @@ export default function CampPage({ cmsData }: CampPageProps) {
                     </div>
                     <div className="mt-6 pt-4 border-t border-neutral-100">
                       <div className="flex gap-2">
-                        <Link href={`/camp/${building.slug}`} className="flex-1">
+                        <Link
+                          href={`/camp/${building.slug}`}
+                          className="flex-1"
+                        >
                           <Button
                             className={`w-full py-3 font-semibold text-base transition-all ${building.id === 1 ? "bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 shadow-accent" : building.id === 2 ? "bg-gradient-to-r from-success-500 to-success-600 hover:from-success-600 hover:to-success-700 shadow-sm" : "bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 shadow-brand"} text-white`}
                           >

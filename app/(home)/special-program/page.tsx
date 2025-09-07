@@ -376,7 +376,7 @@ export default function ProgramPage({ cmsData }: ProgramPageProps) {
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
+    >
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -455,7 +455,7 @@ export default function ProgramPage({ cmsData }: ProgramPageProps) {
             <div className="max-w-4xl mx-auto text-center">
               <Badge className="mb-6 bg-white/20 text-white hover:bg-white/30 border border-white/30 backdrop-blur-sm px-4 py-2">
                 <BookOpen className="w-4 h-4 mr-2" />
-                Program Kursus
+                Special Program
               </Badge>
               <h1 className="text-display-md md:text-display-xl font-bold mb-6 text-white drop-shadow-lg">
                 English Programs for Every Goal
@@ -721,14 +721,14 @@ export default function ProgramPage({ cmsData }: ProgramPageProps) {
                               <span className="text-2xl font-bold text-brand-600">
                                 {
                                   programs.find(
-                                    (p) => p.name === schedule.program,
+                                    (p) => p.name === schedule.program
                                   )?.price
                                 }
                               </span>
                               <p className="text-neutral-600 mt-2">
                                 {
                                   programs.find(
-                                    (p) => p.name === schedule.program,
+                                    (p) => p.name === schedule.program
                                   )?.duration
                                 }
                               </p>
