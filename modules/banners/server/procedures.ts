@@ -36,7 +36,7 @@ type BannerUpdate = {
 };
 
 export const bannersRouter = createTRPCRouter({
-  getMany: baseProcedure
+  getOne: baseProcedure
     .input(
       z.object({
         type: z.enum(pageTypeEnum.enumValues),
@@ -46,7 +46,8 @@ export const bannersRouter = createTRPCRouter({
       const data = await db
         .select()
         .from(banners)
-        .where(and(eq(banners.type, input.type), eq(banners.isActive, "true")));
+        .where(and(eq(banners.type, input.type), eq(banners.isActive, "true")))
+        .then((res) => res[0]);
       return data;
     }),
   getAll: baseProcedure.query(async ({ input }) => {
