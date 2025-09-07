@@ -32,13 +32,13 @@ export const BannerFilters = () => {
   ];
 
   const pageOptions = [
-    { label: "Home", value: "home" },
-    { label: "About", value: "about" },
-    { label: "Camp", value: "camp" },
-    { label: "Programs", value: "programs" },
-    { label: "Tests", value: "tests" },
-    { label: "Blog", value: "blog" },
-    { label: "Contact", value: "contact" },
+    { label: "Home", value: "Home" },
+    { label: "About", value: "About" },
+    { label: "Camp", value: "Camp" },
+    { label: "Programs", value: "Programs" },
+    { label: "Tests", value: "Tests" },
+    { label: "Blog", value: "Blog" },
+    { label: "Contact", value: "Contact" },
   ];
 
   const [{ type, status }, setFilters] = useBannerFilters();
