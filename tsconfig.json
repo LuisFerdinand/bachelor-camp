@@ -22,6 +22,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts","db/**/*.ts", "src/**/*.ts", "modules/home/ui/components/camp/BuildingShowcase"],
   "exclude": ["node_modules"]
 }
