@@ -514,6 +514,7 @@ export function getSuitableBuildings(courseId: number): Building[] {
   if (!course) return [];
 
   // Import buildings from buildingData
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { getAllBuildings } = require("./buildingData");
   const allBuildings = getAllBuildings();
 
@@ -569,8 +570,8 @@ export function createBookingItem(
 
 // Function to get all available booking combinations
 export function getAllBookingCombinations(): BookingItem[] {
-  const { getAllBuildings } = require("./buildingData");
-  const allBuildings = getAllBuildings();
+  // const { getAllBuildings } = require("./buildingData");
+  // const allBuildings = getAllBuildings();
 
   const combinations: BookingItem[] = [];
 

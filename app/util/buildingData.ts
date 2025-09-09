@@ -1,4 +1,3 @@
-// app/util/buildingData.ts
 export interface Building {
   id: number;
   slug: string;
@@ -21,8 +20,11 @@ export interface Building {
     id: number;
     type: string;
     price: string;
+    numericPrice: number; // Added for calculations
     description: string;
     highlight: boolean;
+    capacity: number; // Added minimum capacity
+    maxCapacity: number; // Added maximum capacity
   }[];
   badge: string;
   badgeColor: string;
@@ -134,24 +136,33 @@ export const buildings: Building[] = [
     pricing: [
       {
         id: 1,
-        type: "Per Room/Month",
+        type: "Private Room",
         price: "Rp 2,500,000",
+        numericPrice: 2500000,
         description: "Private room with ensuite bathroom",
         highlight: false,
+        capacity: 1,
+        maxCapacity: 1,
       },
       {
         id: 2,
-        type: "2 Students/Room",
-        price: "Rp 1,300,000/student",
+        type: "Shared Room",
+        price: "Rp 1,300,000/person",
+        numericPrice: 1300000,
         description: "Shared room with ensuite bathroom",
         highlight: true,
+        capacity: 2,
+        maxCapacity: 2,
       },
       {
         id: 3,
-        type: "3 Students/Room",
-        price: "Rp 1,000,000/student",
+        type: "Shared Room",
+        price: "Rp 1,000,000/person",
+        numericPrice: 1000000,
         description: "Shared room with ensuite bathroom",
         highlight: true,
+        capacity: 3,
+        maxCapacity: 3,
       },
     ],
     badge: "Most Popular",
@@ -289,10 +300,13 @@ export const buildings: Building[] = [
     pricing: [
       {
         id: 1,
-        type: "Per Student/Month",
-        price: "Rp 600,000",
+        type: "Shared Room",
+        price: "Rp 600,000/person",
+        numericPrice: 600000,
         description: "Shared room with shared bathroom",
         highlight: true,
+        capacity: 6,
+        maxCapacity: 10,
       },
     ],
     badge: "Best Value",
@@ -434,10 +448,13 @@ export const buildings: Building[] = [
     pricing: [
       {
         id: 1,
-        type: "Per Room/Month",
+        type: "Private Room",
         price: "Rp 2,800,000 - Rp 3,500,000",
+        numericPrice: 2800000,
         description: "Premium room with ensuite bathroom and balcony",
         highlight: false,
+        capacity: 1,
+        maxCapacity: 2,
       },
     ],
     badge: "Premium",

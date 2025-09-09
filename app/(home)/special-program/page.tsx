@@ -22,7 +22,6 @@ import {
   TrendingUp,
   Calendar,
   MessageSquare,
-  CheckCircle2,
   AlertCircle,
   ChevronLeft,
   ChevronRight,
@@ -58,7 +57,7 @@ const formatCurrency = (amount: number): string => {
   }).format(amount);
 };
 
-// Course Card Component
+// In the CourseCard component
 const CourseCard: React.FC<{ course: Course }> = ({ course }) => {
   const isPopular = course.category === "IELTS" || course.level === "ADVANCED";
   return (
@@ -125,7 +124,7 @@ const CourseCard: React.FC<{ course: Course }> = ({ course }) => {
                 : "bg-brand-500 hover:bg-brand-600"
             }`}
           >
-            <Link href="/booking">Book Now</Link>
+            <Link href={`/booking?course=${course.slug}`}>Book Now</Link>
           </Button>
         </div>
       </CardContent>

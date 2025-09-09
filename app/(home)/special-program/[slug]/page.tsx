@@ -44,7 +44,6 @@ const formatCurrency = (amount: number): string => {
 // Course Detail Header Component
 const CourseDetailHeader: React.FC<{ course: Course }> = ({ course }) => {
   const isPopular = course.category === "IELTS" || course.level === "ADVANCED";
-
   return (
     <div className="relative bg-gradient-to-r from-brand-600 to-accent-500 py-16 md:py-24">
       <div className="absolute inset-0 bg-black/20"></div>
@@ -57,7 +56,6 @@ const CourseDetailHeader: React.FC<{ course: Course }> = ({ course }) => {
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Programs
           </Link>
-
           <div className="flex flex-wrap items-center gap-4 mb-6">
             <Badge className="bg-white/20 text-white border border-white/30">
               {course.category}
@@ -72,15 +70,12 @@ const CourseDetailHeader: React.FC<{ course: Course }> = ({ course }) => {
               </Badge>
             )}
           </div>
-
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
             {course.name}
           </h1>
-
           <p className="text-lg md:text-xl text-white/90 mb-8 max-w-3xl">
             {course.description}
           </p>
-
           <div className="flex flex-wrap gap-6 mb-8">
             <div className="flex items-center text-white">
               <Clock className="h-5 w-5 mr-2" />
@@ -95,14 +90,14 @@ const CourseDetailHeader: React.FC<{ course: Course }> = ({ course }) => {
               <span>{formatCurrency(course.investment)}</span>
             </div>
           </div>
-
           <div className="flex flex-wrap gap-4">
             <Button
               asChild
               size="lg"
               className="bg-white text-brand-600 hover:bg-neutral-100"
             >
-              <Link href="/booking">Book Now</Link>
+              {/* Updated to include course slug */}
+              <Link href={`/booking?course=${course.slug}`}>Book Now</Link>
             </Button>
             <Button
               asChild
@@ -144,7 +139,6 @@ const CourseOverview: React.FC<{ course: Course }> = ({ course }) => {
           </ul>
         </CardContent>
       </Card>
-
       <Card className="border-0 shadow-md">
         <CardHeader>
           <CardTitle className="flex items-center text-lg">
@@ -163,7 +157,6 @@ const CourseOverview: React.FC<{ course: Course }> = ({ course }) => {
           </ul>
         </CardContent>
       </Card>
-
       <Card className="border-0 shadow-md">
         <CardHeader>
           <CardTitle className="flex items-center text-lg">
@@ -195,7 +188,6 @@ const CourseDetailsTabs: React.FC<{ course: Course }> = ({ course }) => {
         <TabsTrigger value="target-audience">Target Audience</TabsTrigger>
         <TabsTrigger value="pricing">Pricing</TabsTrigger>
       </TabsList>
-
       <TabsContent value="learning-method">
         <Card>
           <CardHeader>
@@ -221,7 +213,6 @@ const CourseDetailsTabs: React.FC<{ course: Course }> = ({ course }) => {
           </CardContent>
         </Card>
       </TabsContent>
-
       <TabsContent value="target-audience">
         <Card>
           <CardHeader>
@@ -245,7 +236,6 @@ const CourseDetailsTabs: React.FC<{ course: Course }> = ({ course }) => {
           </CardContent>
         </Card>
       </TabsContent>
-
       <TabsContent value="pricing">
         <Card>
           <CardHeader>
@@ -274,12 +264,13 @@ const CourseDetailsTabs: React.FC<{ course: Course }> = ({ course }) => {
                   <div className="text-sm text-neutral-600">Duration</div>
                 </div>
               </div>
+              {/* Updated to include course slug */}
               <Button
                 asChild
                 size="lg"
                 className="bg-brand-500 hover:bg-brand-600"
               >
-                <Link href="/booking">Book Now</Link>
+                <Link href={`/booking?course=${course.slug}`}>Book Now</Link>
               </Button>
             </div>
           </CardContent>
@@ -290,7 +281,7 @@ const CourseDetailsTabs: React.FC<{ course: Course }> = ({ course }) => {
 };
 
 // Course CTA Component
-const CourseCTA: React.FC = () => {
+const CourseCTA: React.FC<{ course: Course }> = ({ course }) => {
   return (
     <section className="py-16 bg-gradient-to-br from-brand-600 via-brand-500 to-accent-500 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-brand-900/20 to-accent-900/20"></div>
@@ -304,12 +295,13 @@ const CourseCTA: React.FC = () => {
             spot today and start achieving your goals.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            {/* Updated to include course slug */}
             <Button
               asChild
               size="lg"
               className="bg-white text-brand-600 hover:bg-neutral-100 shadow-xl font-semibold px-8 py-4 text-base"
             >
-              <Link href="/booking">Book Now</Link>
+              <Link href={`/booking?course=${course.slug}`}>Book Now</Link>
             </Button>
             <Button
               asChild
@@ -337,32 +329,27 @@ interface CourseDetailPageProps {
 
 export default function CourseDetailPage({ params }: CourseDetailPageProps) {
   const course = getCourseBySlug(params.slug);
-
   if (!course) {
     notFound();
   }
-
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <main className="flex-grow">
         {/* Course Detail Header */}
         <CourseDetailHeader course={course} />
-
         {/* Course Content */}
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               {/* Course Overview */}
               <CourseOverview course={course} />
-
               {/* Course Details Tabs */}
               <CourseDetailsTabs course={course} />
             </div>
           </div>
         </section>
-
         {/* Course CTA */}
-        <CourseCTA />
+        <CourseCTA course={course} />
       </main>
     </div>
   );
