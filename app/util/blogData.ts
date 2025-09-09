@@ -28,6 +28,7 @@ export interface BlogPost {
     title: string
     level: number
   }[]
+  keyTakeaway: string
 }
 
 export const blogPosts: BlogPost[] = [
@@ -97,7 +98,8 @@ export const blogPosts: BlogPost[] = [
         category: "Learning Methods",
         date: "April 10, 2023"
       }
-    ]
+    ],
+     keyTakeaway: "Consistent practice combined with real-world application is the most effective way to master English vocabulary. Focus on daily engagement rather than intensive cramming sessions."
   },
   {
     id: 2,
@@ -169,7 +171,8 @@ export const blogPosts: BlogPost[] = [
         category: "Pronunciation",
         date: "February 18, 2023"
       }
-    ]
+    ],
+    keyTakeaway: "Avoiding common mistakes like short answers, memorized responses, and excessive fillers can significantly improve your IELTS Speaking score. Focus on natural communication and extending your answers with reasons and examples."
   },
   {
     id: 3,
@@ -247,7 +250,8 @@ export const blogPosts: BlogPost[] = [
         category: "CEFR",
         date: "March 5, 2023"
       }
-    ]
+    ],
+    keyTakeaway: "Immersion learning accelerates language acquisition by providing authentic contexts for communication. Create an immersion environment through media, social interaction, and daily routine adjustments to see faster progress."
   },
   {
     id: 4,
@@ -374,7 +378,8 @@ export const blogPosts: BlogPost[] = [
         category: "Pronunciation",
         date: "February 18, 2023"
       }
-    ]
+    ],
+     keyTakeaway: "Effective business emails require clear structure, professional tone, and concise language. Always include a specific subject line, proper greeting, and clear call to action to ensure your message achieves its purpose."
   },
   {
     id: 5,
@@ -528,7 +533,8 @@ export const blogPosts: BlogPost[] = [
         category: "IELTS Preparation",
         date: "April 28, 2023"
       }
-    ]
+    ],
+    keyTakeaway: "Understanding CEFR levels helps you set realistic language learning goals and track your progress. Each level represents specific communication abilities that build upon each other in a logical progression."
   },
   {
     id: 6,
@@ -666,9 +672,67 @@ export const blogPosts: BlogPost[] = [
         category: "Learning Tips",
         date: "May 15, 2023"
       }
-    ]
+    ],
+    keyTakeaway: "Improving pronunciation requires focused practice on problem sounds, mastering word stress, and understanding sentence intonation. Use technology, record yourself, and get feedback to make consistent progress."
   }
 ]
+
+export interface AuthorDetails {
+  name: string;
+  bio: string;
+  articleCount: number;
+  followers: number;
+  rating: number;
+}
+
+export const authors: Record<string, AuthorDetails> = {
+  "Sarah Johnson": {
+    name: "Sarah Johnson",
+    bio: "Passionate English language educator with over 10 years of experience helping students achieve fluency through innovative teaching methods.",
+    articleCount: 42,
+    followers: 8200,
+    rating: 4.8
+  },
+  "Michael Chen": {
+    name: "Michael Chen",
+    bio: "IELTS expert with 15 years of experience in test preparation. Specializes in helping students achieve their target band scores through personalized coaching.",
+    articleCount: 38,
+    followers: 6700,
+    rating: 4.7
+  },
+  "Emma Rodriguez": {
+    name: "Emma Rodriguez",
+    bio: "Language acquisition specialist with a focus on immersion learning. Has taught English in five different countries and developed innovative teaching methodologies.",
+    articleCount: 29,
+    followers: 5400,
+    rating: 4.9
+  },
+  "David Kim": {
+    name: "David Kim",
+    bio: "Business English consultant and corporate trainer. Helps professionals improve their communication skills for career advancement.",
+    articleCount: 45,
+    followers: 9100,
+    rating: 4.6
+  },
+  "Lisa Thompson": {
+    name: "Lisa Thompson",
+    bio: "CEFR framework expert and language assessment specialist. Works with educational institutions to implement effective language evaluation systems.",
+    articleCount: 31,
+    followers: 4800,
+    rating: 4.8
+  },
+  "James Wilson": {
+    name: "James Wilson",
+    bio: "Pronunciation coach and phonetics expert. Developed a unique approach to accent reduction that has helped thousands of non-native speakers.",
+    articleCount: 27,
+    followers: 6200,
+    rating: 4.9
+  }
+};
+
+export function getAuthorDetails(authorName: string): AuthorDetails | undefined {
+  return authors[authorName];
+}
 
 // Function to get all blog posts
 export function getAllBlogPosts(): BlogPost[] {
@@ -787,7 +851,7 @@ export function addIdsToHeadings(htmlContent: string, tableOfContents: { id: str
     return htmlContent;
   }
 
-  const modifiedContent = htmlContent;
+  // const modifiedContent = htmlContent;
   
   // Create a temporary div element to parse the HTML
   const tempDiv = document.createElement('div');

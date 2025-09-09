@@ -1,9 +1,9 @@
 import React from "react";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import FloatingWA from "@/components/common/FloatingWA";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import { ClerkProvider } from "@clerk/nextjs";
+import { TRPCProvider } from "@/trpc/client";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,24 +12,21 @@ export const metadata = {
   description:
     "Premium English learning experience with professional facilities and expert instructors",
   icons: {
-    icon: [
-      { url: "/favicon.ico" },
-      { url: "/Logo.png", type: "image/png" },
-    ],
-    apple: "/Logo.png",
+    icon: [{ url: "/favicon.ico" }, { url: "/Logo.ico", type: "image/ico" }],
+    apple: "/Logo.ico",
   },
   openGraph: {
     title: "Bachelor Camp",
     description:
       "Premium English learning experience with professional facilities and expert instructors",
-    images: ["/Logo.png"],
+    images: ["/Logo.ico"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Bachelor Camp",
     description:
       "Premium English learning experience with professional facilities and expert instructors",
-    images: ["/Logo.png"],
+    images: ["/Logo.ico"],
   },
 };
 
@@ -39,13 +36,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <Header />
-        <main className="relative">{children}</main>
-        <FloatingWA />
-        <Footer />
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={inter.className}>
+          <TRPCProvider>
+            <Toaster position="bottom-right"></Toaster>
+            {children}
+          </TRPCProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
