@@ -1,18 +1,18 @@
+// modules/home/ui/components/blog-detail/ArticleContent/index.tsx
 "use client";
-
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Quote } from "lucide-react";
+import { BlogPost } from "@/app/util/blogData";
 
 interface ArticleContentProps {
-  content: string;
+  blogPost: BlogPost;
 }
 
-export function ArticleContent({ content }: ArticleContentProps) {
+export function ArticleContent({ blogPost }: ArticleContentProps) {
   return (
     <div className="prose prose-lg max-w-none mb-12">
-      <div dangerouslySetInnerHTML={{ __html: content }} />
-
+      <div dangerouslySetInnerHTML={{ __html: blogPost.content }} />
       {/* Article Highlight Box */}
       <div className="not-prose my-8">
         <Card className="border-l-4 border-l-brand-500 bg-gradient-to-r from-brand-50 to-transparent shadow-md">
@@ -24,10 +24,7 @@ export function ArticleContent({ content }: ArticleContentProps) {
                   Key Takeaway
                 </h4>
                 <p className="text-neutral-700">
-                  Consistent practice combined with real-world application is
-                  the most effective way to master English language skills.
-                  Focus on daily engagement rather than intensive cramming
-                  sessions.
+                  {blogPost.keyTakeaway}
                 </p>
               </div>
             </div>

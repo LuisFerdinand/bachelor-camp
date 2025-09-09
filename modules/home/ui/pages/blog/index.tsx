@@ -4,11 +4,9 @@ import React, { useState } from "react";
 import { HeroSection } from "@/modules/home/ui/components/blog/HeroSection";
 import { FeaturedArticles } from "@/modules/home/ui/components/blog/FeaturedArticles";
 import { ArticleList } from "@/modules/home/ui/components/blog/ArticleList";
-import { Sidebar } from "@/modules/home/ui/components/blog/Sidebar";
 import {
   getAllBlogPosts,
   getAllCategories,
-  getAllTags,
 } from "@/app/util/blogData";
 
 // Define TypeScript interfaces for the CMS data
@@ -53,7 +51,6 @@ export default function BlogPage({ cmsData }: BlogPageProps) {
   // Get data from util
   const blogPosts = getAllBlogPosts();
   const categories = getAllCategories();
-  const tags = getAllTags();
 
   // Filter posts based on search and category
   const filteredPosts = blogPosts.filter((post) => {
@@ -89,14 +86,6 @@ export default function BlogPage({ cmsData }: BlogPageProps) {
               categories={categories}
               viewMode={viewMode}
               setViewMode={setViewMode}
-            />
-
-            <Sidebar
-              categories={categories}
-              tags={tags}
-              selectedCategory={selectedCategory}
-              setSelectedCategory={setSelectedCategory}
-              popularPosts={blogPosts.slice(0, 4)}
             />
           </div>
         </div>

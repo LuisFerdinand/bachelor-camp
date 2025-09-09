@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+// import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MessageSquare, ThumbsUp, Reply } from "lucide-react";
 
 interface Comment {
@@ -33,8 +33,8 @@ interface Reply {
 interface CommentsSectionProps {
   comments: Comment[];
   setComments: (comments: Comment[]) => void;
-  activeTab: string;
-  setActiveTab: (tab: string) => void;
+  activeTab: "overview" | "comments";
+  setActiveTab: (tab: "overview" | "comments") => void;
 }
 
 export function CommentsSection({

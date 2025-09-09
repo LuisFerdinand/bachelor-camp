@@ -1,19 +1,28 @@
+// modules/home/ui/components/blog-detail/Sidebar/index.tsx
 "use client";
-
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { User, MessageSquare, Tag, BookOpen, TrendingUp } from "lucide-react";
-import { BlogPost } from "@/app/util/blogData";
+import { User, MessageSquare, Tag } from "lucide-react";
+import { BlogPost, AuthorDetails } from "@/app/util/blogData";
 
 interface SidebarProps {
   blogPost: BlogPost;
   tags: string[];
+  authorDetails: AuthorDetails;
 }
 
-export function Sidebar({ blogPost, tags }: SidebarProps) {
+export function Sidebar({ /*blogPost*/ tags, authorDetails }: SidebarProps) {
+  // Helper function to format followers count
+  const formatFollowers = (count: number): string => {
+    if (count >= 1000) {
+      return (count / 1000).toFixed(1) + 'k';
+    }
+    return count.toString();
+  };
+
   return (
     <div className="lg:w-1/4">
       <div className="sticky top-24 space-y-8">
@@ -24,25 +33,23 @@ export function Sidebar({ blogPost, tags }: SidebarProps) {
               <div className="w-16 h-16 bg-gradient-to-br from-brand-500 to-accent-500 rounded-full flex items-center justify-center mx-auto mb-3">
                 <User className="h-8 w-8 text-white" />
               </div>
-              <h3 className="font-bold text-lg">{blogPost.author}</h3>
+              <h3 className="font-bold text-lg">{authorDetails.name}</h3>
               <p className="text-sm text-neutral-600">Expert Writer</p>
             </div>
             <p className="text-neutral-700 text-sm mb-4">
-              Passionate English language educator with over 10 years of
-              experience helping students achieve fluency through innovative
-              teaching methods.
+              {authorDetails.bio}
             </p>
             <div className="flex items-center justify-between text-sm text-neutral-600 mb-4">
               <div>
-                <div className="font-semibold">42</div>
+                <div className="font-semibold">{authorDetails.articleCount}</div>
                 <div>Articles</div>
               </div>
               <div>
-                <div className="font-semibold">8.2k</div>
+                <div className="font-semibold">{formatFollowers(authorDetails.followers)}</div>
                 <div>Followers</div>
               </div>
               <div>
-                <div className="font-semibold">4.8</div>
+                <div className="font-semibold">{authorDetails.rating}</div>
                 <div>Rating</div>
               </div>
             </div>
@@ -51,7 +58,7 @@ export function Sidebar({ blogPost, tags }: SidebarProps) {
             </Button>
           </CardContent>
         </Card>
-
+        
         {/* Newsletter Signup */}
         <Card className="border-0 shadow-md bg-gradient-to-br from-brand-50 via-white to-accent-50">
           <CardContent className="p-6">
@@ -80,7 +87,7 @@ export function Sidebar({ blogPost, tags }: SidebarProps) {
             </p>
           </CardContent>
         </Card>
-
+        
         {/* Popular Tags */}
         <Card className="border-0 shadow-md">
           <CardHeader>

@@ -13,6 +13,7 @@ import {
   getAllBlogPosts,
   getBlogPostWithTOC,
   addIdsToHeadings,
+  AuthorDetails,
 } from "@/app/util/blogData";
 import { HeroSection } from "@/modules/home/ui/components/blog-detail/HeroSection";
 import { TableOfContents } from "@/modules/home/ui/components/blog-detail/TableOfContents";
@@ -143,6 +144,15 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
   // Table of contents from article headings
   const tableOfContents = blogPost.tableOfContents || [];
 
+  // Mock author details (you might want to get this from your data source)
+  const authorDetails: AuthorDetails = {
+    name: blogPost.author || "Expert Writer",
+    bio: "Passionate about helping students master English through innovative teaching methods and practical learning strategies.",
+    articleCount: 42,
+    followers: 2500,
+    rating: 4.8
+  };
+
   // Handle navigation to section
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -226,7 +236,8 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
                     scrollToSection={scrollToSection}
                   />
 
-                  <ArticleContent content={contentWithIds} />
+                  {/* Updated ArticleContent component call */}
+                  <ArticleContent blogPost={blogPost} />
                   <ArticleFeedback />
 
                   {/* Tags */}
@@ -297,8 +308,12 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
                   />
                 </div>
 
-                {/* Sidebar */}
-                <Sidebar blogPost={blogPost} tags={blogPost.tags} />
+                {/* Updated Sidebar component call */}
+                <Sidebar 
+                  blogPost={blogPost}
+                  tags={blogPost.tags}
+                  authorDetails={authorDetails}
+                />
               </div>
             </div>
           </div>

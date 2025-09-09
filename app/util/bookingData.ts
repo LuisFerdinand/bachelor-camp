@@ -615,4 +615,4 @@ export function getBookingCombinationsByCategory(
   );
 }
 
-export { Building };
+export type { Building };
