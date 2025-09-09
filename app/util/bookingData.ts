@@ -614,3 +614,5 @@ export function getBookingCombinationsByCategory(
     (item) => item.course.category === category
   );
 }
+
+export { Building };
