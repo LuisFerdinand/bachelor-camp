@@ -4,23 +4,37 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useConfirm } from "@/hooks/use-confirm";
 import { trpc } from "@/trpc/client";
-import { ExternalLinkIcon, PencilIcon, TrashIcon } from "lucide-react";
+import {
+  ExternalLinkIcon,
+  PencilIcon,
+  TrashIcon,
+  CheckCircleIcon,
+} from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useBannerAction } from "../BannerContext";
-// import { UpdateBannerModal } from "../UpdateBannerModal";
+import { UpdateBannerModal } from "../UpdateBannerModal";
+import { BooleanType, PageType } from "@/db/schema/enums";
 
 interface BannerActionsProps {
   id: string;
+  type: PageType;
+  isActive: BooleanType;
   children: React.ReactNode;
 }
 
-const BannerActions = ({ id, children }: BannerActionsProps) => {
+const BannerActions = ({
+  id,
+  type,
+  children,
+  isActive,
+}: BannerActionsProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const utils = trpc.useUtils();
@@ -67,14 +81,48 @@ const BannerActions = ({ id, children }: BannerActionsProps) => {
     router.push(`${pathname}/${id}`);
   };
 
+  const bannerActivate = trpc.banners.activate.useMutation({
+    onSuccess: () => {
+      toast.success("Banner activated");
+      utils.banners.getFiltered.invalidate();
+    },
+    onError: () => {
+      toast.error("Failed to activate banner");
+    },
+  });
+
+  const [ConfirmActivateDialog, confirmActivate] = useConfirm({
+    title: "Activate Banner",
+    message:
+      "Activating this banner will deactivate the currently active banner on this page. Do you want to continue?",
+    variant: "default",
+  });
+
+  const handleActivate = async () => {
+    const confirmed = await confirmActivate();
+    if (!confirmed) return;
+
+    setIsMutating(true);
+
+    bannerActivate.mutate(
+      { id, type },
+      {
+        onSettled: () => {
+          setIsMutating(false);
+        },
+      }
+    );
+  };
+
   return (
     <div className="flex justify-end">
       <ConfirmDeleteDialog></ConfirmDeleteDialog>
-      {/* <UpdateBannerModal
+      <ConfirmActivateDialog></ConfirmActivateDialog>
+      <UpdateBannerModal
         onOpenChange={setUpdateModalOpen}
         open={updateModalOpen}
         bannerId={id}
-      ></UpdateBannerModal> */}
+      ></UpdateBannerModal>
       <DropdownMenu
         modal={false}
         open={dropdownOpen}
@@ -101,10 +149,25 @@ const BannerActions = ({ id, children }: BannerActionsProps) => {
               e.stopPropagation();
               handleOpen();
             }}
-            disabled={isMutating}
+            // disabled={isMutating}
+            disabled
           >
             <ExternalLinkIcon className="size-4 mr-2 stroke-2"></ExternalLinkIcon>
             <p className="leading-none">View Details</p>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator></DropdownMenuSeparator>
+
+          <DropdownMenuItem
+            className="font-medium p-[10px]"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleActivate();
+            }}
+            disabled={isMutating || isActive === "true"}
+          >
+            <CheckCircleIcon className="size-4 mr-2 stroke-2 text-green-600" />
+            Activate Banner
           </DropdownMenuItem>
 
           <DropdownMenuItem

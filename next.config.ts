@@ -14,7 +14,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "unsplash.com",
+        hostname: "utfs.io",
+      },
+      {
+        protocol: "https",
+        hostname: "lpeoheclll.ufs.sh",
       },
       {
         protocol: "https",

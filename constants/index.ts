@@ -2,4 +2,4 @@ export const DEFAULT_LIMIT = 10;
 export const APP_URL =
   process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 export const MAX_IMAGES = 5;
-export const PRODUCT_IMAGE_FALLBACK = "/ProductImagePlaceholder.png";
+export const PRODUCT_IMAGE_FALLBACK = "/ImagePlaceholder.png";

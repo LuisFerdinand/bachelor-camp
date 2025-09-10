@@ -4,9 +4,7 @@ import React from "react";
 
 export const dynamic = "force-dynamic";
 
-const Page = async ({ params }: { params: { companyId: string } }) => {
-  const { companyId } = await params;
-
+const Page = async () => {
   return (
     <HydrateClient>
       <BannersView />

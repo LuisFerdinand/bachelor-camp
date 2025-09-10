@@ -5,14 +5,17 @@ import { z } from "zod";
 import { trpc } from "@/trpc/client";
 import { Combobox } from "@/components/ui/combobox";
 import {
-  BoxesIcon,
+  HomeIcon,
+  InfoIcon,
+  TentIcon,
   LayersIcon,
-  Package2Icon,
-  StarIcon,
-  StoreIcon,
-  TagIcon,
+  FileCheckIcon,
+  NotebookIcon,
+  MailIcon,
   ToggleLeftIcon,
+  LayoutGridIcon,
 } from "lucide-react";
+
 import {
   Select,
   SelectContent,
@@ -32,13 +35,13 @@ export const BannerFilters = () => {
   ];
 
   const pageOptions = [
-    { label: "Home", value: "home" },
-    { label: "About", value: "about" },
-    { label: "Camp", value: "camp" },
-    { label: "Programs", value: "programs" },
-    { label: "Tests", value: "tests" },
-    { label: "Blog", value: "blog" },
-    { label: "Contact", value: "contact" },
+    { label: "Home", value: "Home", icon: HomeIcon },
+    { label: "About", value: "About", icon: InfoIcon },
+    { label: "Camp", value: "Camp", icon: TentIcon },
+    { label: "Programs", value: "Programs", icon: LayersIcon },
+    { label: "Tests", value: "Tests", icon: FileCheckIcon },
+    { label: "Blog", value: "Blog", icon: NotebookIcon },
+    { label: "Contact", value: "Contact", icon: MailIcon },
   ];
 
   const [{ type, status }, setFilters] = useBannerFilters();
@@ -83,33 +86,8 @@ export const BannerFilters = () => {
           </SelectContent>
         </Select>
 
-        <Select
-          defaultValue={type ?? "all"}
-          onValueChange={(value) =>
-            setFilters({
-              type: value === "all" ? null : (value as PageType),
-            })
-          }
-        >
-          <SelectTrigger className={triggerClass(isActive(type))}>
-            <div className="flex items-center pr-2 leading-none">
-              <BoxesIcon className="size-4 mr-2" />
-              <SelectValue className="leading-none" placeholder="All Page" />
-            </div>
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Pages</SelectItem>
-            <SelectSeparator />
-            {pageOptions.map((opt) => (
-              <SelectItem key={opt.value} value={opt.value}>
-                {opt.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
         <Combobox
-          icon={<span className="size-4 mr-1">⚖️</span>}
+          icon={<LayoutGridIcon className="size-4 mr-2" />}
           value={type ?? "all"}
           onChange={(value) => {
             setFilters({

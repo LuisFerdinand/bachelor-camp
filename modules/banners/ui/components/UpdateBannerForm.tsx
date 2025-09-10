@@ -1,17 +1,16 @@
 "use client";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useRef, useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { trpc } from "@/trpc/client";
+import React, { Suspense, useEffect, useRef, useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import { useBannerAction } from "./BannerContext";
+import { bannerUpdateSchema } from "@/db/schema";
 import { useFieldArray, useForm } from "react-hook-form";
-import { z } from "zod";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import DottedSeparator from "@/components/ui/Separator/DottedSeparator";
+import { zodResolver } from "@hookform/resolvers/zod";
+import z from "zod";
+import toast from "react-hot-toast";
+import { uploadFiles } from "@/lib/uploadthing";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -20,21 +19,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import Image from "next/image";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { ImageIcon, Trash2, Plus, Eye, EyeOff, Tag } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { trpc } from "@/trpc/client";
-import { Textarea } from "@/components/ui/textarea";
-import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
-
-import { GradientSeparator } from "@/components/ui/Separator/SidebarSeparator";
-import { MultiSelect } from "@/components/MultiSelect";
 import { RequiredLabel } from "@/components/RequiredLabel";
-import { bannerCreateSchema } from "@/db/schema";
-import { uploadFiles } from "@/lib/uploadthing";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { GradientSeparator } from "@/components/ui/Separator/SidebarSeparator";
 import {
   Select,
   SelectContent,
@@ -43,110 +32,217 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { PAGE_TYPES } from "@/db/schema/enums";
+import { Eye, EyeOff, ImageIcon, Plus, Tag, Trash2 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
+import Image from "next/image";
 
-interface CreateBannerFormProps {
+interface UpdateBannerFormProps {
+  bannerId: string;
   onCancel?: () => void;
   onSuccess?: (bannerId: string) => void;
-  open: boolean;
+  open?: boolean;
 }
 
-export const CreateBannerForm = ({
+export const UpdateBannerForm = (props: UpdateBannerFormProps) => {
+  return (
+    <Suspense fallback={<UpdateBannerFormSkeleton></UpdateBannerFormSkeleton>}>
+      <ErrorBoundary fallback={<p>Error</p>}>
+        <UpdateBannerFormSuspense {...props}></UpdateBannerFormSuspense>
+      </ErrorBoundary>
+    </Suspense>
+  );
+};
+
+const UpdateBannerFormSkeleton = () => {
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <div className="space-y-2">
+          <Skeleton className="h-7 w-32"></Skeleton>
+          <Skeleton className="h-4 w-40"></Skeleton>
+        </div>
+        <Skeleton className="h-9 w-24"></Skeleton>
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <div className="space-y-8 lg:col-span-3">
+          <div className="space-y-2">
+            <Skeleton className="h-5 w-16"></Skeleton>
+            <Skeleton className="h-10 w-full"></Skeleton>
+          </div>
+          <div className="space-y-2">
+            <Skeleton className="h-5 w-24"></Skeleton>
+            <Skeleton className="h-[220px] w-full"></Skeleton>
+          </div>
+          <div className="space-y-2">
+            <Skeleton className="h-5 w-20"></Skeleton>
+            <Skeleton className="h-[84px] w-[153px]"></Skeleton>
+          </div>
+          <div className="space-y-2">
+            <Skeleton className="h-5 w-20"></Skeleton>
+            <Skeleton className="h-10 w-full"></Skeleton>
+          </div>
+        </div>
+        <div className="flex flex-col gap-y-8 lg:col-span-2">
+          <div className="flex flex-col gap-4 bg-[#f9f9f9] rounded-xl overflow-hidden">
+            <Skeleton className="aspect-video"></Skeleton>
+            <div className="px-4 py-4 space-y-6">
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-20"></Skeleton>
+                <Skeleton className="h-5 w-full"></Skeleton>
+              </div>
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-24"></Skeleton>
+                <Skeleton className="h-5 w-32"></Skeleton>
+              </div>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Skeleton className="h-5 w-20"></Skeleton>
+            <Skeleton className="h-10 w-full"></Skeleton>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const UpdateBannerFormSuspense = ({
+  bannerId,
   onCancel,
   onSuccess,
   open,
-}: CreateBannerFormProps) => {
+}: UpdateBannerFormProps) => {
   const utils = trpc.useUtils();
-
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  // Preview of uploaded image
-  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
-  // Selected file
+  const [previewUrl, setPreviewUrl] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  // Created banner ID
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showBadge, setShowBadge] = useState(false);
+  const { isMutating, setIsMutating } = useBannerAction();
+
+  const [banner] = trpc.banners.getOneProtected.useSuspenseQuery({
+    id: bannerId,
+  });
+
+  const form = useForm<z.infer<typeof bannerUpdateSchema>>({
+    resolver: zodResolver(bannerUpdateSchema),
+    values: {
+      type: banner.type,
+      headline: banner.headline,
+      subheadline: banner.subheadline ?? "",
+      badgeText: banner.badgeText ?? "",
+      ctas: banner.ctas ?? [],
+    },
+    mode: "onChange",
+  });
+  const [showBadge, setShowBadge] = useState(banner.badgeText ? true : false);
+
+  const {
+    handleSubmit,
+    control,
+    setValue,
+    formState: { isDirty },
+  } = form;
+  const { fields, append, remove } = useFieldArray({ control, name: "ctas" });
+
+  const isModified =
+    isDirty || // form field changed
+    selectedFile !== null || // new logo selected
+    (banner.mediaUrl && !previewUrl); // original logo removed
+
+  const updateBanner = trpc.banners.update.useMutation();
+
+  const handlePreview = (file: File) => {
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
+
+    const url = URL.createObjectURL(file);
+    setPreviewUrl(url);
+    setSelectedFile(file);
+  };
 
   useEffect(() => {
-    if (!open) {
-      previewUrls.forEach((url) => URL.revokeObjectURL(url));
-      setPreviewUrls([]);
+    if (open === false) {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+      setPreviewUrl("");
       setSelectedFile(null);
       form.reset();
-      setShowBadge(false);
     }
   }, [open]);
 
-  const form = useForm<z.infer<typeof bannerCreateSchema>>({
-    resolver: zodResolver(bannerCreateSchema),
-    defaultValues: {
-      headline: "",
-      subheadline: "",
-      type: "Home",
-      badgeText: "",
-      ctas: [],
-    },
-  });
+  useEffect(() => {
+    if (banner.mediaUrl && !previewUrl) {
+      setPreviewUrl(banner.mediaUrl);
+      setSelectedFile(null); // Ensure selectedFile is null when loading existing media
+    }
+    setShowBadge(!!banner.badgeText);
 
-  const { control, setValue, watch } = form;
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [banner.mediaUrl]);
 
-  const { fields, append, remove } = useFieldArray({ control, name: "ctas" });
-
-  const bannerUpdate = trpc.banners.update.useMutation();
-  const bannerCreate = trpc.banners.create.useMutation();
-
-  const handlePreview = (files: File[]) => {
-    previewUrls.forEach((url) => URL.revokeObjectURL(url));
-    const urls = files.map((file) => URL.createObjectURL(file));
-    setPreviewUrls(urls);
-    setSelectedFile(files[0] ?? null);
-  };
-
-  const onSubmit = async (values: z.infer<typeof bannerCreateSchema>) => {
-    const toastId = toast.loading("Creating banner...");
-    setIsSubmitting(true);
+  const onSubmit = async (values: z.infer<typeof bannerUpdateSchema>) => {
+    const toastId = toast.loading("Updating banner...");
+    setIsMutating(true);
 
     try {
-      const data = await bannerCreate.mutateAsync({
-        type: values.type,
-        headline: values.headline,
-        subheadline: values.subheadline,
+      // Handle media removal if applicable
+      const isRemovingMedia = !selectedFile && !previewUrl && banner.mediaKey;
+
+      if (isRemovingMedia) {
+        const res = await fetch(`/api/banners/${bannerId}/media`, {
+          method: "DELETE",
+        });
+        const result = await res.json();
+
+        if (!res.ok) throw new Error(result.message);
+
+        await utils.banners.getFiltered.invalidate();
+        toast.success("Banner updated and media removed!", { id: toastId });
+        onSuccess?.(bannerId);
+        return;
+      }
+
+      const updatedBanner = await updateBanner.mutateAsync({
+        id: bannerId,
+        ...values,
         badgeText: showBadge ? values.badgeText : "",
-        ctas: values.ctas,
       });
 
-      // If a media is selected, upload it
+      form.reset(values); // ✅ reset dirty state
+
       if (selectedFile) {
         toast.loading("Uploading banner media...", { id: toastId });
-        console.log("AAA");
 
         const res = await uploadFiles("bannerMediaUploader", {
           files: [selectedFile],
-          input: { bannerId: data.id },
+          input: { bannerId },
         });
 
-        console.log("Upload response:", res);
-
         const uploadedFile = res[0];
-        if (!uploadedFile) {
-          throw new Error("Failed to upload media.");
-        }
+        if (!uploadedFile) throw new Error("Failed to upload media.");
+
+        await updateBanner.mutateAsync({
+          id: bannerId,
+          mediaUrl: uploadedFile.ufsUrl,
+          mediaKey: uploadedFile.key,
+        });
+
+        setSelectedFile(null);
       }
 
-      utils.banners.getFiltered.invalidate();
-      toast.success("Banner created successfully!", { id: toastId });
-      onSuccess?.(data.id);
+      await utils.banners.getFiltered.invalidate();
+      toast.success("Banner updated successfully!", { id: toastId });
+      onSuccess?.(bannerId);
     } catch (error: any) {
-      toast.error(
-        error.message || "An error occurred during banner creation.",
-        {
-          id: toastId,
-        }
-      );
-      console.log({ error });
+      toast.error(error.message || "Update failed", { id: toastId });
     } finally {
-      setIsSubmitting(false);
+      setIsMutating(false);
     }
   };
 
@@ -159,11 +255,9 @@ export const CreateBannerForm = ({
               {/* Basic Information Section */}
               <div className="space-y-4">
                 <div className="space-y-1">
-                  <h3 className="text-lg font-semibold text-foreground">
-                    Basic Information
-                  </h3>
+                  <h3 className="text-lg font-semibold">Basic Information</h3>
                   <p className="text-sm text-muted-foreground">
-                    Configure the main content of your banner
+                    Update the main content of your banner
                   </p>
                 </div>
 
@@ -180,7 +274,7 @@ export const CreateBannerForm = ({
                         <Input
                           placeholder="Enter compelling headline"
                           {...field}
-                          disabled={isSubmitting}
+                          disabled={isMutating}
                           className="border-muted-foreground/50 h-11"
                         />
                       </FormControl>
@@ -200,9 +294,9 @@ export const CreateBannerForm = ({
                       </FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="Enter supporting description"
+                          placeholder="Enter supportive subheadline"
                           {...field}
-                          disabled={isSubmitting}
+                          disabled={isMutating}
                           className="border-muted-foreground/50 min-h-[80px] resize-none"
                         />
                       </FormControl>
@@ -213,30 +307,26 @@ export const CreateBannerForm = ({
 
                 {/* Page Type */}
                 <FormField
-                  control={form.control}
+                  control={control}
                   name="type"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-semibold">Page</FormLabel>
+                      <FormLabel className="font-bold">Page</FormLabel>
                       <FormControl>
                         <Select
                           onValueChange={field.onChange}
                           value={field.value}
-                          disabled={isSubmitting}
+                          disabled={isMutating}
                         >
                           <SelectTrigger
-                            disabled={isSubmitting}
-                            className="border-muted-foreground/50 h-11"
+                            disabled={isMutating}
+                            className="h-11 border-muted-foreground/50"
                           >
                             <SelectValue placeholder="Select page" />
                           </SelectTrigger>
                           <SelectContent>
                             {PAGE_TYPES.map((type) => (
-                              <SelectItem
-                                key={type}
-                                value={type}
-                                onSelect={() => field.onChange(type)}
-                              >
+                              <SelectItem key={type} value={type}>
                                 <span>
                                   {type.charAt(0).toUpperCase() + type.slice(1)}
                                 </span>
@@ -253,72 +343,59 @@ export const CreateBannerForm = ({
 
               <GradientSeparator />
 
-              {/* Badge Section */}
+              {/* Badge Section (with Switch same as Create form) */}
               <div className="space-y-4">
                 <div className="space-y-1">
-                  <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
-                    <Tag className="size-5" />
-                    Badge Settings
+                  <h3 className="text-lg font-semibold flex items-center gap-2 text-foreground">
+                    <Tag className="size-5" /> Badge Settings
                   </h3>
-                  <p className="text-sm text-muted-foreground">
-                    Add an optional promotional badge to your banner
-                  </p>
-                </div>
+                  <div className="bg-muted/30 p-4 rounded-lg border border-muted-foreground">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <Switch
+                          checked={showBadge}
+                          onCheckedChange={(val) => {
+                            setShowBadge(val);
+                            if (!val) setValue("badgeText", "");
+                          }}
+                          disabled={isMutating}
+                        />
 
-                <div className="bg-muted/30 rounded-lg p-4 border border-muted-foreground/20">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <Switch
-                        checked={showBadge}
-                        onCheckedChange={(val) => {
-                          setShowBadge(val);
-                          if (!val) {
-                            setValue("badgeText", "");
-                          }
-                        }}
-                        disabled={isSubmitting}
-                      />
-                      <div>
                         <FormLabel className="font-medium text-base">
                           Enable Badge
                         </FormLabel>
-                        <p className="text-sm text-muted-foreground">
-                          Show a promotional badge on the banner
-                        </p>
                       </div>
                     </div>
+                    {showBadge && (
+                      <div className="mt-4 animate-in slide-in-from-top-2 duration-200">
+                        <FormField
+                          control={control}
+                          name="badgeText"
+                          render={({ field }) => (
+                            <FormItem className="">
+                              <FormLabel className="font-medium">
+                                Badge Text
+                              </FormLabel>
+                              <FormControl>
+                                <Input
+                                  {...field}
+                                  disabled={isMutating}
+                                  className="border-muted-foreground/50 h-11 bg-background"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    )}
                   </div>
-
-                  {showBadge && (
-                    <div className="mt-4 animate-in slide-in-from-top-2 duration-200">
-                      <FormField
-                        control={form.control}
-                        name="badgeText"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="font-medium">
-                              Badge Text
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder="e.g., New, Limited Time, Sale"
-                                {...field}
-                                disabled={isSubmitting}
-                                className="border-muted-foreground/50 h-11 bg-background"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                  )}
                 </div>
               </div>
 
               <GradientSeparator />
 
-              {/* CTA Buttons Section */}
+              {/* CTA Buttons Section (reuse useFieldArray like Create form) */}
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="space-y-1">
@@ -348,7 +425,7 @@ export const CreateBannerForm = ({
                       onClick={() =>
                         append({ ctaText: "", ctaLink: "", isShown: true })
                       }
-                      disabled={isSubmitting}
+                      disabled={isMutating}
                       className="border-muted-foreground/50"
                     >
                       <Plus className="size-4 mr-2" />
@@ -356,14 +433,13 @@ export const CreateBannerForm = ({
                     </Button>
                   </div>
                 )}
-
                 <div className="space-y-3">
                   {fields.map((field, index) => (
                     <div
                       key={field.id}
                       className="bg-muted/30 border border-muted-foreground/20 rounded-lg p-4 space-y-4"
                     >
-                      <div className="flex items-center justify-between">
+                      <div className="flex justify-between items-center">
                         <div className="flex items-center gap-2">
                           <div className="size-8 bg-primary/10 rounded-full flex items-center justify-center">
                             <span className="text-sm font-medium text-primary leading-none">
@@ -382,14 +458,14 @@ export const CreateBannerForm = ({
                                   <Switch
                                     checked={field.value}
                                     onCheckedChange={field.onChange}
-                                    disabled={isSubmitting}
+                                    disabled={isMutating}
                                     className="scale-75"
                                   />
                                 </FormControl>
                                 <FormLabel className="text-sm font-normal">
                                   {field.value ? (
                                     <span className="flex items-center  text-green-600">
-                                      <Eye className="size-5" />
+                                      <Eye className="size-4" />
                                       <p className="leading-none font-semibold text-xs">
                                         Visible
                                       </p>
@@ -397,7 +473,7 @@ export const CreateBannerForm = ({
                                   ) : (
                                     <span className="flex items-center text-muted-foreground">
                                       <EyeOff className="size-4" />
-                                      <p className="leading-none font-semibold">
+                                      <p className="leading-none font-semibold text-xs">
                                         Hidden
                                       </p>
                                     </span>
@@ -408,35 +484,32 @@ export const CreateBannerForm = ({
                           />
                           <Button
                             type="button"
-                            variant="outline"
                             size="sm"
+                            variant="outline"
                             onClick={() => remove(index)}
-                            disabled={isSubmitting}
+                            disabled={isMutating}
                             className="text-destructive hover:text-destructive hover:bg-destructive/10 border"
                           >
                             <Trash2 className="size-4" />
                           </Button>
                         </div>
                       </div>
-
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FormField
                           control={control}
                           name={`ctas.${index}.ctaText`}
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel className="text-sm font-medium">
-                                Button Text
-                              </FormLabel>
+                              <FormLabel>Button Text</FormLabel>
                               <FormControl>
                                 <Input
-                                  placeholder="e.g., Get Started, Learn More"
                                   {...field}
-                                  disabled={isSubmitting}
+                                  placeholder="e.g., Get Started, Learn More"
+                                  disabled={isMutating}
                                   className="border-muted-foreground/50 h-10 bg-background"
                                 />
                               </FormControl>
-                              <FormMessage />
+                              <FormMessage></FormMessage>
                             </FormItem>
                           )}
                         />
@@ -450,13 +523,13 @@ export const CreateBannerForm = ({
                               </FormLabel>
                               <FormControl>
                                 <Input
-                                  placeholder="https://example.com or /path"
                                   {...field}
-                                  disabled={isSubmitting}
+                                  placeholder="https://example.com or /path"
+                                  disabled={isMutating}
                                   className="border-muted-foreground/50 h-10 bg-background"
                                 />
                               </FormControl>
-                              <FormMessage />
+                              <FormMessage></FormMessage>
                             </FormItem>
                           )}
                         />
@@ -464,7 +537,6 @@ export const CreateBannerForm = ({
                     </div>
                   ))}
                 </div>
-
                 {fields.length > 0 && fields.length < 3 && (
                   <Button
                     type="button"
@@ -472,18 +544,19 @@ export const CreateBannerForm = ({
                     onClick={() =>
                       append({ ctaText: "", ctaLink: "", isShown: true })
                     }
-                    disabled={isSubmitting}
+                    disabled={isMutating}
                     className="w-full border-muted-foreground/50 border-dashed h-11"
                   >
-                    <Plus className="size-4 mr-2" />
-                    Add Another CTA Button ({fields.length}/3)
+                    <Plus className="size-4 mr-2" /> Add Another CTA Button (
+                    {fields.length}/3)
                   </Button>
                 )}
               </div>
 
               <GradientSeparator />
 
-              {/* Media Upload & Preview */}
+              {/* Media Upload (same as Create form but preload with banner.mediaUrl) */}
+
               <div className="space-y-4">
                 <div className="space-y-1">
                   <h3 className="text-lg font-semibold text-foreground">
@@ -493,13 +566,12 @@ export const CreateBannerForm = ({
                     Upload an image or graphic for your banner
                   </p>
                 </div>
-
                 <div className="bg-muted/30 rounded-lg p-6 border border-muted-foreground/20">
                   <div className="flex items-start gap-6">
-                    {previewUrls.length > 0 ? (
+                    {previewUrl ? (
                       <div className="size-20 relative rounded-lg overflow-hidden border-2 border-muted-foreground/20">
                         <Image
-                          src={previewUrls[0]}
+                          src={previewUrl}
                           alt="Preview"
                           fill
                           className="object-cover"
@@ -510,6 +582,7 @@ export const CreateBannerForm = ({
                         <ImageIcon className="size-8 text-muted-foreground" />
                       </div>
                     )}
+
                     <div className="flex-1 space-y-3">
                       <div>
                         <p className="font-medium">Upload banner media</p>
@@ -544,35 +617,34 @@ export const CreateBannerForm = ({
                               return;
                             }
 
-                            handlePreview([file]);
+                            handlePreview(file);
                           }
                         }}
                       />
                       <div className="flex gap-2">
-                        {previewUrls.length > 0 ? (
+                        {previewUrl ? (
                           <>
                             <Button
                               type="button"
-                              variant="outline"
                               size="sm"
+                              variant="outline"
                               onClick={() => fileInputRef.current?.click()}
-                              disabled={isSubmitting}
+                              disabled={isMutating}
                               className="border-muted-foreground/50"
                             >
                               Change Media
                             </Button>
                             <Button
                               type="button"
-                              variant="destructive"
                               size="sm"
+                              variant="destructive"
                               onClick={() => {
-                                setPreviewUrls([]);
+                                setPreviewUrl("");
                                 setSelectedFile(null);
-                                if (fileInputRef.current) {
+                                if (fileInputRef.current)
                                   fileInputRef.current.value = "";
-                                }
                               }}
-                              disabled={isSubmitting}
+                              disabled={isMutating}
                             >
                               Remove Media
                             </Button>
@@ -580,14 +652,13 @@ export const CreateBannerForm = ({
                         ) : (
                           <Button
                             type="button"
-                            variant="outline"
                             size="sm"
+                            variant="outline"
                             onClick={() => fileInputRef.current?.click()}
-                            disabled={isSubmitting}
+                            disabled={isMutating}
                             className="border-muted-foreground/50"
                           >
-                            <ImageIcon className="size-4 mr-2" />
-                            Upload Media
+                            <ImageIcon className="size-4 mr-2" /> Upload Media
                           </Button>
                         )}
                       </div>
@@ -605,7 +676,7 @@ export const CreateBannerForm = ({
                   variant="outline"
                   size="lg"
                   onClick={onCancel}
-                  disabled={isSubmitting}
+                  disabled={isMutating}
                 >
                   Cancel
                 </Button>
@@ -613,10 +684,10 @@ export const CreateBannerForm = ({
               <Button
                 type="submit"
                 size="lg"
-                disabled={isSubmitting}
+                disabled={isMutating || !isModified}
                 className="min-w-[140px]"
               >
-                {isSubmitting ? "Creating..." : "Create Banner"}
+                {isMutating ? "Updating..." : "Update Banner"}
               </Button>
             </div>
           </form>

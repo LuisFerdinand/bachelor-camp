@@ -20,9 +20,6 @@ import {
   Boxes,
   Building2,
   CalendarDays,
-  ChevronDown,
-  ChevronRight,
-  ChevronUp,
   CircuitBoard,
   DatabaseBackup,
   Edit,
@@ -237,7 +234,7 @@ const ResponsiveSidebarContent = () => {
           />
           <GradientSeparator className="my-0.25 text-black"></GradientSeparator>
           <NavigationSection
-            title="System"
+            title="System Management"
             sectionIcon={CircuitBoard}
             routes={systemRoutes}
             collapsed={state === "collapsed"}
@@ -411,7 +408,7 @@ const ResponsiveSidebarContent = () => {
         />
 
         <NavigationSection
-          title="System"
+          title="System Management"
           sectionIcon={CircuitBoard}
           routes={systemRoutes}
         />

@@ -21,14 +21,14 @@ export const banners = pgTable("banners", {
   subheadline: text("subheadline"),
 
   ctas: jsonb("ctas").$type<
-    { ctaText: string; ctaLink: string; isShown: boolean }[]
+    { ctaText: string; ctaLink?: string; isShown: boolean }[]
   >(),
   badgeText: varchar("badge_text", { length: 100 }),
 
   mediaUrl: varchar("media_url", { length: 255 }),
   mediaKey: varchar("media_key", { length: 255 }),
 
-  isActive: booleanTypeEnum("is_active").default("true"),
+  isActive: booleanTypeEnum("is_active").default("false"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -47,16 +47,16 @@ export type Banner = {
 
   ctas:
     | {
-        ctaText: string;
-        ctaLink: string;
-        isShown: boolean;
+        ctaText: string | null;
+        ctaLink: string | null;
+        isShown: boolean | null;
       }[]
     | null;
 };
 
 export const bannerCreateSchema = z.object({
   type: z.enum(pageTypeEnum.enumValues),
-  headline: z.string().min(1),
+  headline: z.string().min(1, "Banner headline is required"),
   subheadline: z.string().optional(),
   badgeText: z.string().optional(),
   mediaUrl: z.string().optional(),
@@ -64,32 +64,31 @@ export const bannerCreateSchema = z.object({
   ctas: z
     .array(
       z.object({
-        ctaText: z.string().min(1),
-        ctaLink: z.string().url().optional(),
+        ctaText: z.string().min(1, "CTA text is required"),
+        ctaLink: z.string().optional(),
         isShown: z.boolean(),
       })
     )
     .max(3)
     .optional(),
 });
-// Update Schema
-export const bannerUpdateSchema = z.object({
-  type: z.enum(PAGE_TYPES).optional(),
-  headline: z.string().min(1).max(255).optional(),
-  subheadline: z.string().optional(),
 
+export const bannerUpdateSchema = z.object({
+  type: z.enum(pageTypeEnum.enumValues).optional(),
+  headline: z.string().min(1, "Banner headline is required").optional(),
+  subheadline: z.string().optional(),
+  badgeText: z.string().optional(),
+  mediaUrl: z.string().optional(),
+  mediaKey: z.string().optional(),
+  isActive: z.enum(booleanTypeEnum.enumValues).optional(),
   ctas: z
     .array(
       z.object({
-        ctaText: z.string(),
-        ctaLink: z.string().url(),
+        ctaText: z.string().min(1, "CTA text is required"),
+        ctaLink: z.string().optional(),
         isShown: z.boolean(),
       })
     )
     .max(3)
     .optional(),
-
-  badgeText: z.string().max(100).optional(),
-
-  isActive: z.enum(BOOLEAN_TYPES).optional(),
 });
