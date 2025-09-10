@@ -209,7 +209,6 @@ export const HomePage = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* {JSON.stringify(banner)} */}
       <main className="flex-grow">
         {/* Hero Section with Background Image */}
         <section
@@ -256,10 +255,13 @@ export const HomePage = () => {
                 {show3 && (
                   <Button
                     size="lg"
-                    variant="outline"
-                    className={`${heroData.buttons[1].borderColor} ${heroData.buttons[1].textColor} ${heroData.buttons[1].hoverBg} ${heroData.buttons[1].hoverText} bg-white/10 backdrop-blur-sm border-2 shadow-lg`}
+                    className="relative overflow-hidden rounded-2xl border-2 border-indigo-500 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 
+             px-6 py-3 font-semibold text-white shadow-lg transition-all duration-300 ease-out hover:scale-105 hover:shadow-xl"
                   >
-                    {banner.ctas![2].ctaText}
+                    <span className="relative z-10">
+                      {banner.ctas![2].ctaText}
+                    </span>
+                    <span className="absolute inset-0 -z-0 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></span>
                   </Button>
                 )}
               </div>

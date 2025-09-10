@@ -119,6 +119,7 @@ export const CreateBannerForm = ({
       // If a media is selected, upload it
       if (selectedFile) {
         toast.loading("Uploading banner media...", { id: toastId });
+        console.log("AAA");
 
         const res = await uploadFiles("bannerMediaUploader", {
           files: [selectedFile],
@@ -143,6 +144,7 @@ export const CreateBannerForm = ({
           id: toastId,
         }
       );
+      console.log({ error });
     } finally {
       setIsSubmitting(false);
     }
@@ -194,7 +196,7 @@ export const CreateBannerForm = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="font-semibold">
-                        <RequiredLabel>Subheadline</RequiredLabel>
+                        Subheadline
                       </FormLabel>
                       <FormControl>
                         <Textarea
@@ -388,13 +390,13 @@ export const CreateBannerForm = ({
                                   {field.value ? (
                                     <span className="flex items-center  text-green-600">
                                       <Eye className="size-5" />
-                                      <p className="leading-none font-semibold">
+                                      <p className="leading-none font-semibold text-xs">
                                         Visible
                                       </p>
                                     </span>
                                   ) : (
                                     <span className="flex items-center text-muted-foreground">
-                                      <EyeOff className="size-5" />
+                                      <EyeOff className="size-4" />
                                       <p className="leading-none font-semibold">
                                         Hidden
                                       </p>

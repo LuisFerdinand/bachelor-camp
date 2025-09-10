@@ -20,11 +20,12 @@ import {
 } from "lucide-react";
 
 import { usePathname, useRouter } from "next/navigation";
-import { Banner } from "@/db/schema";
 import { ProductImage } from "@/components/ProductImage";
 import { cn, stringToColor } from "@/lib/utils";
 import { BannerActionProvider } from "../BannerContext";
 import BannerActions from "./banner-actions";
+import { InferSelectModel } from "drizzle-orm";
+import { banners } from "@/db/schema";
 
 const typeIcons: Record<string, React.ElementType> = {
   Home: Home,
@@ -35,6 +36,8 @@ const typeIcons: Record<string, React.ElementType> = {
   Blog: Rss,
   Contact: Mail,
 };
+
+type Banner = InferSelectModel<typeof banners>;
 
 export function getBannerColumns(): ColumnDef<Banner>[] {
   const router = useRouter();
@@ -241,7 +244,7 @@ export function getBannerColumns(): ColumnDef<Banner>[] {
       ),
       cell: ({ row }: { row: Row<Banner> }) => {
         const { createdAt, id } = row.original;
-        const date = new Date(createdAt);
+        const date = new Date(createdAt!);
         const formatted = date.toLocaleString("en-US", {
           year: "numeric",
           month: "numeric",
@@ -278,7 +281,7 @@ export function getBannerColumns(): ColumnDef<Banner>[] {
       ),
       cell: ({ row }: { row: Row<Banner> }) => {
         const { updatedAt, id } = row.original;
-        const date = new Date(row.original.updatedAt);
+        const date = new Date(row.original.updatedAt!);
         const formatted = date.toLocaleString("en-US", {
           year: "numeric",
           month: "numeric",
@@ -304,13 +307,13 @@ export function getBannerColumns(): ColumnDef<Banner>[] {
     },
     {
       id: "actions",
-      cell: ({ row }) => {
-        const id = row.original.id;
+      cell: ({ row }: { row: { original: Banner } }) => {
+        const { id, type, isActive } = row.original;
 
         return (
           <>
             <BannerActionProvider>
-              <BannerActions id={id}>
+              <BannerActions id={id} type={type} isActive={isActive}>
                 <Button
                   variant={"ghost"}
                   className="size-8 p-0 hover:bg-neutral-300 hover:text-primary"

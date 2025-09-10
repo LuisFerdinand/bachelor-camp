@@ -15,19 +15,19 @@ export const metadata = {
     icon: [{ url: "/favicon.ico" }, { url: "/Logo.ico", type: "image/ico" }],
     apple: "/Logo.ico",
   },
-  openGraph: {
-    title: "Bachelor Camp",
-    description:
-      "Premium English learning experience with professional facilities and expert instructors",
-    images: ["/Logo.ico"],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Bachelor Camp",
-    description:
-      "Premium English learning experience with professional facilities and expert instructors",
-    images: ["/Logo.ico"],
-  },
+  // openGraph: {
+  //   title: "Bachelor Camp",
+  //   description:
+  //     "Premium English learning experience with professional facilities and expert instructors",
+  //   images: ["/Logo.ico"],
+  // },
+  // twitter: {
+  //   card: "summary_large_image",
+  //   title: "Bachelor Camp",
+  //   description:
+  //     "Premium English learning experience with professional facilities and expert instructors",
+  //   images: ["/Logo.ico"],
+  // },
 };
 
 export default function RootLayout({

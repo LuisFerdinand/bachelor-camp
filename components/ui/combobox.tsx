@@ -42,7 +42,7 @@ export function Combobox({
             : "border-input"
         )}
       >
-        <span className="flex items-center gap-2 truncate leading-none">
+        <span className="flex items-center truncate leading-none">
           {icon}
           {current?.label || placeholder}
         </span>

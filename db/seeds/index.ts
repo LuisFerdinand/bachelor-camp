@@ -15,7 +15,6 @@ async function main() {
     "post_category_relations",
     "post_categories",
     "posts",
-    "users",
   ]);
 
   // 2. Seed users
