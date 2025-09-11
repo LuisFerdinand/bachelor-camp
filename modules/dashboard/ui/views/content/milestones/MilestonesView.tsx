@@ -2,32 +2,41 @@
 import React, { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { PackageIcon, PlusIcon } from "lucide-react";
+import {
+  Award,
+  Building2,
+  Flag,
+  ImageIcon,
+  MapPin,
+  PackageIcon,
+  PlusIcon,
+  Sparkles,
+} from "lucide-react";
 
 import { PageHeader } from "@/components/PageHeader";
 import { trpc } from "@/trpc/client";
-import { BannersSection } from "../../sections/home/BannersSection";
-import { CreatedBannerModal } from "@/modules/banners/ui/components/CreateBannerModal";
+import { MilestonesSection } from "../../../sections/content/milestones/MilestonesSection";
+import { CreateMilestoneModal } from "@/modules/milestones/ui/components/CreateMilestoneModal";
 
-export const BannersView = () => {
+export const MilestonesView = () => {
   const [createModalOpen, setCreateModalOpen] = useState(false);
 
   return (
     <div className="flex flex-col gap-y-6 pt-2.5">
-      <CreatedBannerModal
+      <CreateMilestoneModal
         open={createModalOpen}
         onOpenChange={setCreateModalOpen}
       />
       <PageHeader
-        icon={<PackageIcon className="size-4 text-primary" />}
-        title="Banners Management"
-        description={`View and manage all banners.`}
+        icon={<Flag className="size-4 text-primary" />}
+        title="Milestones Management"
+        description={`View and manage all milestones.`}
         breadcrumbs={[
           { label: "Dashboard", href: "/dashboard" },
           {
-            label: "Home Management",
+            label: "Content Management",
           },
-          { label: "Banners", isCurrent: true },
+          { label: "Milestones", isCurrent: true },
         ]}
         action={
           <Button
@@ -40,7 +49,7 @@ export const BannersView = () => {
           </Button>
         }
       />
-      <BannersSection></BannersSection>
+      <MilestonesSection></MilestonesSection>
     </div>
   );
 };

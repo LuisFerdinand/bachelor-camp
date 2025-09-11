@@ -5,15 +5,15 @@ import { ResponsiveModal } from "@/components/ResponsiveModal";
 import { useRouter } from "next/navigation";
 import { CreateBannerForm } from "./CreateBannerForm";
 
-interface CreatedBannerModalProps {
+interface CreateBannerModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export const CreatedBannerModal = ({
+export const CreateBannerModal = ({
   open,
   onOpenChange,
-}: CreatedBannerModalProps) => {
+}: CreateBannerModalProps) => {
   const router = useRouter();
 
   return (

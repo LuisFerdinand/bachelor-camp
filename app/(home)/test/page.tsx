@@ -5,7 +5,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { PageClient } from "./client";
 
 const Test = () => {
-  void trpc.banners.getMany.prefetch({ type: "Home" });
+  void trpc.banners.getOne.prefetch({ type: "Home" });
   void trpc.posts.getCategories.prefetch();
   return (
     <HydrateClient>

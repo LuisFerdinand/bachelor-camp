@@ -1,4 +1,4 @@
-import { BannersView } from "@/modules/dashboard/ui/views/home/BannersView";
+import { BannersView } from "@/modules/dashboard/ui/views/content/banners/BannersView";
 import { HomePage } from "@/modules/home/ui/pages/home/All";
 import { HydrateClient, trpc } from "@/trpc/server";
 import React from "react";

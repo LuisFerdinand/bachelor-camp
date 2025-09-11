@@ -28,38 +28,53 @@ import {
   TagIcon,
 } from "lucide-react";
 import { trpc } from "@/trpc/client";
+import HomePillarsSection from "../../sections/home/HomePillarsSection";
 
 export const HomePage = () => {
-  // Hero section data - easily replaceable with CMS data
-  const heroData = {
-    backgroundImage:
-      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80",
+  const bannerStyles = {
     badge: {
-      text: "New Programs Available",
-      bgColor: "bg-accent-100",
-      textColor: "text-accent-800",
-      hoverColor: "hover:bg-accent-200",
+      base: "bg-accent-100 text-accent-800 hover:bg-accent-200",
     },
-    title: "Master English with Expert Instructors",
-    subtitle:
-      "Premium English learning experience with professional facilities, expert instructors, and proven results.",
-    buttons: [
-      {
-        text: "Explore Programs",
-        variant: "primary",
-        bgColor: "bg-brand-500",
-        hoverColor: "hover:bg-brand-600",
+    buttons: {
+      primary: {
+        base: "bg-brand-500 text-white shadow-lg hover:bg-brand-600",
       },
-      {
-        text: "Book a Consultation",
-        variant: "outline",
-        borderColor: "border-accent-500",
-        textColor: "text-accent-600",
-        hoverBg: "hover:bg-accent-500",
-        hoverText: "hover:text-white",
+      outline: {
+        base: "border-2 border-accent-500 text-accent-600 hover:bg-accent-500 hover:text-white bg-white/10 backdrop-blur-sm shadow-lg",
       },
-    ],
+      gradient: {
+        base: `relative overflow-hidden rounded-2xl border-2 border-indigo-500 
+             bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 
+             px-6 py-3 font-semibold text-white shadow-lg 
+             transition-all duration-300 ease-out hover:scale-105 hover:shadow-xl`,
+        inner: "relative z-10",
+        hoverOverlay:
+          "absolute inset-0 -z-0 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100",
+      },
+    },
+  } as const;
+
+  const generatePillarStyles = (
+    color: "brand" | "accent" | "green" | "blue" | "purple" | "orange"
+  ) => {
+    const baseColors: Record<string, { bg: string; text: string }> = {
+      brand: { bg: "bg-brand-100", text: "text-brand-600" },
+      accent: { bg: "bg-accent-100", text: "text-accent-600" },
+      green: { bg: "bg-green-100", text: "text-green-600" },
+      blue: { bg: "bg-blue-100", text: "text-blue-600" },
+      purple: { bg: "bg-purple-100", text: "text-purple-600" },
+      orange: { bg: "bg-orange-100", text: "text-orange-600" },
+    };
+
+    return {
+      iconWrapper: `${baseColors[color].bg} flex items-center justify-center w-16 h-16 rounded-full m-4`,
+      iconColor: `${baseColors[color].text}`,
+      button: `w-full mt-4 ${baseColors[color].text} hover:${baseColors[
+        color
+      ].text.replace("600", "800")}`,
+    };
   };
+
   const testimonials = [
     {
       id: 1,
@@ -199,9 +214,12 @@ export const HomePage = () => {
     },
   ];
 
-  const { data: banner, isLoading } = trpc.banners.getOne.useQuery({
-    type: "Home",
-  });
+  const { data: banner, isLoading: isLoadingBanner } =
+    trpc.banners.getOne.useQuery({
+      type: "Home",
+    });
+  const { data: pillars, isLoading: isLoadingPillars } =
+    trpc.pillars.getMany.useQuery();
 
   const show1 = !!banner?.ctas?.[0]?.isShown;
   const show2 = !!banner?.ctas?.[1]?.isShown;
@@ -222,10 +240,8 @@ export const HomePage = () => {
         >
           <div className="container mx-auto px-4 w-full">
             <div className="max-w-3xl text-center md:text-left mx-auto md:mx-0">
-              <Badge
-                className={`mb-4 ${heroData.badge.bgColor} ${heroData.badge.textColor} ${heroData.badge.hoverColor}`}
-              >
-                <TagIcon className="size-3 mr-1"></TagIcon>
+              <Badge className={`mb-4 ${bannerStyles.badge.base}`}>
+                <TagIcon className="size-3 mr-1" />
                 {banner?.badgeText}
               </Badge>
               <h1 className="text-display-md md:text-display-xl font-bold mb-6 text-white">
@@ -235,33 +251,36 @@ export const HomePage = () => {
                 {banner?.subheadline}
               </p>
               <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-4">
-                {show1 === true && (
+                {show1 && (
                   <Button
                     size="lg"
-                    className={`${heroData.buttons[0].bgColor} ${heroData.buttons[0].hoverColor} text-white shadow-lg`}
+                    className={bannerStyles.buttons.primary.base}
                   >
                     {banner.ctas![0].ctaText}
                   </Button>
                 )}
-                {show2 === true && (
+
+                {show2 && (
                   <Button
                     size="lg"
                     variant="outline"
-                    className={`${heroData.buttons[1].borderColor} ${heroData.buttons[1].textColor} ${heroData.buttons[1].hoverBg} ${heroData.buttons[1].hoverText} bg-white/10 backdrop-blur-sm border-2 shadow-lg`}
+                    className={bannerStyles.buttons.outline.base}
                   >
                     {banner.ctas![1].ctaText}
                   </Button>
                 )}
+
                 {show3 && (
                   <Button
                     size="lg"
-                    className="relative overflow-hidden rounded-2xl border-2 border-indigo-500 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 
-             px-6 py-3 font-semibold text-white shadow-lg transition-all duration-300 ease-out hover:scale-105 hover:shadow-xl"
+                    className={`group ${bannerStyles.buttons.gradient.base}`}
                   >
-                    <span className="relative z-10">
+                    <span className={bannerStyles.buttons.gradient.inner}>
                       {banner.ctas![2].ctaText}
                     </span>
-                    <span className="absolute inset-0 -z-0 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></span>
+                    <span
+                      className={bannerStyles.buttons.gradient.hoverOverlay}
+                    ></span>
                   </Button>
                 )}
               </div>
@@ -424,7 +443,11 @@ export const HomePage = () => {
         </section>
 
         {/* Three Pillars Section with Background Images */}
-        <section className="py-16 bg-white">
+        <HomePillarsSection
+          pillars={pillars}
+          isLoading={isLoadingPillars}
+        ></HomePillarsSection>
+        {/* <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="text-center max-w-2xl mx-auto mb-16">
               <h2 className="text-display-sm md:text-display-md font-bold mb-4">
@@ -581,7 +604,7 @@ export const HomePage = () => {
               </Card>
             </div>
           </div>
-        </section>
+        </section> */}
         {/* Campus Facilities Section */}
         <section className="py-16 bg-gradient-to-b from-neutral-50 to-white">
           <div className="container mx-auto px-4">

@@ -4,10 +4,7 @@ import React, { useState } from "react";
 import { HeroSection } from "@/modules/home/ui/components/blog/HeroSection";
 import { FeaturedArticles } from "@/modules/home/ui/components/blog/FeaturedArticles";
 import { ArticleList } from "@/modules/home/ui/components/blog/ArticleList";
-import {
-  getAllBlogPosts,
-  getAllCategories,
-} from "@/app/util/blogData";
+import { getAllBlogPosts, getAllCategories } from "@/app/util/blogData";
 
 // Define TypeScript interfaces for the CMS data
 interface CMSImage {

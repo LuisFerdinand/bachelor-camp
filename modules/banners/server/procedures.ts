@@ -13,6 +13,7 @@ import {
 } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { and, asc, desc, eq, ilike, or, sql } from "drizzle-orm";
+import { UTApi } from "uploadthing/server";
 import { z } from "zod";
 
 export const bannersRouter = createTRPCRouter({
@@ -90,9 +91,7 @@ export const bannersRouter = createTRPCRouter({
           badgeText: banners.badgeText,
           mediaUrl: banners.mediaUrl,
           mediaKey: banners.mediaKey,
-          isActive: sql<string>`coalesce(${banners.isActive}, 'false')`.as(
-            "isActive"
-          ),
+          isActive: banners.isActive,
           createdAt: banners.createdAt,
           updatedAt: banners.updatedAt,
           ctas: banners.ctas,
@@ -113,42 +112,45 @@ export const bannersRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       const { bannerId } = input;
 
-      // Step 1: Fetch the product to get the bannerId
-      const product = await db
+      // Step 1: Fetch the banner to get the bannerId
+      const banner = await db
         .select()
         .from(banners)
         .where(eq(banners.id, bannerId))
         .then((res) => res[0]);
 
-      if (!product) {
+      if (!banner) {
         throw new TRPCError({ code: "NOT_FOUND" });
       }
 
-      // if (product.imageKey) {
-      //   const utapi = new UTApi();
-      //   try {
-      //     await utapi.deleteFiles(product.imageKey);
-      //     console.log(`Deleted logo from UploadThing: ${product.imageKey}`);
-      //   } catch (error) {
-      //     console.error("⚠️ Failed to delete logo from UploadThing:", error);
-      //     // Not critical enough to stop store deletion
-      //   }
-      // }
+      if (banner.mediaKey) {
+        const utapi = new UTApi();
+        try {
+          await utapi.deleteFiles(banner.mediaKey);
+          console.log(`Deleted logo from UploadThing: ${banner.mediaKey}`);
+        } catch (error) {
+          console.error(
+            "⚠️ Failed to delete banner media from UploadThing:",
+            error
+          );
+          // Not critical enough to stop store deletion
+        }
+      }
 
       // Step 3: Perform deletion
-      const [deletedProduct] = await db
+      const [deletedBanner] = await db
         .delete(banners)
         .where(eq(banners.id, bannerId))
         .returning();
 
-      if (!deletedProduct) {
+      if (!deletedBanner) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Failed to delete store.",
         });
       }
 
-      return deletedProduct;
+      return deletedBanner;
     }),
   create: protectedProcedure
     .input(bannerCreateSchema)

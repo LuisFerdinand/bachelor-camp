@@ -13,6 +13,7 @@ import {
   pageTypeEnum,
 } from "../enums";
 import z from "zod";
+import { InferSelectModel } from "drizzle-orm";
 
 export const banners = pgTable("banners", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -33,26 +34,7 @@ export const banners = pgTable("banners", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-export type Banner = {
-  id: string;
-  type: string;
-  headline: string;
-  subheadline: string | null;
-  badgeText: string | null;
-  mediaUrl: string | null;
-  mediaKey: string | null;
-  isActive: "true" | "false";
-  createdAt: Date;
-  updatedAt: Date;
-
-  ctas:
-    | {
-        ctaText: string | null;
-        ctaLink: string | null;
-        isShown: boolean | null;
-      }[]
-    | null;
-};
+export type Banner = InferSelectModel<typeof banners>;
 
 export const bannerCreateSchema = z.object({
   type: z.enum(pageTypeEnum.enumValues),

@@ -163,17 +163,18 @@ export default function AboutUsPage({ cmsData }: AboutPageProps) {
     <div className="min-h-screen flex flex-col bg-white">
       <main className="flex-grow">
         <HeroSection heroImages={heroImages} />
-        <MainContentSection
-          values={values}
-          stats={stats}
-          companyInfo={cmsData?.companyInfo}
-        />
-        <VisionMissionSection data={cmsData?.visionMission} />
+
+        <StatsSection stats={stats} />
+
         <AccreditationsSection accreditations={accreditations} />
+
         <TestimonialsSection testimonials={testimonials} />
+
         <MilestonesSection milestones={milestones} />
-        <TeamSection /> {/* Using the imported TeamSection component */}
-        {/* <CTASection 
+
+        <ValuesSection values={values} />
+
+        <CTASection
           title="Join Our Learning Community"
           description="Become part of our global community of learners and transform your English skills with our world-class programs."
           buttonTexts={["Explore Programs", "Meet Our Team", "Contact Us"]}
