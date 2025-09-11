@@ -1,30 +1,40 @@
 "use client";
-
 import React from "react";
 import { HeroSection } from "@/modules/home/ui/components/about/HeroSection";
-import { StatsSection } from "@/modules/home/ui/components/about/StatsSection";
+import { MainContentSection } from "@/modules/home/ui/components/about/MainContentSection";
+import { VisionMissionSection } from "@/modules/home/ui/components/about/VisionMissionSection";
 import { AccreditationsSection } from "@/modules/home/ui/components/about/AccreditationsSection";
 import { TestimonialsSection } from "@/modules/home/ui/components/about/TestimonialsSection";
 import { MilestonesSection } from "@/modules/home/ui/components/about/MilestonesSection";
-import { ValuesSection } from "@/modules/home/ui/components/about/ValuesSection";
 import { CTASection } from "@/modules/home/ui/components/about/CTASection";
+import { TeamSection } from "@/modules/home/ui/components/about/TeamSection"; // Import the new TeamSection component
 import { Award, BookOpen, Globe, Users } from "lucide-react";
-
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 // Define TypeScript interfaces for the CMS data
 interface CMSImage {
   url: string;
   alt: string;
 }
-
+interface VisionMissionData {
+  vision: string;
+  mission: string;
+}
+interface CompanyInfo {
+  paragraph1?: string;
+  paragraph2?: string;
+}
 interface AboutPageCMSData {
   heroMobileImage?: CMSImage;
   heroDesktopImage?: CMSImage;
+  visionMission?: VisionMissionData;
+  companyInfo?: CompanyInfo;
 }
-
 interface AboutPageProps {
   cmsData?: AboutPageCMSData;
 }
 
+// About Us Page Component
 export default function AboutUsPage({ cmsData }: AboutPageProps) {
   // Get hero images with fallbacks to Unsplash images
   const heroImages = {
@@ -45,7 +55,6 @@ export default function AboutUsPage({ cmsData }: AboutPageProps) {
         "Students collaborating in modern campus - desktop view",
     },
   };
-
   const accreditations = [
     {
       id: 1,
@@ -72,7 +81,6 @@ export default function AboutUsPage({ cmsData }: AboutPageProps) {
       logo: "QE",
     },
   ];
-
   const milestones = [
     {
       year: "2010",
@@ -101,14 +109,12 @@ export default function AboutUsPage({ cmsData }: AboutPageProps) {
       description: "Opened state-of-the-art campus expansion",
     },
   ];
-
   const stats = [
     { id: 1, value: "15,000+", label: "Students" },
     { id: 2, value: "98%", label: "Satisfaction Rate" },
     { id: 3, value: "50+", label: "Expert Instructors" },
     { id: 4, value: "30+", label: "Nationalities" },
   ];
-
   const values = [
     {
       icon: BookOpen,
@@ -136,7 +142,6 @@ export default function AboutUsPage({ cmsData }: AboutPageProps) {
       color: "bg-purple-100 text-purple-700",
     },
   ];
-
   const testimonials = [
     {
       name: "Michael T.",
@@ -154,27 +159,25 @@ export default function AboutUsPage({ cmsData }: AboutPageProps) {
       rating: 5,
     },
   ];
-
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <main className="flex-grow">
         <HeroSection heroImages={heroImages} />
-        
-        <StatsSection stats={stats} />
-        
+        <MainContentSection
+          values={values}
+          stats={stats}
+          companyInfo={cmsData?.companyInfo}
+        />
+        <VisionMissionSection data={cmsData?.visionMission} />
         <AccreditationsSection accreditations={accreditations} />
-        
         <TestimonialsSection testimonials={testimonials} />
-        
         <MilestonesSection milestones={milestones} />
-        
-        <ValuesSection values={values} />
-        
-        <CTASection 
+        <TeamSection /> {/* Using the imported TeamSection component */}
+        {/* <CTASection 
           title="Join Our Learning Community"
           description="Become part of our global community of learners and transform your English skills with our world-class programs."
           buttonTexts={["Explore Programs", "Meet Our Team", "Contact Us"]}
-        />
+        /> */}
       </main>
     </div>
   );

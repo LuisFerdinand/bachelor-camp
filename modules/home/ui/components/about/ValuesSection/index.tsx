@@ -26,7 +26,7 @@ export function ValuesSection({ values }: ValuesSectionProps) {
             <BookOpen className="w-4 h-4 mr-2" />
             Our Core Values
           </Badge>
-          <h2 className="text-display-sm md:text-display-md font-bold mb-4">
+          <h2 className="textAC-display-sm md:text-display-md font-bold mb-4">
             Guiding Principles
           </h2>
           <p className="text-lg text-neutral-600">
