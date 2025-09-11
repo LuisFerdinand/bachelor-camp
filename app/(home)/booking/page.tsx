@@ -1,5 +1,5 @@
 "use client";
-import { Suspense } from 'react';
+import { Suspense } from "react";
 import BookingPage from "@/modules/home/ui/pages/booking";
 
 export default function Page() {

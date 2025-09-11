@@ -36,9 +36,9 @@ export function PageHeader({
                 <span key={idx} className="flex items-center gap-1">
                   <BreadcrumbItem>
                     {crumb.isCurrent ? (
-                      <div className="flex items-center gap-2 px-2 py-1 rounded-md bg-primary/10 text-primary">
+                      <div className="flex items-center justify-center gap-2 px-2 py-1 rounded-md bg-primary/10 text-primary">
                         {icon && <span className="text-primary">{icon}</span>}
-                        <span className="font-medium text-foreground leading-none">
+                        <span className="font-medium text-foreground leading-snug items-center">
                           {crumb.label}
                         </span>
                       </div>

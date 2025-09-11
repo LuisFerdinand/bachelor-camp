@@ -10,7 +10,7 @@ import { useBannerFilters } from "../../hooks/use-banner-filters";
 import { BannerFilters } from "./BannerFilters";
 import { DataTable } from "./Table/data-table";
 import { Banner } from "@/db/schema";
-import { getBannerColumns } from "./Table/column";
+import { getBannerColumns } from "./Table/columns";
 
 export const BannersViewSwitcher = () => {
   const [view, setView] = useQueryState("view", {

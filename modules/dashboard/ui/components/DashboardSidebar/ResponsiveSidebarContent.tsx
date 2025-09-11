@@ -45,6 +45,7 @@ import {
   SearchCheck,
   Settings,
   Share2,
+  Sparkles,
   Tags,
   Tent,
   UserCog,
@@ -55,19 +56,24 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { trpc } from "@/trpc/client";
-import { HomeManagement } from "./HomeManagement";
 import { NavigationSection } from "./Navigation";
 import { GradientSeparator } from "@/components/ui/Separator/SidebarSeparator";
 
-const homeRoutes = [
-  { label: "Banners", url: "/home/banners", icon: ImageIcon },
-  { label: "3 Pillars", url: "/home/pillars", icon: Landmark },
-  { label: "Accreditations", url: "/home/accreditations", icon: Award },
-  { label: "Milestones", url: "/home/milestones", icon: Flag },
-  { label: "Testimonials", url: "/home/testimonials", icon: Quote },
-  { label: "FAQs", url: "/home/faqs", icon: HelpCircle },
-  { label: "Locations", url: "/home/locations", icon: MapPin },
-  { label: "Social Media", url: "/home/social-media", icon: Share2 },
+const contentRoutes = [
+  { label: "Banners", url: "/content/banners", icon: ImageIcon },
+  { label: "Pillars", url: "/content/pillars", icon: Landmark },
+  { label: "Accreditations", url: "/content/accreditations", icon: Award },
+  { label: "Milestones", url: "/content/milestones", icon: Flag },
+  { label: "Testimonials", url: "/content/testimonials", icon: Quote },
+  { label: "FAQs", url: "/content/faqs", icon: HelpCircle },
+  { label: "Locations", url: "/content/locations", icon: MapPin },
+  { label: "Social Medias", url: "/content/social-media", icon: Share2 },
+  {
+    label: "Featured Facilities",
+    url: "/content/featured-facilities",
+    icon: Building2,
+  },
+  { label: "Highlights", url: "/content/highlights", icon: Sparkles },
 ];
 
 const servicesRoutes = [
@@ -183,9 +189,9 @@ const ResponsiveSidebarContent = () => {
           <DottedSeparator></DottedSeparator>
           {/* Logo Placeholder */}
           <NavigationSection
-            title="Home Management"
+            title="Content Management"
             sectionIcon={House}
-            routes={homeRoutes}
+            routes={contentRoutes}
             collapsed={state === "collapsed"}
           />
           <GradientSeparator className="my-0.25 text-black"></GradientSeparator>
@@ -361,9 +367,9 @@ const ResponsiveSidebarContent = () => {
 
         {/* <CompanyNavigation /> */}
         <NavigationSection
-          title="Home Management"
+          title="Content Management"
           sectionIcon={House}
-          routes={homeRoutes}
+          routes={contentRoutes}
         />
         <NavigationSection
           title="Services Management"

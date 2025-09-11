@@ -150,7 +150,7 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
     bio: "Passionate about helping students master English through innovative teaching methods and practical learning strategies.",
     articleCount: 42,
     followers: 2500,
-    rating: 4.8
+    rating: 4.8,
   };
 
   // Handle navigation to section
@@ -309,7 +309,7 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
                 </div>
 
                 {/* Updated Sidebar component call */}
-                <Sidebar 
+                <Sidebar
                   blogPost={blogPost}
                   tags={blogPost.tags}
                   authorDetails={authorDetails}

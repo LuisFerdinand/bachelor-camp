@@ -93,7 +93,6 @@ export const CreateBannerForm = ({
 
   const { fields, append, remove } = useFieldArray({ control, name: "ctas" });
 
-  const bannerUpdate = trpc.banners.update.useMutation();
   const bannerCreate = trpc.banners.create.useMutation();
 
   const handlePreview = (files: File[]) => {
@@ -119,7 +118,6 @@ export const CreateBannerForm = ({
       // If a media is selected, upload it
       if (selectedFile) {
         toast.loading("Uploading banner media...", { id: toastId });
-        console.log("AAA");
 
         const res = await uploadFiles("bannerMediaUploader", {
           files: [selectedFile],

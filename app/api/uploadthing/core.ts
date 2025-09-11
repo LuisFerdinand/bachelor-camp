@@ -5,7 +5,7 @@ import { UploadThingError, UTApi } from "uploadthing/server";
 
 import { auth } from "@clerk/nextjs/server";
 import { db } from "@/db";
-import { banners, users } from "@/db/schema";
+import { banners, pillars, users } from "@/db/schema";
 
 const f = createUploadthing();
 
@@ -54,6 +54,52 @@ export const ourFileRouter = {
       console.log("UploadThing metadata:", metadata);
       console.log("UploadThing file:", file);
       return { url: file.ufsUrl, key: file.key }; // ✅ JSON-safe
+    }),
+
+  pillarImageUploader: f({
+    image: {
+      maxFileSize: "2MB",
+      maxFileCount: 1,
+    },
+  })
+    .input(z.object({ pillarId: z.string().uuid() }))
+    .middleware(async ({ input }) => {
+      const { userId: clerkUserId } = await auth();
+      if (!clerkUserId) throw new UploadThingError("Unauthorized");
+
+      const [user] = await db
+        .select()
+        .from(users)
+        .where(eq(users.clerkId, clerkUserId));
+      if (!user) throw new UploadThingError("Unauthorized");
+
+      const [pillar] = await db
+        .select({ imageKey: pillars.imageKey })
+        .from(pillars)
+        .where(eq(pillars.id, input.pillarId));
+
+      if (!pillar) throw new UploadThingError("Pillar not found");
+
+      if (pillar.imageKey) {
+        const utapi = new UTApi();
+        await utapi.deleteFiles(pillar.imageKey);
+        await db
+          .update(pillars)
+          .set({ imageKey: null, imageUrl: null })
+          .where(eq(pillars.id, input.pillarId));
+      }
+
+      return { user, ...input };
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      await db
+        .update(pillars)
+        .set({ imageUrl: file.ufsUrl, imageKey: file.key })
+        .where(eq(pillars.id, metadata.pillarId));
+
+      console.log("UploadThing metadata:", metadata);
+      console.log("UploadThing file:", file);
+      return { url: file.ufsUrl, key: file.key };
     }),
 } satisfies FileRouter;
 

@@ -4,12 +4,14 @@ import { db } from "..";
 import { users } from "../schema/users";
 import { seedBanners } from "./banners.seed";
 import { seedPostCategories } from "./posts.seed";
+import { seedPillars } from "./pillars.seed";
 
 async function main() {
   // 1. Clear tables
   await clearTables([
     "collection_posts",
     "user_collections",
+    "pillars",
     "post_tag_relations",
     "post_tags",
     "post_category_relations",
@@ -26,6 +28,9 @@ async function main() {
 
   // Seed Banners
   await seedBanners();
+
+  // Seed Banners
+  await seedPillars();
 
   // Seed Posts
   await seedPostCategories();

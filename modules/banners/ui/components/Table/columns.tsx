@@ -25,7 +25,7 @@ import { cn, stringToColor } from "@/lib/utils";
 import { BannerActionProvider } from "../BannerContext";
 import BannerActions from "./banner-actions";
 import { InferSelectModel } from "drizzle-orm";
-import { banners } from "@/db/schema";
+import { Banner } from "@/db/schema";
 
 const typeIcons: Record<string, React.ElementType> = {
   Home: Home,
@@ -36,8 +36,6 @@ const typeIcons: Record<string, React.ElementType> = {
   Blog: Rss,
   Contact: Mail,
 };
-
-type Banner = InferSelectModel<typeof banners>;
 
 export function getBannerColumns(): ColumnDef<Banner>[] {
   const router = useRouter();
@@ -147,7 +145,9 @@ export function getBannerColumns(): ColumnDef<Banner>[] {
                   isActive === "true" ? "bg-green-500" : "bg-red-500"
                 )}
               />
-              {isActive === "true" ? "Active" : "Inactive"}
+              <p className="leading-none">
+                {isActive === "true" ? "Active" : "Inactive"}
+              </p>
             </span>
           </div>
         );
@@ -313,7 +313,7 @@ export function getBannerColumns(): ColumnDef<Banner>[] {
         return (
           <>
             <BannerActionProvider>
-              <BannerActions id={id} type={type} isActive={isActive}>
+              <BannerActions id={id} type={type} isActive={isActive!}>
                 <Button
                   variant={"ghost"}
                   className="size-8 p-0 hover:bg-neutral-300 hover:text-primary"
