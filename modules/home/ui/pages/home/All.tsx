@@ -293,6 +293,136 @@ export const HomePage = () => {
           </div>
         </section>
 
+        {/* Why Choose Us Section */}
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              
+              {/* Left Content */}
+              <div className="order-2 lg:order-1">
+                <div className="max-w-xl">
+                  <h2 className="text-display-sm lg:text-display-md font-bold text-neutral-900 mb-6">
+                    Your Success Is Our <span className="text-brand-600">Priority</span>
+                  </h2>
+                  
+                  <p className="text-lg text-neutral-600 mb-8 leading-relaxed">
+                    We combine proven teaching methods with world-class facilities
+                    to deliver exceptional English learning experiences that transform your future.
+                  </p>
+                  
+                  {/* Key Features List */}
+                  <div className="space-y-4">
+                    <div className="flex items-start space-x-3">
+                      <div className="w-6 h-6 rounded-full bg-brand-600 flex items-center justify-center flex-shrink-0 mt-1">
+                        <CheckCircle className="h-4 w-4 text-white" />
+                      </div>
+                      <div>
+                        <h5 className="font-semibold text-neutral-900 mb-1">Expert Native Instructors</h5>
+                        <p className="text-neutral-600 text-sm">TESOL certified teachers with 10+ years experience</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start space-x-3">
+                      <div className="w-6 h-6 rounded-full bg-brand-600 flex items-center justify-center flex-shrink-0 mt-1">
+                        <CheckCircle className="h-4 w-4 text-white" />
+                      </div>
+                      <div>
+                        <h5 className="font-semibold text-neutral-900 mb-1">95% Success Rate</h5>
+                        <p className="text-neutral-600 text-sm">Students achieve IELTS target scores within 8 weeks</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start space-x-3">
+                      <div className="w-6 h-6 rounded-full bg-brand-600 flex items-center justify-center flex-shrink-0 mt-1">
+                        <CheckCircle className="h-4 w-4 text-white" />
+                      </div>
+                      <div>
+                        <h5 className="font-semibold text-neutral-900 mb-1">Small Class Sizes</h5>
+                        <p className="text-neutral-600 text-sm">Maximum 12 students per class for personalized attention</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start space-x-3">
+                      <div className="w-6 h-6 rounded-full bg-brand-600 flex items-center justify-center flex-shrink-0 mt-1">
+                        <CheckCircle className="h-4 w-4 text-white" />
+                      </div>
+                      <div>
+                        <h5 className="font-semibold text-neutral-900 mb-1">International Environment</h5>
+                        <p className="text-neutral-600 text-sm">English-only campus with students from 15+ countries</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Right Image with Conversation Bubble */}
+              <div className="order-1 lg:order-2 relative">
+                <div className="relative max-w-md mx-auto lg:max-w-none">
+                  {/* Main Image */}
+                  <Image
+                    src="/home/whyUs-sec.svg" 
+                    alt="Happy student giving thumbs up" 
+                    className="w-full h-auto max-w-sm mx-auto lg:max-w-md"
+                    width={100}
+                    height={100}
+                  />
+                  
+                  {/* Conversation Bubble */}
+                  <div className="absolute -bottom-4 lg:-top-4 right-4 lg:-left-12 max-w-xs">
+                    <div className="bg-white rounded-2xl px-6 py-4 shadow-xl border border-neutral-100 relative">
+                      {/* Speech bubble tail */}
+                      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full lg:hidden">
+                        <div className="w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-b-[12px] border-b-white"></div>
+                      </div>
+                      <div className="absolute bottom-0 right-8 transform translate-y-full hidden lg:block">
+                        <div className="w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[12px] border-t-white"></div>
+                      </div>
+                      
+                      <div className="flex items-center space-x-3 mb-3">
+                        <div className="w-8 h-8 rounded-full bg-brand-600 flex items-center justify-center">
+                          <span className="text-white text-sm font-bold">BC</span>
+                        </div>
+                        <div>
+                          <p className="font-semibold text-neutral-900 text-sm">Bachelor Camp</p>
+                          <p className="text-neutral-500 text-xs">English Expert</p>
+                        </div>
+                      </div>
+                      
+                      <p className="text-neutral-700 text-sm leading-relaxed">
+                        &quot;Ready to achieve your English goals? Join thousands of successful students! 🚀&quot;
+                      </p>
+                      
+                      {/* Typing indicator */}
+                      <div className="flex items-center space-x-1 mt-3">
+                        <div className="flex space-x-1">
+                          <div className="w-2 h-2 bg-neutral-400 rounded-full animate-bounce"></div>
+                          <div className="w-2 h-2 bg-neutral-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                          <div className="w-2 h-2 bg-neutral-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                        </div>
+                        <span className="text-xs text-neutral-500 ml-2">Bachelor Camp is typing...</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Floating Elements */}
+                  <div className="absolute -top-8 right-4 lg:right-8">
+                    <div className="bg-accent-500 text-neutral-900 px-3 py-2 rounded-full text-sm font-semibold shadow-lg">
+                      ⭐ 4.9/5 Rating
+                    </div>
+                  </div>
+                  
+                  <div className="absolute bottom-64 lg:bottom-4 left-0 lg:-left-8">
+                    <div className="bg-brand-600 text-white px-3 py-2 rounded-full text-sm font-semibold shadow-lg">
+                      ✅ 1000+ Graduates
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </section>
+
         {/* Three Pillars Section with Background Images */}
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
@@ -412,8 +542,8 @@ export const HomePage = () => {
                     className="object-cover transition-transform group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
-                    <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center m-4">
-                      <Users className="h-8 w-8 text-green-600" />
+                    <div className="w-16 h-16 rounded-full bg-electric-100 flex items-center justify-center m-4">
+                      <Users className="h-8 w-8 text-electric-600" />
                     </div>
                   </div>
                 </div>
@@ -430,7 +560,7 @@ export const HomePage = () => {
                   <div className="space-y-2">
                     <div className="flex items-center">
                       <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                      <span className="text-sm">Progress Tracking</span>
+                      <span className="text-sm">Free Testing Form</span>
                     </div>
                     <div className="flex items-center">
                       <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
@@ -443,7 +573,7 @@ export const HomePage = () => {
                   </div>
                   <Button
                     variant="ghost"
-                    className="w-full mt-4 text-green-600 hover:text-green-800"
+                    className="w-full mt-4 text-electric-600 hover:text-electric-800"
                   >
                     View Testing <ChevronRight className="h-4 w-4 ml-1" />
                   </Button>
@@ -502,174 +632,6 @@ export const HomePage = () => {
                   </Card>
                 );
               })}
-            </div>
-          </div>
-        </section>
-
-        {/* Why Choose Us Section */}
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <div className="text-center max-w-2xl mx-auto mb-16">
-              <Badge className="bg-brand-100 text-brand-800 mb-4">
-                Why Bachelor Camp?
-              </Badge>
-              <h2 className="text-display-sm md:text-display-md font-bold mb-4">
-                Your Success Is Our Priority
-              </h2>
-              <p className="text-lg text-neutral-600">
-                We combine proven teaching methods with world-class facilities
-                to deliver exceptional English learning experiences.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {/* Experienced Instructors */}
-              <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white group">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 rounded-full bg-brand-100 flex items-center justify-center mx-auto mb-6 group-hover:bg-brand-200 transition-colors">
-                    <Users className="h-8 w-8 text-brand-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-4">
-                    Expert Instructors
-                  </h3>
-                  <p className="text-neutral-600 mb-4">
-                    Native and certified English teachers with 10+ years of
-                    experience in language education.
-                  </p>
-                  <div className="flex items-center justify-center space-x-4 text-sm text-neutral-500">
-                    <span className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                      TESOL Certified
-                    </span>
-                    <span className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                      Native Speakers
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-              {/* Proven Results */}
-              <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white group">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6 group-hover:bg-green-200 transition-colors">
-                    <BookOpen className="h-8 w-8 text-green-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-4">Proven Results</h3>
-                  <p className="text-neutral-600 mb-4">
-                    95% of our IELTS students achieve their target scores within
-                    8 weeks of intensive preparation.
-                  </p>
-                  <div className="flex items-center justify-center space-x-4 text-sm text-neutral-500">
-                    <span className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                      95% Success Rate
-                    </span>
-                    <span className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                      Fast Progress
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-              {/* Immersive Environment */}
-              <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white group">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 rounded-full bg-accent-100 flex items-center justify-center mx-auto mb-6 group-hover:bg-accent-200 transition-colors">
-                    <Globe className="h-8 w-8 text-accent-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-4">
-                    Immersive Environment
-                  </h3>
-                  <p className="text-neutral-600 mb-4">
-                    English-only campus environment with international students
-                    from 15+ countries.
-                  </p>
-                  <div className="flex items-center justify-center space-x-4 text-sm text-neutral-500">
-                    <span className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                      15+ Countries
-                    </span>
-                    <span className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                      English Only
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-              {/* Small Class Sizes */}
-              <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white group">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-6 group-hover:bg-blue-200 transition-colors">
-                    <Heart className="h-8 w-8 text-blue-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-4">
-                    Personal Attention
-                  </h3>
-                  <p className="text-neutral-600 mb-4">
-                    Maximum 12 students per class ensures personalized feedback
-                    and rapid improvement.
-                  </p>
-                  <div className="flex items-center justify-center space-x-4 text-sm text-neutral-500">
-                    <span className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                      Max 12 Students
-                    </span>
-                    <span className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                      1:1 Support
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-              {/* Flexible Programs */}
-              <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white group">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-6 group-hover:bg-purple-200 transition-colors">
-                    <Home className="h-8 w-8 text-purple-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-4">
-                    Flexible Options
-                  </h3>
-                  <p className="text-neutral-600 mb-4">
-                    Choose from intensive camps, part-time courses, or online
-                    programs to fit your schedule.
-                  </p>
-                  <div className="flex items-center justify-center space-x-4 text-sm text-neutral-500">
-                    <span className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                      Multiple Formats
-                    </span>
-                    <span className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                      Your Schedule
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-              {/* Certification & Support */}
-              <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white group">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center mx-auto mb-6 group-hover:bg-orange-200 transition-colors">
-                    <CheckCircle className="h-8 w-8 text-orange-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-4">
-                    Official Certification
-                  </h3>
-                  <p className="text-neutral-600 mb-4">
-                    Internationally recognized certificates and lifetime career
-                    support for our graduates.
-                  </p>
-                  <div className="flex items-center justify-center space-x-4 text-sm text-neutral-500">
-                    <span className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                      CEFR Certified
-                    </span>
-                    <span className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                      Career Support
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
             </div>
           </div>
         </section>

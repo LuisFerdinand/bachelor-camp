@@ -37,6 +37,7 @@ const nextConfig: NextConfig = {
         hostname: "assets.example.com",
         pathname: "/account123/**",
       },
+      new URL('https://assets.example.com/account123/**')
     ],
   },
   typescript: {
