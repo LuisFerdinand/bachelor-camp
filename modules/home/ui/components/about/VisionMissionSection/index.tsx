@@ -25,7 +25,7 @@ export function VisionMissionSection({ data }: VisionMissionSectionProps) {
   const visionMissionData = data || defaultData;
 
   return (
-    <section className="py-16 bg-gradient-to-br from-brand-50/30 to-accent-50/20">
+    <section className="py-20 bg-gradient-to-br from-brand-50/30 to-accent-50/20">
       <div className="container mx-auto px-4">
         <div className="mx-auto">
           <div className="text-center mb-16">

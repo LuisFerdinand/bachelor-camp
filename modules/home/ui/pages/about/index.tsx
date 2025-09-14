@@ -6,11 +6,9 @@ import { VisionMissionSection } from "@/modules/home/ui/components/about/VisionM
 import { AccreditationsSection } from "@/modules/home/ui/components/about/AccreditationsSection";
 import { TestimonialsSection } from "@/modules/home/ui/components/about/TestimonialsSection";
 import { MilestonesSection } from "@/modules/home/ui/components/about/MilestonesSection";
-import { CTASection } from "@/modules/home/ui/components/about/CTASection";
 import { TeamSection } from "@/modules/home/ui/components/about/TeamSection"; // Import the new TeamSection component
 import { Award, BookOpen, Globe, Users } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+
 // Define TypeScript interfaces for the CMS data
 interface CMSImage {
   url: string;
@@ -163,22 +161,17 @@ export default function AboutUsPage({ cmsData }: AboutPageProps) {
     <div className="min-h-screen flex flex-col bg-white">
       <main className="flex-grow">
         <HeroSection heroImages={heroImages} />
-
-        <StatsSection stats={stats} />
-
+        <MainContentSection
+          values={values}
+          stats={stats}
+          companyInfo={cmsData?.companyInfo}
+        />
+        <VisionMissionSection data={cmsData?.visionMission} />
         <AccreditationsSection accreditations={accreditations} />
-
         <TestimonialsSection testimonials={testimonials} />
-
         <MilestonesSection milestones={milestones} />
+        <TeamSection /> {/* Using the imported TeamSection component */}
 
-        <ValuesSection values={values} />
-
-        <CTASection
-          title="Join Our Learning Community"
-          description="Become part of our global community of learners and transform your English skills with our world-class programs."
-          buttonTexts={["Explore Programs", "Meet Our Team", "Contact Us"]}
-        /> */}
       </main>
     </div>
   );

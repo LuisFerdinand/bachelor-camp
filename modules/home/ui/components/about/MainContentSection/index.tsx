@@ -61,17 +61,17 @@ export function MainContentSection({
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-12 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-12 mx-auto">
           {/* Left Side - Company About */}
           <div className="space-y-8">
             {/* Image added at the top */}
-            <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div className="">
               <Image
-                src="/home/banner.png"
+                src="/about/about.png"
                 alt="Company visual"
-                className="w-full h-64 object-cover"
-                width={1000}
-                height={1000}
+                className="w-full h-full object-cover"
+                width={500}
+                height={500}
               />
             </div>
 
@@ -90,7 +90,7 @@ export function MainContentSection({
           </div>
 
           {/* Right Side - Stats & Values */}
-          <div className="space-y-12">
+          <div className="space-y-12 lg:pt-[60px]">
             {/* Stats Section */}
             <div>
               <div className="flex items-center mb-8">

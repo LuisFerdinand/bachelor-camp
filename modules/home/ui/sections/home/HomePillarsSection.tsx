@@ -21,37 +21,37 @@ import { ReactSVG } from "react-svg";
 function getPillarStyles(index: number) {
   const styles = [
     {
-      bg: "bg-gradient-to-br from-blue-50 to-indigo-100",
-      iconBg: "bg-blue-100 border-blue-200",
-      text: "text-blue-600",
-      hover: "hover:text-blue-800 hover:bg-blue-50",
-      accent: "text-blue-500",
+      bg: "bg-gradient-to-br from-brand-50 to-indigo-100",
+      iconBg: "bg-brand-100 border-brand-200",
+      text: "text-brand-600",
+      hover: "hover:text-brand-800 hover:bg-brand-50",
+      accent: "text-brand-500",
       // CTA Button styles
-      buttonBg: "bg-blue-600 hover:bg-blue-700",
+      buttonBg: "bg-brand-600 hover:bg-brand-700",
       buttonText: "text-white",
-      buttonShadow: "shadow-blue-200",
+      buttonShadow: "shadow-brand-200",
     },
     {
-      bg: "bg-gradient-to-br from-purple-50 to-pink-100",
-      iconBg: "bg-purple-100 border-purple-200",
-      text: "text-purple-600",
-      hover: "hover:text-purple-800 hover:bg-purple-50",
-      accent: "text-purple-500",
+      bg: "bg-gradient-to-br from-accent-50 to-pink-100",
+      iconBg: "bg-accent-100 border-accent-200",
+      text: "text-accent-600",
+      hover: "hover:text-accent-800 hover:bg-accent-50",
+      accent: "text-accent-500",
       // CTA Button styles
-      buttonBg: "bg-purple-600 hover:bg-purple-700",
+      buttonBg: "bg-accent-600 hover:bg-accent-700",
       buttonText: "text-white",
-      buttonShadow: "shadow-purple-200",
+      buttonShadow: "shadow-accent-200",
     },
     {
-      bg: "bg-gradient-to-br from-green-50 to-emerald-100",
-      iconBg: "bg-green-100 border-green-200",
-      text: "text-green-600",
-      hover: "hover:text-green-800 hover:bg-green-50",
-      accent: "text-green-500",
+      bg: "bg-gradient-to-br from-electric-50 to-emerald-100",
+      iconBg: "bg-electric-100 border-electric-200",
+      text: "text-electric-600",
+      hover: "hover:text-electric-800 hover:bg-electric-50",
+      accent: "text-electric-500",
       // CTA Button styles
-      buttonBg: "bg-green-600 hover:bg-green-700",
+      buttonBg: "bg-electric-600 hover:bg-electric-700",
       buttonText: "text-white",
-      buttonShadow: "shadow-green-200",
+      buttonShadow: "shadow-electric-200",
     },
     {
       bg: "bg-gradient-to-br from-orange-50 to-red-100",
@@ -68,6 +68,7 @@ function getPillarStyles(index: number) {
   return styles[index % styles.length];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const FeatureItem = ({ feature, style }: { feature: any; style: any }) => (
   <div
     className={`flex items-center gap-3 rounded-lg border p-3 transition-colors duration-200 hover:bg-gray-50 ${style.iconBg} bg-white`}

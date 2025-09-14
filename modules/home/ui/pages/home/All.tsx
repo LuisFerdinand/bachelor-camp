@@ -29,6 +29,7 @@ import {
 } from "lucide-react";
 import { trpc } from "@/trpc/client";
 import HomePillarsSection from "../../sections/home/HomePillarsSection";
+import { StudentLifeGallery } from "../../components/home/StudentLifeGallery";
 
 export const HomePage = () => {
   const bannerStyles = {
@@ -684,6 +685,7 @@ export const HomePage = () => {
             <TestimonialSlider testimonials={testimonials} />
           </div>
         </section>
+
         {/* Enhanced Bundles Section */}
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
@@ -743,78 +745,10 @@ export const HomePage = () => {
             </div>
           </div>
         </section>
-        {/* Student Life Gallery Section */}
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <div className="text-center max-w-2xl mx-auto mb-16">
-              <h2 className="text-display-sm md:text-display-md font-bold mb-4">
-                Student Life at Kediri
-              </h2>
-              <p className="text-lg text-neutral-600">
-                Experience the vibrant community and rich activities that make
-                learning English enjoyable and memorable.
-              </p>
-            </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
-              {[
-                {
-                  src: "https://images.unsplash.com/photo-1659287590518-81891c997956?q=80&w=872&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                  alt: "Group Activities",
-                },
-                {
-                  src: "https://images.unsplash.com/photo-1521017432531-fbd92d768814?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-                  alt: "Study Groups",
-                },
-                {
-                  src: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-                  alt: "Technology Lab",
-                },
-                {
-                  src: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-                  alt: "Outdoor Learning",
-                },
-                {
-                  src: "https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-                  alt: "Individual Study",
-                },
-                {
-                  src: "https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-                  alt: "Presentations",
-                },
-              ].map((image, index) => (
-                <div
-                  key={index}
-                  className="relative group overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
-                >
-                  <div className="relative h-32">
-                    <Image
-                      src={image.src}
-                      alt={image.alt}
-                      fill
-                      className="object-cover transition-transform group-hover:scale-110"
-                    />
-                  </div>
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
-                    <Camera className="h-6 w-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </div>
-                </div>
-              ))}
-            </div>
-            {/* Call to Action */}
-            <div className="text-center">
-              <Link href="/gallery">
-                <Button
-                  size="lg"
-                  className="bg-brand-500 hover:bg-brand-600 shadow-lg"
-                >
-                  <Camera className="h-4 w-4 mr-2" />
-                  View Full Gallery
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </section>
+        {/* Student Life Gallery Section */}
+        <StudentLifeGallery />
+
       </main>
     </div>
   );
