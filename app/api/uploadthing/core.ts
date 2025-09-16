@@ -1,22 +1,24 @@
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
-import { z } from "zod";
 import { UploadThingError, UTApi } from "uploadthing/server";
+import { z } from "zod";
 
 import { auth } from "@clerk/nextjs/server";
 import { db } from "@/db";
-import { banners, pillars, users } from "@/db/schema";
+import { accreditations, highlights, milestones, users } from "@/db/schema";
 
 const f = createUploadthing();
 
-export const ourFileRouter = {
-  bannerMediaUploader: f({
-    image: {
-      maxFileSize: "2MB",
-      maxFileCount: 1,
-    },
+function createImageUploader<T extends { id: any }>(options: {
+  table: any;
+  idField: string;
+  keyColumn: string;
+  urlColumn: string;
+}) {
+  return f({
+    image: { maxFileSize: "2MB", maxFileCount: 1 },
   })
-    .input(z.object({ bannerId: z.string().uuid() }))
+    .input(z.object({ [options.idField]: z.string().uuid() }))
     .middleware(async ({ input }) => {
       const { userId: clerkUserId } = await auth();
       if (!clerkUserId) throw new UploadThingError("Unauthorized");
@@ -27,80 +29,81 @@ export const ourFileRouter = {
         .where(eq(users.clerkId, clerkUserId));
       if (!user) throw new UploadThingError("Unauthorized");
 
-      const [banner] = await db
-        .select({ mediaKey: banners.mediaKey })
-        .from(banners)
-        .where(eq(banners.id, input.bannerId));
+      const id = (input as any)[options.idField];
 
-      if (!banner) throw new UploadThingError("Banner not found");
+      const [record] = await db
+        .select({ key: options.table[options.keyColumn] })
+        .from(options.table)
+        .where(eq(options.table.id, id));
 
-      if (banner.mediaKey) {
+      if (!record) throw new UploadThingError("Record not found");
+
+      if (record.key) {
         const utapi = new UTApi();
-        await utapi.deleteFiles(banner.mediaKey);
+        await utapi.deleteFiles(record.key);
         await db
-          .update(banners)
-          .set({ mediaKey: null, mediaUrl: null })
-          .where(eq(banners.id, input.bannerId));
+          .update(options.table)
+          .set({ [options.keyColumn]: null, [options.urlColumn]: null })
+          .where(eq(options.table.id, id));
       }
 
-      return { user, ...input };
+      return { user, id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
       await db
-        .update(banners)
-        .set({ mediaUrl: file.ufsUrl, mediaKey: file.key })
-        .where(eq(banners.id, metadata.bannerId));
+        .update(options.table)
+        .set({
+          [options.urlColumn]: file.ufsUrl,
+          [options.keyColumn]: file.key,
+        })
+        .where(eq(options.table.id, metadata.id));
 
-      console.log("UploadThing metadata:", metadata);
-      console.log("UploadThing file:", file);
-      return { url: file.ufsUrl, key: file.key }; // ✅ JSON-safe
-    }),
-
-  pillarImageUploader: f({
-    image: {
-      maxFileSize: "2MB",
-      maxFileCount: 1,
-    },
-  })
-    .input(z.object({ pillarId: z.string().uuid() }))
-    .middleware(async ({ input }) => {
-      const { userId: clerkUserId } = await auth();
-      if (!clerkUserId) throw new UploadThingError("Unauthorized");
-
-      const [user] = await db
-        .select()
-        .from(users)
-        .where(eq(users.clerkId, clerkUserId));
-      if (!user) throw new UploadThingError("Unauthorized");
-
-      const [pillar] = await db
-        .select({ imageKey: pillars.imageKey })
-        .from(pillars)
-        .where(eq(pillars.id, input.pillarId));
-
-      if (!pillar) throw new UploadThingError("Pillar not found");
-
-      if (pillar.imageKey) {
-        const utapi = new UTApi();
-        await utapi.deleteFiles(pillar.imageKey);
-        await db
-          .update(pillars)
-          .set({ imageKey: null, imageUrl: null })
-          .where(eq(pillars.id, input.pillarId));
-      }
-
-      return { user, ...input };
-    })
-    .onUploadComplete(async ({ metadata, file }) => {
-      await db
-        .update(pillars)
-        .set({ imageUrl: file.ufsUrl, imageKey: file.key })
-        .where(eq(pillars.id, metadata.pillarId));
-
-      console.log("UploadThing metadata:", metadata);
-      console.log("UploadThing file:", file);
       return { url: file.ufsUrl, key: file.key };
-    }),
+    });
+}
+
+// --- use the factory for each uploader ---
+import { banners, pillars, testimonials } from "@/db/schema";
+
+export const ourFileRouter = {
+  bannerMediaUploader: createImageUploader({
+    table: banners,
+    idField: "bannerId",
+    keyColumn: "mediaKey",
+    urlColumn: "mediaUrl",
+  }),
+
+  pillarImageUploader: createImageUploader({
+    table: pillars,
+    idField: "pillarId",
+    keyColumn: "imageKey",
+    urlColumn: "imageUrl",
+  }),
+
+  testimonialImageUploader: createImageUploader({
+    table: testimonials,
+    idField: "testimonialId",
+    keyColumn: "imageKey",
+    urlColumn: "imageUrl",
+  }),
+  highlightImageUploader: createImageUploader({
+    table: highlights,
+    idField: "highlightId",
+    keyColumn: "imageKey",
+    urlColumn: "imageUrl",
+  }),
+  accreditationImageUploader: createImageUploader({
+    table: accreditations,
+    idField: "accreditationId",
+    keyColumn: "imageKey",
+    urlColumn: "imageUrl",
+  }),
+  milestoneImageUploader: createImageUploader({
+    table: milestones,
+    idField: "milestoneId",
+    keyColumn: "imageKey",
+    urlColumn: "imageUrl",
+  }),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;

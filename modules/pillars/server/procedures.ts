@@ -1,6 +1,7 @@
 import { db } from "@/db";
 import { pillarCreateSchema, pillars, pillarUpdateSchema } from "@/db/schema";
 import { booleanTypeEnum } from "@/db/schema/enums";
+import { requireRole } from "@/lib/access";
 import {
   baseProcedure,
   createTRPCRouter,
@@ -28,6 +29,10 @@ export const pillarsRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
+      const { id: userId } = ctx.user;
+
+      await requireRole(userId, ["super_admin", "admin"]);
+
       const { isActive, searchQuery } = input;
 
       const filters = and(
@@ -58,7 +63,10 @@ export const pillarsRouter = createTRPCRouter({
         pillarId: z.string().uuid(),
       })
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
+      const { id: userId } = ctx.user;
+
+      await requireRole(userId, ["super_admin", "admin"]);
       const { pillarId } = input;
 
       const pillar = await db
@@ -71,6 +79,8 @@ export const pillarsRouter = createTRPCRouter({
         throw new TRPCError({ code: "NOT_FOUND" });
       }
 
+      const currentOrder = pillar.order ?? 0;
+
       if (pillar.imageKey) {
         const utapi = new UTApi();
         try {
@@ -81,7 +91,7 @@ export const pillarsRouter = createTRPCRouter({
             "⚠️ Failed to delete pillar image from UploadThing:",
             error
           );
-          // Not critical enough to stop store deletion
+          // Not critical enough to stop pillar deletion
         }
       }
 
@@ -93,15 +103,31 @@ export const pillarsRouter = createTRPCRouter({
       if (!deletedPillar) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Failed to delete store.",
+          message: "Failed to delete pillar.",
         });
+      }
+
+      if (pillar.isActive === "true") {
+        await db
+          .update(pillars)
+          .set({
+            order: sql`${pillars.order} - 1`,
+            updatedAt: new Date(),
+          })
+          .where(
+            and(gt(pillars.order, currentOrder), eq(pillars.isActive, "true"))
+          );
       }
 
       return deletedPillar;
     }),
   create: protectedProcedure
     .input(pillarCreateSchema)
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
+      const { id: userId } = ctx.user;
+
+      await requireRole(userId, ["super_admin", "admin"]);
+
       const [pillar] = await db
         .insert(pillars)
         .values({
@@ -133,6 +159,9 @@ export const pillarsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input, ctx }) => {
+      const { id: userId } = ctx.user;
+
+      await requireRole(userId, ["super_admin", "admin"]);
       const { id, ...rest } = input;
 
       const [existing] = await db
@@ -238,6 +267,9 @@ export const pillarsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const { id: userId } = ctx.user;
+
+      await requireRole(userId, ["super_admin", "admin"]);
       const { pillarId, action, activate } = input;
 
       const [pillar] = await db
@@ -317,16 +349,19 @@ export const pillarsRouter = createTRPCRouter({
           .where(eq(pillars.id, pillar.id));
         await db
           .update(pillars)
-          .set({ order: pillar.order, updatedAt: new Date() })
+          .set({ order: pillar.order })
           .where(eq(pillars.id, targetPillar.id));
       }
 
       return true;
     }),
 
-  getMaxOrder: protectedProcedure.query(async () => {
+  getMaxOrder: protectedProcedure.query(async ({ ctx }) => {
+    const { id: userId } = ctx.user;
+
+    await requireRole(userId, ["super_admin", "admin"]);
     const [result] = await db
-      .select({ maxOrder: sql<number>`MAX(${pillars.order})` })
+      .select({ maxOrder: sql<number>`CAST(MAX(${pillars.order}) AS INT)` })
       .from(pillars)
       .where(eq(pillars.isActive, "true"));
 
@@ -340,6 +375,9 @@ export const pillarsRouter = createTRPCRouter({
       })
     )
     .query(async ({ input, ctx }) => {
+      const { id: userId } = ctx.user;
+
+      await requireRole(userId, ["super_admin", "admin"]);
       const pillar = await db.query.pillars.findFirst({
         where: (p, { eq }) => eq(p.id, input.id),
       });

@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DEFAULT_LIMIT } from "@/constants";
-import { FeaturedFacilitiesViewSwitcher } from "@/modules/featuredFacilities/ui/components/FeaturedFacilitiesViewSwitcher";
+import { FeaturedFacilitiesViewSwitcher } from "@/modules/facilities/ui/components/FeaturedFacilitiesViewSwitcher";
 
 import React, { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";

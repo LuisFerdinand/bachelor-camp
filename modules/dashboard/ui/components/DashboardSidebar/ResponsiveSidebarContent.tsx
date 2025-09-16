@@ -15,6 +15,7 @@ import DottedSeparator from "@/components/ui/Separator/DottedSeparator";
 // import { CompanyNavigation, StoreNavigation } from "./Navigation";
 import {
   Award,
+  BarChart3,
   BedDouble,
   BookOpen,
   Boxes,
@@ -42,6 +43,7 @@ import {
   MapPin,
   MessageSquare,
   Quote,
+  Scale,
   SearchCheck,
   Settings,
   Share2,
@@ -74,6 +76,8 @@ const contentRoutes = [
     icon: Building2,
   },
   { label: "Highlights", url: "/content/highlights", icon: Sparkles },
+  { label: "Principles", url: "/content/principles", icon: Scale },
+  { label: "Statistics", url: "/content/statistics", icon: BarChart3 },
 ];
 
 const servicesRoutes = [
@@ -95,11 +99,6 @@ export const articlesRoutes = [
 
 export const engagementRoutes = [
   { label: "Leads", url: "/engagement/leads", icon: Mail },
-  {
-    label: "Testimonials",
-    url: "/engagement/testimonials",
-    icon: MessageSquare,
-  },
 ];
 
 export const usersRoutes = [

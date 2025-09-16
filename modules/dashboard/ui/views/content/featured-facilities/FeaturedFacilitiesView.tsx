@@ -12,18 +12,11 @@ import {
 
 import { PageHeader } from "@/components/PageHeader";
 import { trpc } from "@/trpc/client";
-import { FeaturedFacilitiesSection } from "../../../sections/content/featuredFacilities/FeaturedFacilitiesSection";
-import { CreateFeaturedFacilitieModal } from "@/modules/featuredFacilities/ui/components/CreateFeaturedFacilitieModal";
+import { FeaturedFacilitiesSection } from "../../../sections/content/featured-facilities/FeaturedFacilitiesSection";
 
 export const FeaturedFacilitiesView = () => {
-  const [createModalOpen, setCreateModalOpen] = useState(false);
-
   return (
     <div className="flex flex-col gap-y-6 pt-2.5">
-      <CreateFeaturedFacilitieModal
-        open={createModalOpen}
-        onOpenChange={setCreateModalOpen}
-      />
       <PageHeader
         icon={<Building2 className="size-4 text-primary" />}
         title="Featured Facilities Management"
@@ -33,20 +26,10 @@ export const FeaturedFacilitiesView = () => {
           {
             label: "Content Management",
           },
-          { label: "FeaturedFacilities", isCurrent: true },
+          { label: "Featured Facilities", isCurrent: true },
         ]}
-        action={
-          <Button
-            variant="default"
-            onClick={() => setCreateModalOpen(true)}
-            className="flex items-center gap-2"
-          >
-            <PlusIcon className="w-4 h-4" />
-            <span>Create</span>
-          </Button>
-        }
       />
-      <FeaturedFacilitiesSection></FeaturedFacilitiesSection>
+      {/* <FeaturedFacilitiesSection></FeaturedFacilitiesSection> */}
     </div>
   );
 };

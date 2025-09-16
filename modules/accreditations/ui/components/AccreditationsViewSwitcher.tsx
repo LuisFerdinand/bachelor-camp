@@ -7,10 +7,10 @@ import { Separator } from "@/components/ui/separator";
 import { GradientSeparator } from "@/components/ui/Separator/SidebarSeparator";
 import { useState } from "react";
 import { useAccreditationFilters } from "../../hooks/use-accreditation-filters";
-import { AccreditationFilters } from "./AccreditationFilters";
 import { DataTable } from "./Table/data-table";
 import { Accreditation } from "@/db/schema";
-import { getAccreditationColumns } from "./Table/column";
+import { getAccreditationColumns } from "./Table/columns";
+import { AccreditationFilters } from "./AccredtiationFilters";
 
 export const AccreditationsViewSwitcher = () => {
   const [view, setView] = useQueryState("view", {
@@ -23,7 +23,6 @@ export const AccreditationsViewSwitcher = () => {
 
   const { data: accreditations, isLoading } =
     trpc.accreditations.getFiltered.useQuery({
-      type: filters.type ?? undefined,
       isActive: filters.status ?? undefined,
       searchQuery: filters.searchQuery ?? undefined,
     });
@@ -53,7 +52,6 @@ export const AccreditationsViewSwitcher = () => {
           <AccreditationFilters />
           <>
             <TabsContent value="table">
-              {/* {JSON.stringify(accreditations)} */}
               <DataTable<Accreditation, unknown>
                 columns={columns}
                 data={accreditations ?? []}

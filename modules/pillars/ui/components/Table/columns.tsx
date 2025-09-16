@@ -7,6 +7,7 @@ import {
   TagIcon,
   Image as ImageIcon,
   List,
+  Circle,
 } from "lucide-react";
 
 import { usePathname, useRouter } from "next/navigation";
@@ -109,14 +110,31 @@ export function getPillarColumns(): ColumnDef<Pillar>[] {
       header: () => <Button variant="ghost">Features</Button>,
       cell: ({ row }) => {
         const features = row.original.features || [];
+
+        if (features.length === 0) {
+          return (
+            <span className="flex justify-center text-xs text-muted-foreground italic text-center">
+              No features
+            </span>
+          );
+        }
+
         return (
           <ul className="space-y-1 list-disc pl-4 text-xs">
             {features.map((f, i) => (
               <li key={i} className="truncate flex items-center gap-1">
-                {f.iconUrl && (
-                  <img src={f.iconUrl} alt="" className="w-3 h-3" />
+                {f.iconUrl ? (
+                  <img
+                    src={f.iconUrl}
+                    alt=""
+                    className="w-3 h-3 object-contain"
+                  />
+                ) : (
+                  <Circle className="w-3 h-3 text-muted-foreground" />
                 )}
-                <span className="leading-none">{f.text}</span>
+                <span className="leading-none">
+                  {f.text || "Untitled feature"}
+                </span>
               </li>
             ))}
           </ul>

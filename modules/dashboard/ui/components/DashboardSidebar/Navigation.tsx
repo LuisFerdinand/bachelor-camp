@@ -114,7 +114,7 @@ export const NavigationSection = ({
               defaultValue={title.toLowerCase().replace(/\s+/g, "-")}
             >
               <AccordionItem value={title.toLowerCase()}>
-                <AccordionTrigger className="text-sm text-muted-foreground font-bold px-2 py-1 uppercase hover:no-underline">
+                <AccordionTrigger className="text-sm text-muted-foreground font-bold px-2 py-1 uppercase hover:no-underline truncate">
                   {title}
                 </AccordionTrigger>
                 <AccordionContent>
@@ -137,7 +137,7 @@ export const NavigationSection = ({
                         >
                           <SidebarMenuButton asChild>
                             <Link href={fullHref} prefetch>
-                              <div className="flex items-center gap-2.5 px-2 font-medium py-4 text-base">
+                              <div className="flex items-center gap-2.5 px-2 font-medium py-4 text-base truncate">
                                 <Icon className="size-5" />
                                 {route.label}
                               </div>

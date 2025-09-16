@@ -1,12 +1,5 @@
 import { pgTable, uuid, varchar, timestamp, pgEnum } from "drizzle-orm/pg-core";
-
-export const roleEnum = pgEnum("role", [
-  "admin",
-  "author",
-  "student",
-  "staff",
-  "instructor",
-]);
+import { roleEnum } from "../enums";
 
 export const roles = pgTable("roles", {
   id: uuid("id").primaryKey(),

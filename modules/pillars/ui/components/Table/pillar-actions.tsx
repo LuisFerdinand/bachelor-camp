@@ -228,7 +228,7 @@ const PillarActions = ({
             disabled={isMutating}
           >
             <TrashIcon className="w-4 h-4 stroke-2" />
-            <span>Delete Pillar</span>
+            <span>Delete</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
