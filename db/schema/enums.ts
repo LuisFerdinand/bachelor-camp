@@ -48,6 +48,15 @@ export const ROOM_STATUSES = ["available", "occupied", "maintenance"] as const;
 export type RoomStatus = (typeof ROOM_STATUSES)[number];
 export const roomStatusEnum = pgEnum("room_status", ROOM_STATUSES);
 
+// Facilities
+export const FACILITY_STATUSES = ["active", "inactive", "archived"] as const;
+export type FacilityStatus = (typeof FACILITY_STATUSES)[number];
+export const facilityStatusEnum = pgEnum("facility_status", FACILITY_STATUSES);
+
+export const FACILITY_TYPES = ["camp", "roomType"] as const;
+export type FacilityType = (typeof FACILITY_TYPES)[number];
+export const facilityTypeEnum = pgEnum("facility_type", FACILITY_TYPES);
+
 // Courses
 export const COURSE_MODES = ["offline", "online", "hybrid"] as const;
 export type CourseMode = (typeof COURSE_MODES)[number];
@@ -76,3 +85,28 @@ export const postStatusEnum = pgEnum("post_status", POST_STATUSES);
 export const COLLECTION_TYPES = ["personal", "curated", "system"] as const;
 export type CollectionType = (typeof COLLECTION_TYPES)[number];
 export const collectionTypeEnum = pgEnum("collection_type", COLLECTION_TYPES);
+
+// Testimonials
+export const TESTIMONIAL_SOURCES = [
+  "student",
+  "alumni",
+  "parent",
+  "partner",
+  "other",
+] as const;
+export type TestimonialSource = (typeof TESTIMONIAL_SOURCES)[number];
+export const testimonialSourceEnum = pgEnum(
+  "testimonial_source",
+  TESTIMONIAL_SOURCES
+);
+
+export const ROLES = [
+  "super_admin",
+  "admin",
+  "author",
+  "student",
+  "staff",
+  "instructor",
+] as const;
+export type Role = (typeof ROLES)[number];
+export const roleEnum = pgEnum("role", ROLES);

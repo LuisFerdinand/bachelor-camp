@@ -5,6 +5,7 @@ import React from "react";
 export const dynamic = "force-dynamic";
 
 const Page = async () => {
+  void trpc.testimonials.getAllCategories.prefetch();
   return (
     <HydrateClient>
       <TestimonialsView />

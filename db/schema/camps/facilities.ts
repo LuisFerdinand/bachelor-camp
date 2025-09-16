@@ -6,17 +6,18 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
+import { facilityStatusEnum, facilityTypeEnum } from "../enums";
 
 export const facilities = pgTable("facilities", {
   id: uuid("id").primaryKey(),
   name: varchar("name", { length: 100 }).notNull(),
   slug: varchar("slug", { length: 120 }),
-  type: varchar("type", { length: 20 }).notNull(), // "camp" | "roomType"
-  status: varchar("status", { length: 20 }).default("active"), // active | inactive | archived
+  type: facilityTypeEnum("type").notNull(), // "camp" | "roomType"
+  status: facilityStatusEnum("status").default("active"), // active | inactive | archived
   description: text("description"),
-  iconUrl: varchar("icon_url", { length: 255 }),
-  imageUrl: varchar("image_url", { length: 255 }),
-  imageKey: varchar("image_key", { length: 255 }),
+  iconUrl: text("icon_url"),
+  imageUrl: text("image_url"),
+  imageKey: text("image_key"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

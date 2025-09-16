@@ -512,14 +512,14 @@ export const CreateBannerForm = ({
                       <div>
                         <p className="font-medium">Upload banner media</p>
                         <p className="text-sm text-muted-foreground">
-                          JPG, PNG, SVG or JPEG, max 2MB
+                          JPG, PNG or JPEG, max 2MB
                         </p>
                       </div>
                       <input
                         type="file"
                         ref={fileInputRef}
                         className="hidden"
-                        accept=".jpg,.jpeg,.png,.svg"
+                        accept=".jpg,.jpeg,.png"
                         onChange={(e) => {
                           if (e.target.files && e.target.files[0]) {
                             const file = e.target.files[0];
@@ -530,11 +530,7 @@ export const CreateBannerForm = ({
                               return;
                             }
 
-                            const validTypes = [
-                              "image/jpeg",
-                              "image/png",
-                              "image/svg+xml",
-                            ];
+                            const validTypes = ["image/jpeg", "image/png"];
                             if (!validTypes.includes(file.type)) {
                               toast.error(
                                 "Invalid file type. Only JPG, PNG, or SVG allowed."

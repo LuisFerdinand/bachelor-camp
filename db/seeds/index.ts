@@ -5,11 +5,19 @@ import { users } from "../schema/users";
 import { seedBanners } from "./banners.seed";
 import { seedPostCategories } from "./posts.seed";
 import { seedPillars } from "./pillars.seed";
+import { seedTestimonials } from "./testimonials.seed";
+import { seedRoles, seedUserRoles } from "./users.seed";
+import { seedHighlights } from "./highlights.seed";
+import { seedAccreditations } from "./accredItations.seed";
+import { seedMilestones } from "./milestones.seed";
+import { seedPrinciples } from "./principles.seed";
+import { seedStatistics } from "./statistics.seed";
 
 async function main() {
   // 1. Clear tables
   await clearTables([
     "collection_posts",
+    "highlights",
     "user_collections",
     "pillars",
     "post_tag_relations",
@@ -17,6 +25,9 @@ async function main() {
     "post_category_relations",
     "post_categories",
     "posts",
+    "testimonials",
+    "testimonial_categories",
+    "user_roles",
   ]);
 
   // 2. Seed users
@@ -25,6 +36,10 @@ async function main() {
 
   // 3. Seed posts
   //   await seedPosts(userIds, 30);
+  await seedRoles();
+  await seedUserRoles();
+
+  await seedTestimonials();
 
   // Seed Banners
   await seedBanners();
@@ -34,6 +49,16 @@ async function main() {
 
   // Seed Posts
   await seedPostCategories();
+
+  await seedHighlights();
+
+  await seedAccreditations();
+
+  await seedMilestones();
+
+  await seedPrinciples();
+
+  await seedStatistics();
 
   console.log("✅ Seeding complete!");
 }

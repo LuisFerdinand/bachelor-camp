@@ -193,7 +193,7 @@ const BannerActions = ({
             disabled={isMutating}
           >
             <TrashIcon className="size-4 mr-2 stroke-2"></TrashIcon>
-            Delete Banner
+            Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

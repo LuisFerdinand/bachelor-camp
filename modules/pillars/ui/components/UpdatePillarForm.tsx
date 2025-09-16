@@ -466,13 +466,12 @@ const UpdatePillarFormSuspense = ({
                     className="w-full border-muted-foreground/50 border-dashed h-11"
                   >
                     <Plus className="size-4 mr-2" />
-                    Add Another Feature ({fields.length}/3)
+                    Add Another Feature ({fields.length}/5)
                   </Button>
                 )}
               </div>
 
               {/* CTA */}
-              {/* same CTA block as create form */}
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold">Call To Action</h3>
                 <FormField

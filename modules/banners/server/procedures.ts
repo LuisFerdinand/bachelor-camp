@@ -6,6 +6,7 @@ import {
   PageType,
   pageTypeEnum,
 } from "@/db/schema/enums";
+import { requireRole } from "@/lib/access";
 import {
   baseProcedure,
   createTRPCRouter,
@@ -38,6 +39,10 @@ export const bannersRouter = createTRPCRouter({
       })
     )
     .query(async ({ input, ctx }) => {
+      const { id: userId } = ctx.user;
+
+      await requireRole(userId, ["super_admin", "admin"]);
+
       const banner = await db.query.banners.findFirst({
         where: (b, { eq }) => eq(b.id, input.id),
       });
@@ -65,7 +70,9 @@ export const bannersRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
+      const { id: userId } = ctx.user;
       const { type, isActive, searchQuery } = input;
+      await requireRole(userId, ["super_admin", "admin"]);
 
       // Build filters dynamically
       const filters = and(
@@ -110,7 +117,10 @@ export const bannersRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input, ctx }) => {
+      const { id: userId } = ctx.user;
       const { bannerId } = input;
+
+      await requireRole(userId, ["super_admin", "admin"]);
 
       // Step 1: Fetch the banner to get the bannerId
       const banner = await db
@@ -133,7 +143,6 @@ export const bannersRouter = createTRPCRouter({
             "⚠️ Failed to delete banner media from UploadThing:",
             error
           );
-          // Not critical enough to stop store deletion
         }
       }
 
@@ -155,6 +164,10 @@ export const bannersRouter = createTRPCRouter({
   create: protectedProcedure
     .input(bannerCreateSchema)
     .mutation(async ({ input, ctx }) => {
+      const { id: userId } = ctx.user;
+
+      await requireRole(userId, ["super_admin", "admin"]);
+
       const [banner] = await db
         .insert(banners)
         .values({
@@ -185,7 +198,9 @@ export const bannersRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input, ctx }) => {
+      const { id: userId } = ctx.user;
       const { id, ...rest } = input;
+      await requireRole(userId, ["super_admin", "admin"]);
 
       const updateData: Partial<typeof banners.$inferInsert> = {
         updatedAt: new Date(),
@@ -237,8 +252,11 @@ export const bannersRouter = createTRPCRouter({
     .input(
       z.object({ id: z.string().uuid(), type: z.enum(pageTypeEnum.enumValues) })
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
+      const { id: userId } = ctx.user;
       const { id, type } = input;
+
+      await requireRole(userId, ["super_admin", "admin"]);
 
       await db
         .update(banners)

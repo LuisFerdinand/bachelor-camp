@@ -26,6 +26,7 @@ import {
 import Image from "next/image";
 import MenuItem from "@/components/MenuItem";
 import { Separator } from "@/components/ui/separator";
+import { USER_IMAGE_FALLBACK } from "@/constants";
 
 interface UserMenuProps {
   isOpen: boolean;
@@ -61,7 +62,7 @@ export const UserMenu = ({
               height={35}
               width={35}
               alt="Avatar"
-              src={user?.imageUrl || "/images/placeholder.jpg"}
+              src={user?.imageUrl || USER_IMAGE_FALLBACK}
             />
           </div>
         </div>

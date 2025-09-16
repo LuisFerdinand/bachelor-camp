@@ -1,4 +1,4 @@
-import { FeaturedFacilitiesView } from "@/modules/dashboard/ui/views/content/featuredFacilities/FeaturedFacilitiesView";
+import { FeaturedFacilitiesView } from "@/modules/dashboard/ui/views/content/featured-facilities/FeaturedFacilitiesView";
 import { HydrateClient, trpc } from "@/trpc/server";
 import React from "react";
 
