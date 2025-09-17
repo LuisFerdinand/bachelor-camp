@@ -30,10 +30,7 @@ export const seedUserRoles = async () => {
 
   type UserRoleInsert = typeof userRoles.$inferInsert;
 
-  const emails = [
-    "vincent373kon@gmail.com",
-    "ferdinandluis88@gmail.com", // 👈 add new user here
-  ];
+  const emails = ["vincent373kon@gmail.com", "ferdinandluis88@gmail.com"];
 
   const roleList = await db.select().from(roles);
   const roleIds = roleList.map((row) => row.id);
