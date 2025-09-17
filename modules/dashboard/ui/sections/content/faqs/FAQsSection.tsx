@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DEFAULT_LIMIT } from "@/constants";
-import { FAQsViewSwitcher } from "@/modules/faqs/ui/components/FAQsViewSwitcher";
+// import { FAQsViewSwitcher } from "@/modules/faqs/ui/components/FAQsViewSwitcher";
 
 import React, { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -84,7 +84,7 @@ export const FAQsSectionSuspense = () => {
   return (
     <div className="flex flex-col gap-4 mx-4">
       <div className="flex flex-wrap justify-between items-center">
-        <FAQsViewSwitcher />
+        {/* <FAQsViewSwitcher /> */}
       </div>
     </div>
   );
