@@ -35,6 +35,12 @@ import { PAGE_TYPES } from "@/db/schema/enums";
 import { Eye, EyeOff, ImageIcon, Plus, Tag, Trash2 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import Image from "next/image";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface UpdateBannerFormProps {
   bannerId: string;
@@ -191,32 +197,26 @@ const UpdateBannerFormSuspense = ({
     setIsMutating(true);
 
     try {
-      // Handle media removal if applicable
-      const isRemovingMedia = !selectedFile && !previewUrl && banner.mediaKey;
+      if (!previewUrl) {
+        if (banner.mediaKey && banner.mediaUrl) {
+          const res = await fetch(`/api/file/banners/${bannerId}`, {
+            method: "DELETE",
+          });
+          const result = await res.json();
 
-      if (isRemovingMedia) {
-        const res = await fetch(`/api/banners/${bannerId}/media`, {
-          method: "DELETE",
-        });
-        const result = await res.json();
-
-        if (!res.ok) throw new Error(result.message);
-
-        await utils.banners.getFiltered.invalidate();
-        toast.success("Banner updated and media removed!", { id: toastId });
-        onSuccess?.(bannerId);
-        return;
+          if (!res.ok) {
+            throw new Error(result.message);
+          }
+          toast.success("Banner media removed!", { id: toastId });
+        } else if (banner.mediaUrl && !banner.mediaKey) {
+          await updateBanner.mutateAsync({
+            id: bannerId,
+            mediaUrl: "",
+          });
+        }
       }
 
-      const updatedBanner = await updateBanner.mutateAsync({
-        id: bannerId,
-        ...values,
-        badgeText: showBadge ? values.badgeText : "",
-      });
-
-      form.reset(values); // ✅ reset dirty state
-
-      if (selectedFile) {
+      if (previewUrl && selectedFile) {
         toast.loading("Uploading banner media...", { id: toastId });
 
         const res = await uploadFiles("bannerMediaUploader", {
@@ -236,7 +236,17 @@ const UpdateBannerFormSuspense = ({
         setSelectedFile(null);
       }
 
+      const updatedBanner = await updateBanner.mutateAsync({
+        id: bannerId,
+        ...values,
+        badgeText: showBadge ? values.badgeText : "",
+      });
+
+      form.reset(values); // ✅ reset dirty state
+
       await utils.banners.getFiltered.invalidate();
+      await utils.banners.getOneProtected.invalidate({ id: bannerId });
+
       toast.success("Banner updated successfully!", { id: toastId });
       onSuccess?.(bannerId);
     } catch (error: any) {
@@ -311,29 +321,54 @@ const UpdateBannerFormSuspense = ({
                   name="type"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-bold">Page</FormLabel>
+                      <FormLabel
+                        className={`font-semibold ${banner.isActive === "true" && "text-muted-foreground"}`}
+                      >
+                        Page
+                      </FormLabel>
                       <FormControl>
-                        <Select
-                          onValueChange={field.onChange}
-                          value={field.value}
-                          disabled={isMutating}
-                        >
-                          <SelectTrigger
-                            disabled={isMutating}
-                            className="h-11 border-muted-foreground/50"
-                          >
-                            <SelectValue placeholder="Select page" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {PAGE_TYPES.map((type) => (
-                              <SelectItem key={type} value={type}>
-                                <span>
-                                  {type.charAt(0).toUpperCase() + type.slice(1)}
-                                </span>
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <div>
+                                <Select
+                                  onValueChange={field.onChange}
+                                  value={field.value}
+                                  disabled={
+                                    isMutating || banner.isActive === "true"
+                                  }
+                                >
+                                  <SelectTrigger
+                                    disabled={
+                                      isMutating || banner.isActive === "true"
+                                    }
+                                    className="h-11 border-muted-foreground/50"
+                                  >
+                                    <SelectValue placeholder="Select page" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {PAGE_TYPES.map((type) => (
+                                      <SelectItem key={type} value={type}>
+                                        <span>
+                                          {type.charAt(0).toUpperCase() +
+                                            type.slice(1)}
+                                        </span>
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                            </TooltipTrigger>
+                            {banner.isActive === "true" && (
+                              <TooltipContent>
+                                <p>
+                                  You cannot change page type while banner is
+                                  active
+                                </p>
+                              </TooltipContent>
+                            )}
+                          </Tooltip>
+                        </TooltipProvider>
                       </FormControl>
                       <FormMessage />
                     </FormItem>

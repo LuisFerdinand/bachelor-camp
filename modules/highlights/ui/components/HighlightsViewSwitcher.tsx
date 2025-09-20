@@ -10,6 +10,7 @@ import { useHighlightFilters } from "../../hooks/use-highlight-filters";
 import { HighlightFilters } from "./HighlightFilters";
 import { HighlightsDataTable } from "./Table/data-table";
 import { getHighlightColumns } from "./Table/columns";
+import { Highlight } from "@/db/schema";
 
 export const HighlightsViewSwitcher = () => {
   const [view, setView] = useQueryState("view", {

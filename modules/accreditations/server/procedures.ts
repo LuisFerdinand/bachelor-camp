@@ -8,7 +8,7 @@ import { booleanTypeEnum } from "@/db/schema/enums";
 import { requireRole } from "@/lib/access";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
-import { and, desc, eq, gt, ilike, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gt, ilike, or, sql } from "drizzle-orm";
 import { abort } from "process";
 import { UTApi } from "uploadthing/server";
 import z from "zod";
@@ -72,7 +72,11 @@ export const accreditationsRouter = createTRPCRouter({
           .select()
           .from(accreditations)
           .where(filters)
-          .orderBy(desc(accreditations.updatedAt));
+          .orderBy(
+            asc(accreditations.isActive), // "true" first
+            asc(accreditations.order), // then by lowest order
+            asc(accreditations.title)
+          );
 
         return result;
       } catch (error) {
@@ -300,30 +304,77 @@ export const accreditationsRouter = createTRPCRouter({
       const { id, ...rest } = input;
       await requireRole(userId, ["super_admin", "admin"]);
 
+      const [existing] = await db
+        .select()
+        .from(accreditations)
+        .where(eq(accreditations.id, id));
+      if (!existing) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Accreditation not found",
+        });
+      }
+
       const updateData: Partial<typeof accreditations.$inferInsert> = {
         updatedAt: new Date(),
       };
 
-      if (rest.title) {
+      if (rest.title !== undefined) {
         updateData.title = rest.title;
       }
-      if (rest.description) {
+      if (rest.description !== undefined) {
         updateData.description = rest.description;
       }
-      if (rest.imageKey) {
+      if (rest.imageKey !== undefined) {
         updateData.imageKey = rest.imageKey;
       }
-      if (rest.isActive) {
-        updateData.isActive = rest.isActive;
+
+      if (rest.imageUrl !== undefined) {
+        updateData.imageUrl =
+          typeof rest.imageUrl === "string" && rest.imageUrl.trim() === ""
+            ? null
+            : rest.imageUrl;
       }
-      if (rest.imageUrl) {
-        updateData.imageUrl = rest.imageUrl;
+
+      let orderUpdate: number | undefined = undefined;
+
+      // ✅ Handle activation
+      if (rest.isActive === "true" && existing.isActive === "false") {
+        const [maxRow] = await db
+          .select({ maxOrder: sql<number>`max(${accreditations.order})` })
+          .from(accreditations)
+          .where(eq(accreditations.isActive, "true"));
+
+        const maxOrder = maxRow?.maxOrder ?? 0;
+        orderUpdate = maxOrder + 1;
+        updateData.isActive = "true";
+      }
+
+      // ✅ Handle deactivation
+      if (rest.isActive === "false" && existing.isActive === "true") {
+        const currentOrder = existing.order ?? 0;
+        updateData.isActive = "false";
+        orderUpdate = 0;
+
+        await db
+          .update(accreditations)
+          .set({
+            order: sql`${accreditations.order} - 1`,
+            updatedAt: new Date(),
+          })
+          .where(
+            and(
+              gt(accreditations.order, currentOrder),
+              eq(accreditations.isActive, "true")
+            )
+          );
       }
 
       const [accreditation] = await db
         .update(accreditations)
         .set({
           ...updateData,
+          order: orderUpdate ?? existing.order,
         })
         .where(eq(accreditations.id, id))
         .returning();

@@ -30,6 +30,7 @@ import {
 import { trpc } from "@/trpc/client";
 import HomePillarsSection from "../../sections/home/HomePillarsSection";
 import HomeHeroSection from "../../sections/home/HomeHeroSection";
+import { StudentLifeGallery } from "../../components/home/StudentLifeGallery";
 
 export const HomePage = () => {
   const generatePillarStyles = (
@@ -258,174 +259,6 @@ export const HomePage = () => {
           </div>
         </section>
 
-        {/* Why Choose Us Section */}
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <div className="text-center max-w-2xl mx-auto mb-16">
-              <Badge className="bg-brand-100 text-brand-800 mb-4">
-                Why Bachelor Camp?
-              </Badge>
-              <h2 className="text-display-sm md:text-display-md font-bold mb-4">
-                Your Success Is Our Priority
-              </h2>
-              <p className="text-lg text-neutral-600">
-                We combine proven teaching methods with world-class facilities
-                to deliver exceptional English learning experiences.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {/* Experienced Instructors */}
-              <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white group">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 rounded-full bg-brand-100 flex items-center justify-center mx-auto mb-6 group-hover:bg-brand-200 transition-colors">
-                    <Users className="h-8 w-8 text-brand-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-4">
-                    Expert Instructors
-                  </h3>
-                  <p className="text-neutral-600 mb-4">
-                    Native and certified English teachers with 10+ years of
-                    experience in language education.
-                  </p>
-                  <div className="flex items-center justify-center space-x-4 text-sm text-neutral-500">
-                    <span className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                      TESOL Certified
-                    </span>
-                    <span className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                      Native Speakers
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-              {/* Proven Results */}
-              <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white group">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6 group-hover:bg-green-200 transition-colors">
-                    <BookOpen className="h-8 w-8 text-green-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-4">Proven Results</h3>
-                  <p className="text-neutral-600 mb-4">
-                    95% of our IELTS students achieve their target scores within
-                    8 weeks of intensive preparation.
-                  </p>
-                  <div className="flex items-center justify-center space-x-4 text-sm text-neutral-500">
-                    <span className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                      95% Success Rate
-                    </span>
-                    <span className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                      Fast Progress
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-              {/* Immersive Environment */}
-              <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white group">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 rounded-full bg-accent-100 flex items-center justify-center mx-auto mb-6 group-hover:bg-accent-200 transition-colors">
-                    <Globe className="h-8 w-8 text-accent-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-4">
-                    Immersive Environment
-                  </h3>
-                  <p className="text-neutral-600 mb-4">
-                    English-only campus environment with international students
-                    from 15+ countries.
-                  </p>
-                  <div className="flex items-center justify-center space-x-4 text-sm text-neutral-500">
-                    <span className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                      15+ Countries
-                    </span>
-                    <span className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                      English Only
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-              {/* Small Class Sizes */}
-              <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white group">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-6 group-hover:bg-blue-200 transition-colors">
-                    <Heart className="h-8 w-8 text-blue-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-4">
-                    Personal Attention
-                  </h3>
-                  <p className="text-neutral-600 mb-4">
-                    Maximum 12 students per class ensures personalized feedback
-                    and rapid improvement.
-                  </p>
-                  <div className="flex items-center justify-center space-x-4 text-sm text-neutral-500">
-                    <span className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                      Max 12 Students
-                    </span>
-                    <span className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                      1:1 Support
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-              {/* Flexible Programs */}
-              <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white group">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-6 group-hover:bg-purple-200 transition-colors">
-                    <Home className="h-8 w-8 text-purple-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-4">
-                    Flexible Options
-                  </h3>
-                  <p className="text-neutral-600 mb-4">
-                    Choose from intensive camps, part-time courses, or online
-                    programs to fit your schedule.
-                  </p>
-                  <div className="flex items-center justify-center space-x-4 text-sm text-neutral-500">
-                    <span className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                      Multiple Formats
-                    </span>
-                    <span className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                      Your Schedule
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-              {/* Certification & Support */}
-              <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white group">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center mx-auto mb-6 group-hover:bg-orange-200 transition-colors">
-                    <CheckCircle className="h-8 w-8 text-orange-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-4">
-                    Official Certification
-                  </h3>
-                  <p className="text-neutral-600 mb-4">
-                    Internationally recognized certificates and lifetime career
-                    support for our graduates.
-                  </p>
-                  <div className="flex items-center justify-center space-x-4 text-sm text-neutral-500">
-                    <span className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                      CEFR Certified
-                    </span>
-                    <span className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                      Career Support
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
-
         {/* Testimonials Section with Background */}
         <section
           className="py-16 relative"
@@ -451,6 +284,7 @@ export const HomePage = () => {
             <TestimonialSlider testimonials={testimonials} />
           </div>
         </section>
+
         {/* Enhanced Bundles Section */}
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
@@ -510,78 +344,9 @@ export const HomePage = () => {
             </div>
           </div>
         </section>
-        {/* Student Life Gallery Section */}
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <div className="text-center max-w-2xl mx-auto mb-16">
-              <h2 className="text-display-sm md:text-display-md font-bold mb-4">
-                Student Life at Kediri
-              </h2>
-              <p className="text-lg text-neutral-600">
-                Experience the vibrant community and rich activities that make
-                learning English enjoyable and memorable.
-              </p>
-            </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
-              {[
-                {
-                  src: "https://images.unsplash.com/photo-1659287590518-81891c997956?q=80&w=872&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                  alt: "Group Activities",
-                },
-                {
-                  src: "https://images.unsplash.com/photo-1521017432531-fbd92d768814?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-                  alt: "Study Groups",
-                },
-                {
-                  src: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-                  alt: "Technology Lab",
-                },
-                {
-                  src: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-                  alt: "Outdoor Learning",
-                },
-                {
-                  src: "https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-                  alt: "Individual Study",
-                },
-                {
-                  src: "https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-                  alt: "Presentations",
-                },
-              ].map((image, index) => (
-                <div
-                  key={index}
-                  className="relative group overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
-                >
-                  <div className="relative h-32">
-                    <Image
-                      src={image.src}
-                      alt={image.alt}
-                      fill
-                      className="object-cover transition-transform group-hover:scale-110"
-                    />
-                  </div>
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
-                    <Camera className="h-6 w-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </div>
-                </div>
-              ))}
-            </div>
-            {/* Call to Action */}
-            <div className="text-center">
-              <Link href="/gallery">
-                <Button
-                  size="lg"
-                  className="bg-brand-500 hover:bg-brand-600 shadow-lg"
-                >
-                  <Camera className="h-4 w-4 mr-2" />
-                  View Full Gallery
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </section>
+        {/* Student Life Gallery Section */}
+        <StudentLifeGallery />
       </main>
     </div>
   );

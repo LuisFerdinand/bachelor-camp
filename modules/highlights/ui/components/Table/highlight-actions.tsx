@@ -24,7 +24,6 @@ import { BooleanType, PageType } from "@/db/schema/enums";
 import { Switch } from "@/components/ui/switch";
 import { useHighlightAction } from "../HighlightContext";
 import { UpdateHighlightModal } from "../UpdateHighlightModal";
-// import { UpdateHighlightModal } from "../UpdateHighlightModal";
 
 interface HighlightActionsProps {
   id: string;

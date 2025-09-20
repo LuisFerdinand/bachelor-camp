@@ -12,13 +12,21 @@ import {
   MapPin,
 } from "lucide-react";
 import Image from "next/image";
+import Map from "@/components/common/Map";
 
 const Footer = () => {
+  // Kediri coordinates
+  const coordinates = {
+    lat: -6.1656097168538215,
+    lng: 106.78050486274218,
+  };
+
   return (
     <footer className="bg-neutral-900 text-neutral-100 pt-16 pb-8">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div>
+          {/* Logo and Social Section */}
+          <div className="md:col-span-1">
             <div className="flex items-center space-x-2 mb-4">
               <div className="flex items-center space-x-2">
                 <Image
@@ -41,7 +49,8 @@ const Footer = () => {
             </div>
           </div>
 
-          <div>
+          {/* Quick Links Section */}
+          <div className="md:col-span-1">
             <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
@@ -95,75 +104,48 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div>
-            <h3 className="font-semibold text-lg mb-4">Programs</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/special-program"
-                  className="text-neutral-400 hover:text-brand-400 transition-colors"
-                >
-                  General English
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/special-program"
-                  className="text-neutral-400 hover:text-brand-400 transition-colors"
-                >
-                  IELTS Preparation
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/special-program"
-                  className="text-neutral-400 hover:text-brand-400 transition-colors"
-                >
-                  CEFR Levels
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/camp"
-                  className="text-neutral-400 hover:text-brand-400 transition-colors"
-                >
-                  Camp Programs
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/special-program"
-                  className="text-neutral-400 hover:text-brand-400 transition-colors"
-                >
-                  Special Courses
-                </Link>
-              </li>
-            </ul>
+          <div className="md:col-span-1 space-y-6">
+            {/* Contact Section */}
+            <div>
+              <h3 className="font-semibold text-lg mb-4">Contact Us</h3>
+              <ul className="space-y-3">
+                <li className="flex items-start space-x-2">
+                  <MapPin className="h-5 w-5 text-brand-500 mt-0.5" />
+                  <span className="text-neutral-400">
+                    123 Education Street, Jakarta, Indonesia
+                  </span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <Phone className="h-5 w-5 text-brand-500" />
+                  <span className="text-neutral-400">+62 21 1234 5678</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <Mail className="h-5 w-5 text-brand-500" />
+                  <span className="text-neutral-400">
+                    info@bachelorCamp.com
+                  </span>
+                </li>
+              </ul>
+            </div>
           </div>
 
+          {/* Map Section */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">Contact Us</h3>
-            <ul className="space-y-3">
-              <li className="flex items-start space-x-2">
-                <MapPin className="h-5 w-5 text-brand-500 mt-0.5" />
-                <span className="text-neutral-400">
-                  123 Education Street, Jakarta, Indonesia
-                </span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <Phone className="h-5 w-5 text-brand-500" />
-                <span className="text-neutral-400">+62 21 1234 5678</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <Mail className="h-5 w-5 text-brand-500" />
-                <span className="text-neutral-400">info@bachelorCamp.com</span>
-              </li>
-            </ul>
+            <h3 className="font-semibold text-lg mb-4 flex items-center">
+              <MapPin className="h-5 w-5 text-brand-500 mr-2" />
+              Find Our Location
+            </h3>
+            <div className="overflow-hidden h-48 border-2 border-neutral-700 shadow-lg">
+              <Map
+                coordinates={coordinates}
+                title="BachelorCamp Kediri"
+                className="h-full w-full"
+              />
+            </div>
           </div>
         </div>
 
         <Separator className="my-8 bg-neutral-800" />
-
         <div className="flex flex-col md:flex-row justify-between items-center">
           <p className="text-neutral-500 text-sm">
             © {new Date().getFullYear()} Bachelor Camp. All rights reserved.

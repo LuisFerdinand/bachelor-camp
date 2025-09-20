@@ -105,7 +105,11 @@ export const bannersRouter = createTRPCRouter({
         })
         .from(banners)
         .where(filters)
-        .orderBy(desc(banners.updatedAt));
+        .orderBy(
+          asc(banners.isActive),
+          asc(banners.type),
+          asc(banners.headline)
+        );
 
       return result;
     }),
@@ -206,28 +210,32 @@ export const bannersRouter = createTRPCRouter({
         updatedAt: new Date(),
       };
 
-      if (rest.headline) {
+      if (rest.headline !== undefined) {
         updateData.headline = rest.headline;
       }
-      if (rest.subheadline) {
+      if (rest.subheadline !== undefined) {
         updateData.subheadline = rest.subheadline;
       }
-      if (rest.badgeText) {
+      if (rest.badgeText !== undefined) {
         updateData.badgeText = rest.badgeText;
       }
-      if (rest.ctas) {
+      if (rest.ctas !== undefined) {
         updateData.ctas = rest.ctas;
       }
-      if (rest.isActive) {
+      if (rest.isActive !== undefined) {
         updateData.isActive = rest.isActive;
       }
-      if (rest.mediaKey) {
+      if (rest.mediaKey !== undefined) {
         updateData.mediaKey = rest.mediaKey;
       }
-      if (rest.mediaUrl) {
-        updateData.mediaUrl = rest.mediaUrl;
+      if (rest.mediaUrl !== undefined) {
+        updateData.mediaUrl =
+          typeof rest.mediaUrl === "string" && rest.mediaUrl.trim() === ""
+            ? null
+            : rest.mediaUrl;
       }
-      if (rest.type) {
+
+      if (rest.type !== undefined) {
         updateData.type = rest.type;
       }
 

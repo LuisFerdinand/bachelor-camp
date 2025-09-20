@@ -160,6 +160,8 @@ const UpdatePrincipleFormSuspense = ({
       form.reset(values);
 
       await utils.principles.getFiltered.invalidate();
+      await utils.principles.getOneProtected.invalidate({ id: principleId });
+
       toast.success("Principle updated successfully!", { id: toastId });
       onSuccess?.(principleId);
     } catch (err: any) {

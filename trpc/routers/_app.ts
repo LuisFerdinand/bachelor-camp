@@ -9,17 +9,21 @@ import { accreditationsRouter } from "@/modules/accreditations/server/procedures
 import { milestonesRouter } from "@/modules/milestones/server/procedures";
 import { principlesRouter } from "@/modules/principles/server/procedures";
 import { statisticsRouter } from "@/modules/statistics/server/procedures";
+import { teamMembersRouter } from "@/modules/team-members/server/procedures";
+import { faqsRouter } from "@/modules/faqs/server/procedures";
 
 export const appRouter = createTRPCRouter({
   accreditations: accreditationsRouter,
   banners: bannersRouter,
   facilities: facilitiesRouter,
+  faqs: faqsRouter,
   highlights: highlightsRouter,
   milestones: milestonesRouter,
   pillars: pillarsRouter,
   principles: principlesRouter,
   posts: postsRouter,
   statistics: statisticsRouter,
+  teamMembers: teamMembersRouter,
   testimonials: testimonialsRouter,
 });
 

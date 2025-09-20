@@ -195,30 +195,28 @@ const UpdateMilestoneFormSuspense = ({
 
     try {
       // Handle image removal
-      const isRemovingImage =
-        !selectedFile && !previewUrl && milestone.imageKey;
-      if (isRemovingImage) {
-        const res = await fetch(`/api/milestones/${milestoneId}/image`, {
-          method: "DELETE",
-        });
-        const result = await res.json();
-        if (!res.ok) throw new Error(result.message);
+      if (!previewUrl) {
+        if (milestone.imageKey && milestone.imageUrl) {
+          const res = await fetch(`/api/file/milestones/${milestoneId}`, {
+            method: "DELETE",
+          });
+          const result = await res.json();
 
-        await utils.milestones.getFiltered.invalidate();
-        toast.success("Milestone updated and image removed!", { id: toastId });
-        onSuccess?.(milestoneId);
-        return;
+          if (!res.ok) {
+            throw new Error(result.message);
+          }
+          toast.success("Milestone image removed!", { id: toastId });
+        } else if (milestone.imageUrl && !milestone.imageKey) {
+          await updateMilestone.mutateAsync({
+            id: milestoneId,
+            imageUrl: "",
+          });
+        }
       }
 
-      const updatedMilestone = await updateMilestone.mutateAsync({
-        id: milestoneId,
-        ...values,
-      });
-
-      form.reset(values);
-
-      if (selectedFile) {
+      if (previewUrl && selectedFile) {
         toast.loading("Uploading milestone image...", { id: toastId });
+
         const res = await uploadFiles("milestoneImageUploader", {
           files: [selectedFile],
           input: { milestoneId },
@@ -236,7 +234,15 @@ const UpdateMilestoneFormSuspense = ({
         setSelectedFile(null);
       }
 
+      const updatedMilestone = await updateMilestone.mutateAsync({
+        id: milestoneId,
+        ...values,
+      });
+
+      form.reset(values);
+
       await utils.milestones.getFiltered.invalidate();
+      await utils.milestones.getOneProtected.invalidate({ id: milestoneId });
       toast.success("Milestone updated successfully!", { id: toastId });
       onSuccess?.(milestoneId);
     } catch (err: any) {
@@ -392,7 +398,7 @@ const UpdateMilestoneFormSuspense = ({
                     )}
                     <div className="flex-1 space-y-3">
                       <div>
-                        <p className="font-medium">Upload banner image</p>
+                        <p className="font-medium">Upload milestone image</p>
                         <p className="text-sm text-muted-foreground">
                           JPG, PNG or JPEG, max 2MB
                         </p>

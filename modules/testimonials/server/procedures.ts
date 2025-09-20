@@ -10,7 +10,7 @@ import { booleanTypeEnum, testimonialSourceEnum } from "@/db/schema/enums";
 import { requireRole } from "@/lib/access";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
-import { and, desc, eq, ilike, or } from "drizzle-orm";
+import { and, asc, desc, eq, ilike, or } from "drizzle-orm";
 import { UTApi } from "uploadthing/server";
 import z from "zod";
 
@@ -89,7 +89,12 @@ export const testimonialsRouter = createTRPCRouter({
             category ? eq(testimonialCategories.slug, category) : undefined
           )
         )
-        .orderBy(desc(testimonials.updatedAt));
+        .orderBy(
+          asc(testimonials.isFeatured),
+          asc(testimonials.isShown),
+          asc(testimonials.order),
+          asc(testimonials.name)
+        );
 
       const grouped = rows.reduce(
         (acc, row) => {
@@ -237,7 +242,6 @@ export const testimonialsRouter = createTRPCRouter({
     .input(testimonialUpdateSchema.extend({ id: z.string().uuid() }))
     .mutation(async ({ input, ctx }) => {
       const { id: userId } = ctx.user;
-
       await requireRole(userId, ["super_admin", "admin"]);
       const { id, ...rest } = input;
 
@@ -256,34 +260,37 @@ export const testimonialsRouter = createTRPCRouter({
         updatedAt: new Date(),
       };
 
-      if (rest.content) {
+      if (rest.content !== undefined) {
         updateData.content = rest.content;
       }
-      if (rest.imageKey) {
+      if (rest.imageKey !== undefined) {
         updateData.imageKey = rest.imageKey;
       }
-      if (rest.imageUrl) {
-        updateData.imageUrl = rest.imageUrl;
+      if (rest.imageUrl !== undefined) {
+        updateData.imageUrl =
+          typeof rest.imageUrl === "string" && rest.imageUrl.trim() === ""
+            ? null
+            : rest.imageUrl;
       }
-      if (rest.isFeatured) {
+      if (rest.isFeatured !== undefined) {
         updateData.isFeatured = rest.isFeatured;
       }
-      if (rest.isShown) {
+      if (rest.isShown !== undefined) {
         updateData.isShown = rest.isShown;
       }
-      if (rest.name) {
+      if (rest.name !== undefined) {
         updateData.name = rest.name;
       }
-      if (rest.rating) {
+      if (rest.rating !== undefined) {
         updateData.rating = rest.rating;
       }
-      if (rest.role) {
+      if (rest.role !== undefined) {
         updateData.role = rest.role;
       }
-      if (rest.source) {
+      if (rest.source !== undefined) {
         updateData.source = rest.source;
       }
-      if (rest.userId) {
+      if (rest.userId !== undefined) {
         updateData.userId = rest.userId;
       }
 

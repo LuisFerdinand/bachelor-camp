@@ -165,6 +165,7 @@ const UpdateHighlightFormSuspense = ({
       form.reset(values);
 
       await utils.highlights.getFiltered.invalidate();
+      await utils.highlights.getOneProtected.invalidate({ id: highlightId });
       toast.success("Highlight updated successfully!", { id: toastId });
       onSuccess?.(highlightId);
     } catch (err: any) {

@@ -8,7 +8,7 @@ import { booleanTypeEnum } from "@/db/schema/enums";
 import { requireRole } from "@/lib/access";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
-import { and, desc, eq, gt, gte, ilike, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gt, gte, ilike, or, sql } from "drizzle-orm";
 import { UTApi } from "uploadthing/server";
 import z from "zod";
 
@@ -46,7 +46,12 @@ export const milestonesRouter = createTRPCRouter({
         .select()
         .from(milestones)
         .where(filters)
-        .orderBy(desc(milestones.updatedAt));
+        .orderBy(
+          asc(milestones.isActive),
+          asc(milestones.order),
+          asc(milestones.year),
+          asc(milestones.title)
+        );
 
       return result;
     }),
@@ -502,25 +507,28 @@ export const milestonesRouter = createTRPCRouter({
         updatedAt: new Date(),
       };
 
-      if (rest.title) {
+      if (rest.title !== undefined) {
         updateData.title = rest.title;
       }
-      if (rest.description) {
+      if (rest.description !== undefined) {
         updateData.description = rest.description;
       }
-      if (rest.year) {
+      if (rest.year !== undefined) {
         updateData.year = rest.year;
       }
-      if (rest.imageUrl) {
-        updateData.imageUrl = rest.imageUrl;
+      if (rest.imageUrl !== undefined) {
+        updateData.imageUrl =
+          typeof rest.imageUrl === "string" && rest.imageUrl.trim() === ""
+            ? null
+            : rest.imageUrl;
       }
-      if (rest.isActive) {
+      if (rest.isActive !== undefined) {
         updateData.isActive = rest.isActive;
       }
-      if (rest.imageKey) {
+      if (rest.imageKey !== undefined) {
         updateData.imageKey = rest.imageKey;
       }
-      if (rest.order) {
+      if (rest.order !== undefined) {
         updateData.order = rest.order;
       }
 

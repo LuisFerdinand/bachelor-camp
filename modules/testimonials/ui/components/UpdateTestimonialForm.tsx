@@ -74,12 +74,15 @@ export function UpdateTestimonialForm({
   const form = useForm<z.infer<typeof testimonialUpdateSchema>>({
     resolver: zodResolver(testimonialUpdateSchema),
     defaultValues: {
-      ...testimonial,
       userId: testimonial.userId,
       role: testimonial.role || "student",
-      imageUrl: testimonial.imageUrl || "",
-      imageKey: testimonial.imageKey || "",
       categories: testimonial.categories || [],
+      content: testimonial.content || "",
+      isFeatured: testimonial.isFeatured || "false",
+      isShown: testimonial.isShown || "false",
+      name: testimonial.name || "",
+      rating: testimonial.rating,
+      source: testimonial.source,
     },
     mode: "onChange",
   });
@@ -138,33 +141,26 @@ export function UpdateTestimonialForm({
 
     try {
       // Handle image removal if applicable
-      const isRemovingImage =
-        !selectedFile && !previewUrl && testimonial.imageKey;
+      if (!previewUrl) {
+        if (testimonial.imageKey && testimonial.imageUrl) {
+          const res = await fetch(`/api/file/testimonials/${testimonialId}`, {
+            method: "DELETE",
+          });
+          const result = await res.json();
 
-      if (isRemovingImage) {
-        const res = await fetch(`/api/testimonials/${testimonialId}/image`, {
-          method: "DELETE",
-        });
-        const result = await res.json();
-
-        if (!res.ok) throw new Error(result.message);
-
-        await utils.testimonials.getFiltered.invalidate();
-        toast.success("Testimonial updated and image removed!", {
-          id: toastId,
-        });
-        onSuccess?.(testimonialId);
-        return;
+          if (!res.ok) {
+            throw new Error(result.message);
+          }
+          toast.success("Testimonial image removed!", { id: toastId });
+        } else if (testimonial.imageUrl && !testimonial.imageKey) {
+          await updateTestimonial.mutateAsync({
+            id: testimonialId,
+            imageUrl: "",
+          });
+        }
       }
 
-      const updatedTestimonial = await updateTestimonial.mutateAsync({
-        id: testimonialId,
-        ...values,
-      });
-
-      form.reset(values);
-
-      if (selectedFile) {
+      if (previewUrl && selectedFile) {
         toast.loading("Uploading testimonial image...", { id: toastId });
 
         const res = await uploadFiles("testimonialImageUploader", {
@@ -184,7 +180,17 @@ export function UpdateTestimonialForm({
         setSelectedFile(null);
       }
 
+      const updatedTestimonial = await updateTestimonial.mutateAsync({
+        id: testimonialId,
+        ...values,
+      });
+
+      form.reset(values);
+
       await utils.testimonials.getFiltered.invalidate();
+      await utils.testimonials.getOneProtected.invalidate({
+        testimonialId,
+      });
       toast.success("Testimonial updated successfully!", { id: toastId });
       onSuccess?.(testimonialId);
     } catch (error: any) {
@@ -313,7 +319,7 @@ export function UpdateTestimonialForm({
                         Rating: {field.value ?? 0}
                       </FormLabel>
                       <FormControl>
-                        <>
+                        <div>
                           <StarRatingInput
                             value={parseFloat(field.value || "0") ?? 0}
                             onChange={(val) => field.onChange(val.toString())}
@@ -329,7 +335,7 @@ export function UpdateTestimonialForm({
                             disabled={isMutating}
                             className="w-full accent-yellow-400"
                           />
-                        </>
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -374,6 +380,7 @@ export function UpdateTestimonialForm({
                 </div>
                 <div className="bg-muted/30 rounded-lg p-6 border border-muted-foreground/20">
                   <div className="flex items-start gap-6">
+                    {/* {JSON.stringify(previewUrl)} */}
                     {previewUrl ? (
                       <div className="size-20 relative rounded-lg overflow-hidden border-2 border-muted-foreground/20">
                         <Image

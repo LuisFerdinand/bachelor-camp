@@ -19,15 +19,12 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { BlogPost } from "@/app/util/blogData";
-import {
-  getAllBlogPosts,
-  getAllTags,
-} from "@/app/util/blogData";
+import { getAllBlogPosts, getAllTags } from "@/app/util/blogData";
 import { Sidebar } from "../Sidebar";
 
 // Get data from util
-  const blogPosts = getAllBlogPosts();
-  const tags = getAllTags();
+const blogPosts = getAllBlogPosts();
+const tags = getAllTags();
 
 interface ArticleListProps {
   filteredPosts: BlogPost[];
@@ -51,7 +48,7 @@ export function ArticleList({
   setViewMode,
 }: ArticleListProps) {
   return (
-    <section className="py-16 bg-neutral-50">
+    <section className="py-16">
       <div className="container mx-auto px-4">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Main Content */}
@@ -297,13 +294,13 @@ export function ArticleList({
           </div>
 
           {/* Enhanced Sidebar */}
-            <Sidebar
-              categories={categories}
-              tags={tags}
-              selectedCategory={selectedCategory}
-              setSelectedCategory={setSelectedCategory}
-              popularPosts={blogPosts.slice(0, 4)}
-            />
+          <Sidebar
+            categories={categories}
+            tags={tags}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            popularPosts={blogPosts.slice(0, 4)}
+          />
         </div>
       </div>
     </section>
