@@ -6,7 +6,6 @@ import {
   highlightUpdateSchema,
 } from "@/db/schema/marketing/highlights";
 import { requireRole } from "@/lib/access";
-import { generateUniqueSlug } from "@/lib/utils";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { and, asc, desc, eq, gt, ilike, or, sql } from "drizzle-orm";

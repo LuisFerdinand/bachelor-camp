@@ -139,7 +139,7 @@ export const pillarsRouter = createTRPCRouter({
           ctaText: input.ctaText,
           ctaLink: input.ctaLink,
           features: input.features ?? [],
-          isActive: "false", // default inactive
+          isActive: "false",
         })
         .returning();
 

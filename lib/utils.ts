@@ -46,3 +46,9 @@ export function generateSlug(input: string): string {
     .replace(/\-{2,}/g, "-")
     .replace(/^-+|-+$/g, "");
 }
+
+export const capitalize = (str: string) =>
+  str.charAt(0).toUpperCase() + str.slice(1);
+
+export const getAbbr = (day: string) =>
+  day.charAt(0).toUpperCase() + day.slice(1, 3);

@@ -14,6 +14,8 @@ import { seedPrinciples } from "./principles.seed";
 import { seedStatistics } from "./statistics.seed";
 import { seedTeamMembers } from "./teamMembers.seed";
 import { seedFaqs } from "./faqs.seed";
+import { seedSocialMedias } from "./socialMedias.seed";
+import { seedLocations } from "./locations.seed";
 
 async function main() {
   // 1. Clear tables
@@ -30,6 +32,7 @@ async function main() {
     "post_category_relations",
     "post_categories",
     "posts",
+    "social_medias",
     "team_members",
     "testimonials",
     "testimonial_categories",
@@ -69,6 +72,10 @@ async function main() {
   await seedTeamMembers();
 
   await seedFaqs();
+
+  await seedSocialMedias();
+
+  await seedLocations();
 
   console.log("✅ Seeding complete!");
 }
