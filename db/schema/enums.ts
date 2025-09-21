@@ -110,3 +110,21 @@ export const ROLES = [
 ] as const;
 export type Role = (typeof ROLES)[number];
 export const roleEnum = pgEnum("role", ROLES);
+
+export const SOCIAL_PLATFORMS = [
+  "youtube",
+  "linkedin",
+  "tiktok",
+  "instagram",
+  "facebook",
+  "x",
+  "threads",
+  "snapchat",
+  "pinterest",
+  "reddit",
+  "whatsapp",
+  "telegram",
+  "discord",
+] as const;
+export type SocialPlatform = (typeof SOCIAL_PLATFORMS)[number];
+export const socialPlatformEnum = pgEnum("social_platform", SOCIAL_PLATFORMS);

@@ -17,7 +17,6 @@ import { InferSelectModel } from "drizzle-orm";
 import { pillars } from "@/db/schema";
 import { PillarActionProvider } from "../PillarContext";
 import PillarActions from "./pillar-actions";
-// import PillarActions from "./pillar-actions";
 
 export type Pillar = InferSelectModel<typeof pillars>;
 

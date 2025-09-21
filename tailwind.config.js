@@ -10,6 +10,7 @@ module.exports = withUt(
 		'./app/**/*.{js,ts,jsx,tsx,mdx}',
 		'./modules/**/*.{js,ts,jsx,tsx,mdx}',
 		'./hooks/**/*.{js,ts,jsx,tsx,mdx}',
+		'./public/**/*.{js,ts,jsx,tsx,mdx}',
 		'./src/**/*.{js,ts,jsx,tsx,mdx}',
 	  ],
 	  prefix: "",

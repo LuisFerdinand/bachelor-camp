@@ -138,7 +138,7 @@ export const NavigationSection = ({
                           <SidebarMenuButton asChild>
                             <Link href={fullHref} prefetch>
                               <div className="flex items-center gap-2.5 px-2 font-medium py-4 text-base truncate">
-                                <Icon className="size-5" />
+                                <Icon className="size-5 shrink-0" />
                                 {route.label}
                               </div>
                             </Link>

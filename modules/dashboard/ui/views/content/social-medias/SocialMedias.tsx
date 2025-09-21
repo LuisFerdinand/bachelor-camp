@@ -17,18 +17,11 @@ import {
 
 import { PageHeader } from "@/components/PageHeader";
 import { trpc } from "@/trpc/client";
-import { SocialMediasSection } from "../../../sections/content/socialMedias/SocialMediasSection";
-import { CreateSocialMediaModal } from "@/modules/socialMedias/ui/components/CreateSocialMediaModal";
+import { SocialMediasSection } from "../../../sections/content/social-medias/SocialMediasSection";
 
 export const SocialMediasView = () => {
-  const [createModalOpen, setCreateModalOpen] = useState(false);
-
   return (
     <div className="flex flex-col gap-y-6 pt-2.5">
-      <CreateSocialMediaModal
-        open={createModalOpen}
-        onOpenChange={setCreateModalOpen}
-      />
       <PageHeader
         icon={<Share2 className="size-4 text-primary" />}
         title="Social Medias Management"
@@ -38,18 +31,8 @@ export const SocialMediasView = () => {
           {
             label: "Content Management",
           },
-          { label: "SocialMedias", isCurrent: true },
+          { label: "Social Medias", isCurrent: true },
         ]}
-        action={
-          <Button
-            variant="default"
-            onClick={() => setCreateModalOpen(true)}
-            className="flex items-center gap-2"
-          >
-            <PlusIcon className="w-4 h-4" />
-            <span>Create</span>
-          </Button>
-        }
       />
       <SocialMediasSection></SocialMediasSection>
     </div>

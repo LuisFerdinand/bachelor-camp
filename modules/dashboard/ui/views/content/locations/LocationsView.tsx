@@ -15,17 +15,17 @@ import {
 import { PageHeader } from "@/components/PageHeader";
 import { trpc } from "@/trpc/client";
 import { LocationsSection } from "../../../sections/content/locations/LocationsSection";
-// import { CreateLocationModal } from "@/modules/locations/ui/components/CreateLocationModal";
+import { CreateLocationModal } from "@/modules/locations/ui/components/CreateLocationModal";
 
 export const LocationsView = () => {
   const [createModalOpen, setCreateModalOpen] = useState(false);
 
   return (
     <div className="flex flex-col gap-y-6 pt-2.5">
-      {/* <CreateLocationModal
+      <CreateLocationModal
         open={createModalOpen}
         onOpenChange={setCreateModalOpen}
-      /> */}
+      />
       <PageHeader
         icon={<MapPin className="size-4 text-primary" />}
         title="Locations Management"
