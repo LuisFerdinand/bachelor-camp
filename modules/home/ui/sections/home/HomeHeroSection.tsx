@@ -76,30 +76,6 @@ export default function HomeHeroSection() {
           </div>
         </div>
       </div>
-
-      {/* Floating Hero Images */}
-      <div className="absolute bottom-8 right-8 hidden lg:block">
-        <div className="flex space-x-4">
-          <div className="w-20 h-20 rounded-full overflow-hidden border-4 border-white/30 shadow-lg">
-            <Image
-              src="https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&q=80"
-              alt="Student studying"
-              width={80}
-              height={80}
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="w-16 h-16 rounded-full overflow-hidden border-4 border-white/30 shadow-lg mt-4">
-            <Image
-              src="https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&q=80"
-              alt="Group discussion"
-              width={64}
-              height={64}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </div>
-      </div>
     </section>
   );
 }
