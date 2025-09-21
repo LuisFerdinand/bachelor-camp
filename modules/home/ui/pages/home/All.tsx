@@ -30,6 +30,7 @@ import {
 import { trpc } from "@/trpc/client";
 import HomePillarsSection from "../../sections/home/HomePillarsSection";
 import HomeHeroSection from "../../sections/home/HomeHeroSection";
+import { StudentLifeGallery } from "../../components/home/StudentLifeGallery";
 
 export const HomePage = () => {
   const generatePillarStyles = (
@@ -199,11 +200,13 @@ export const HomePage = () => {
     <div className="min-h-screen flex flex-col">
       <main className="flex-grow">
         <HomeHeroSection></HomeHeroSection>
+        
         {/* Three Pillars Section with Background Images */}
         <HomePillarsSection
           pillars={pillars}
           isLoading={isLoadingPillars}
         ></HomePillarsSection>
+
         {/* Campus Facilities Section */}
         <section className="py-16 bg-gradient-to-b from-neutral-50 to-white">
           <div className="container mx-auto px-4">
