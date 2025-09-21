@@ -14,7 +14,6 @@ import { TestimonialWithCategories } from "@/db/schema";
 import TestimonialActions from "./testimonial-actions";
 import { TestimonialActionProvider } from "../TestimonialContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-// import TestimonialActions from "./testimonial-actions";
 
 export function getTestimonialColumns(): ColumnDef<TestimonialWithCategories>[] {
   const columns: ColumnDef<TestimonialWithCategories>[] = [

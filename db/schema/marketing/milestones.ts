@@ -46,8 +46,8 @@ export const milestoneUpdateSchema = z.object({
     .optional(),
   title: z.string().min(1, "Milestone title is required").optional(),
   description: z.string().optional(),
-  imageUrl: z.string().url("Image URL must be valid").optional(),
-  imageKey: z.string().url("Image URL must be valid").optional(),
+  imageUrl: z.string().optional(),
+  imageKey: z.string().optional(),
   order: z.number().optional(),
   isActive: z.enum(booleanTypeEnum.enumValues).optional(),
 });

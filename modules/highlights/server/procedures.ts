@@ -9,7 +9,7 @@ import { requireRole } from "@/lib/access";
 import { generateUniqueSlug } from "@/lib/utils";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
-import { and, desc, eq, gt, ilike, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gt, ilike, or, sql } from "drizzle-orm";
 import z from "zod";
 
 export const highlightsRouter = createTRPCRouter({
@@ -43,7 +43,11 @@ export const highlightsRouter = createTRPCRouter({
         .select()
         .from(highlights)
         .where(filters)
-        .orderBy(desc(highlights.updatedAt));
+        .orderBy(
+          asc(highlights.isActive),
+          asc(highlights.order),
+          asc(highlights.title)
+        );
 
       return result;
     }),
@@ -130,7 +134,6 @@ export const highlightsRouter = createTRPCRouter({
         updateData.isActive = "false";
         orderUpdate = 0;
 
-        console.log("AAA1");
         await db
           .update(highlights)
           .set({

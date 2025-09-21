@@ -349,7 +349,6 @@ export const HomePage = () => {
 
         {/* Student Life Gallery Section */}
         <StudentLifeGallery />
-
       </main>
     </div>
   );

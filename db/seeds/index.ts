@@ -12,11 +12,16 @@ import { seedAccreditations } from "./accredItations.seed";
 import { seedMilestones } from "./milestones.seed";
 import { seedPrinciples } from "./principles.seed";
 import { seedStatistics } from "./statistics.seed";
+import { seedTeamMembers } from "./teamMembers.seed";
+import { seedFaqs } from "./faqs.seed";
 
 async function main() {
   // 1. Clear tables
   await clearTables([
     "collection_posts",
+    "departments",
+    "faqs",
+    "faq_categories",
     "highlights",
     "user_collections",
     "pillars",
@@ -25,6 +30,7 @@ async function main() {
     "post_category_relations",
     "post_categories",
     "posts",
+    "team_members",
     "testimonials",
     "testimonial_categories",
     "user_roles",
@@ -59,6 +65,10 @@ async function main() {
   await seedPrinciples();
 
   await seedStatistics();
+
+  await seedTeamMembers();
+
+  await seedFaqs();
 
   console.log("✅ Seeding complete!");
 }

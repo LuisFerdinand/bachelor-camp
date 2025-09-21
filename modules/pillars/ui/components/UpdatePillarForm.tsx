@@ -198,30 +198,28 @@ const UpdatePillarFormSuspense = ({
     setIsMutating(true);
 
     try {
-      // Handle image removal
-      const isRemovingImage = !selectedFile && !previewUrl && pillar.imageKey;
-      if (isRemovingImage) {
-        const res = await fetch(`/api/pillars/${pillarId}/image`, {
-          method: "DELETE",
-        });
-        const result = await res.json();
-        if (!res.ok) throw new Error(result.message);
+      if (!previewUrl) {
+        if (pillar.imageKey && pillar.imageUrl) {
+          const res = await fetch(`/api/file/pillars/${pillarId}`, {
+            method: "DELETE",
+          });
+          const result = await res.json();
 
-        await utils.pillars.getFiltered.invalidate();
-        toast.success("Pillar updated and image removed!", { id: toastId });
-        onSuccess?.(pillarId);
-        return;
+          if (!res.ok) {
+            throw new Error(result.message);
+          }
+          toast.success("Pillar image removed!", { id: toastId });
+        } else if (pillar.imageUrl && !pillar.imageKey) {
+          await updatePillar.mutateAsync({
+            id: pillarId,
+            imageUrl: "",
+          });
+        }
       }
 
-      const updatedPillar = await updatePillar.mutateAsync({
-        id: pillarId,
-        ...values,
-      });
-
-      form.reset(values);
-
-      if (selectedFile) {
+      if (previewUrl && selectedFile) {
         toast.loading("Uploading pillar image...", { id: toastId });
+
         const res = await uploadFiles("pillarImageUploader", {
           files: [selectedFile],
           input: { pillarId },
@@ -239,7 +237,15 @@ const UpdatePillarFormSuspense = ({
         setSelectedFile(null);
       }
 
+      const updatedPillar = await updatePillar.mutateAsync({
+        id: pillarId,
+        ...values,
+      });
+
+      form.reset(values);
+
       await utils.pillars.getFiltered.invalidate();
+      await utils.pillars.getOneProtected.invalidate({ id: pillarId });
       toast.success("Pillar updated successfully!", { id: toastId });
       onSuccess?.(pillarId);
     } catch (err: any) {

@@ -6,10 +6,9 @@ import {
   statisticUpdateSchema,
 } from "@/db/schema/marketing/statistics";
 import { requireRole } from "@/lib/access";
-import { generateUniqueSlug } from "@/lib/utils";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
-import { and, desc, eq, gt, ilike, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gt, ilike, or, sql } from "drizzle-orm";
 import z from "zod";
 
 export const statisticsRouter = createTRPCRouter({
@@ -43,7 +42,11 @@ export const statisticsRouter = createTRPCRouter({
         .select()
         .from(statistics)
         .where(filters)
-        .orderBy(desc(statistics.updatedAt));
+        .orderBy(
+          asc(statistics.isActive),
+          asc(statistics.order),
+          asc(statistics.label)
+        );
 
       return result;
     }),

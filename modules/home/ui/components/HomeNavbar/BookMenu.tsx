@@ -1,5 +1,5 @@
-'use client';
-import Link from 'next/link';
+"use client";
+import Link from "next/link";
 
 type Props = {
   isOpen: boolean;
@@ -9,26 +9,39 @@ type Props = {
   isSignedIn: boolean;
 };
 
-export default function BookMenu({ isOpen, toggle, closeMenus, shouldUseSolidStyling, isSignedIn }: Props) {
+export default function BookMenu({
+  isOpen,
+  toggle,
+  closeMenus,
+  shouldUseSolidStyling,
+  isSignedIn,
+}: Props) {
   return (
     <div className="hidden lg:block relative">
       <button
         onClick={toggle}
         className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-500 ease-in-out ${
           shouldUseSolidStyling
-            ? 'bg-brand-600 text-white hover:bg-brand-700'
-            : 'bg-white/20 backdrop-blur-sm text-white border border-white/30 hover:bg-white/30'
+            ? "bg-brand-600 text-white hover:bg-brand-700"
+            : "bg-white/20 backdrop-blur-sm text-white border border-white/30 hover:bg-white/30"
         }`}
       >
         <span className="font-medium">Book Now</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className={`h-4 w-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+          className={`h-4 w-4 transition-transform duration-200 ${
+            isOpen ? "rotate-180" : ""
+          }`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
         </svg>
       </button>
 
@@ -54,15 +67,27 @@ export default function BookMenu({ isOpen, toggle, closeMenus, shouldUseSolidSty
 
             {!isSignedIn ? (
               <>
-                <Link href="/login" onClick={closeMenus} className="block px-4 py-3 hover:bg-gray-50 text-gray-700">
+                <Link
+                  href="/login"
+                  onClick={closeMenus}
+                  className="block px-4 py-3 hover:bg-gray-50 text-gray-700"
+                >
                   Sign In
                 </Link>
-                <Link href="/register" onClick={closeMenus} className="block px-4 py-3 hover:bg-gray-50 text-gray-700">
+                <Link
+                  href="/register"
+                  onClick={closeMenus}
+                  className="block px-4 py-3 hover:bg-gray-50 text-gray-700"
+                >
                   Sign Up
                 </Link>
               </>
             ) : (
-              <Link href="/profile" onClick={closeMenus} className="block px-4 py-3 hover:bg-gray-50 text-gray-700">
+              <Link
+                href="/profile"
+                onClick={closeMenus}
+                className="block px-4 py-3 hover:bg-gray-50 text-gray-700"
+              >
                 My Profile
               </Link>
             )}

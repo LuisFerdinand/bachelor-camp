@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DEFAULT_LIMIT } from "@/constants";
-import { FAQsViewSwitcher } from "@/modules/faqs/ui/components/FAQsViewSwitcher";
+import { FAQsViewSwitcher } from "@/modules/faqs/ui/components/FAQViewSwitcher";
 
 import React, { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";

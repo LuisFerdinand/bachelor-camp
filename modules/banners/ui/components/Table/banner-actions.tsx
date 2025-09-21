@@ -190,7 +190,7 @@ const BannerActions = ({
               e.stopPropagation();
               handleDelete();
             }}
-            disabled={isMutating}
+            disabled={isMutating || isActive === "true"} //  Disable if active
           >
             <TrashIcon className="size-4 mr-2 stroke-2"></TrashIcon>
             Delete

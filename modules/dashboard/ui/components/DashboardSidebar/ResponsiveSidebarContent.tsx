@@ -51,6 +51,7 @@ import {
   Tags,
   Tent,
   UserCog,
+  Users,
 } from "lucide-react";
 import clsx from "clsx";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -62,22 +63,23 @@ import { NavigationSection } from "./Navigation";
 import { GradientSeparator } from "@/components/ui/Separator/SidebarSeparator";
 
 const contentRoutes = [
-  { label: "Banners", url: "/content/banners", icon: ImageIcon },
-  { label: "Pillars", url: "/content/pillars", icon: Landmark },
   { label: "Accreditations", url: "/content/accreditations", icon: Award },
-  { label: "Milestones", url: "/content/milestones", icon: Flag },
-  { label: "Testimonials", url: "/content/testimonials", icon: Quote },
+  { label: "Banners", url: "/content/banners", icon: ImageIcon },
   { label: "FAQs", url: "/content/faqs", icon: HelpCircle },
-  { label: "Locations", url: "/content/locations", icon: MapPin },
-  { label: "Social Medias", url: "/content/social-media", icon: Share2 },
   {
     label: "Featured Facilities",
     url: "/content/featured-facilities",
     icon: Building2,
   },
   { label: "Highlights", url: "/content/highlights", icon: Sparkles },
+  { label: "Locations", url: "/content/locations", icon: MapPin },
+  { label: "Milestones", url: "/content/milestones", icon: Flag },
+  { label: "Pillars", url: "/content/pillars", icon: Landmark },
   { label: "Principles", url: "/content/principles", icon: Scale },
+  { label: "Social Medias", url: "/content/social-media", icon: Share2 },
   { label: "Statistics", url: "/content/statistics", icon: BarChart3 },
+  { label: "Testimonials", url: "/content/testimonials", icon: Quote },
+  { label: "Team Members", url: "/content/team-members", icon: Users },
 ];
 
 const servicesRoutes = [

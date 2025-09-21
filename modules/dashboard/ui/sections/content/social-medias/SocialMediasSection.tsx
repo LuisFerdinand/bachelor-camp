@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DEFAULT_LIMIT } from "@/constants";
-import { SocialMediasViewSwitcher } from "@/modules/socialMedias/ui/components/SocialMediasViewSwitcher";
+// import { SocialMediasViewSwitcher } from "@/modules/socialMedias/ui/components/SocialMediasViewSwitcher";
 
 import React, { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -86,7 +86,7 @@ export const SocialMediasSectionSuspense = () => {
   return (
     <div className="flex flex-col gap-4 mx-4">
       <div className="flex flex-wrap justify-between items-center">
-        <SocialMediasViewSwitcher />
+        {/* <SocialMediasViewSwitcher /> */}
       </div>
     </div>
   );

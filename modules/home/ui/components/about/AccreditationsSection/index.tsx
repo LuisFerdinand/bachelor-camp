@@ -16,7 +16,9 @@ interface AccreditationsSectionProps {
   accreditations: Accreditation[];
 }
 
-export function AccreditationsSection({ accreditations }: AccreditationsSectionProps) {
+export function AccreditationsSection({
+  accreditations,
+}: AccreditationsSectionProps) {
   return (
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
@@ -45,9 +47,7 @@ export function AccreditationsSection({ accreditations }: AccreditationsSectionP
                     {accreditation.logo}
                   </span>
                 </div>
-                <h3 className="font-bold text-lg mb-2">
-                  {accreditation.name}
-                </h3>
+                <h3 className="font-bold text-lg mb-2">{accreditation.name}</h3>
                 <p className="text-neutral-600 text-sm">
                   {accreditation.description}
                 </p>

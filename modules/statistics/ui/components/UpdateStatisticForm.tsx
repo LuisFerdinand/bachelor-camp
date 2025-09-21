@@ -161,6 +161,7 @@ const UpdateStatisticFormSuspense = ({
       form.reset(values);
 
       await utils.statistics.getFiltered.invalidate();
+      await utils.statistics.getOneProtected.invalidate({ id: statisticId });
       toast.success("Statistic updated successfully!", { id: toastId });
       onSuccess?.(statisticId);
     } catch (err: any) {

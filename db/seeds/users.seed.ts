@@ -30,22 +30,30 @@ export const seedUserRoles = async () => {
 
   type UserRoleInsert = typeof userRoles.$inferInsert;
 
-  const user = await db
-    .select()
-    .from(users)
-    .where(eq(users.email, "vincent373kon@gmail.com"))
-    .then((res) => res[0]);
+  const emails = ["vincent373kon@gmail.com", "ferdinandluis88@gmail.com"];
 
   const roleList = await db.select().from(roles);
   const roleIds = roleList.map((row) => row.id);
 
-  const data: UserRoleInsert[] = roleIds.map((role) => {
-    return {
+  for (const email of emails) {
+    const user = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, email))
+      .then((res) => res[0]);
+
+    if (!user) {
+      console.warn(`⚠️ User with email ${email} not found, skipping...`);
+      continue;
+    }
+
+    const data: UserRoleInsert[] = roleIds.map((role) => ({
       userId: user.id,
       roleId: role,
-    };
-  });
-  await db.insert(userRoles).values(data);
+    }));
+
+    await db.insert(userRoles).values(data);
+  }
 
   console.log("✅ User Roles seeded successfully!");
 };

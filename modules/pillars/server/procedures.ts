@@ -8,7 +8,7 @@ import {
   protectedProcedure,
 } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
-import { and, desc, eq, gt, ilike, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gt, ilike, or, sql } from "drizzle-orm";
 import { UTApi } from "uploadthing/server";
 import z from "zod";
 
@@ -53,7 +53,7 @@ export const pillarsRouter = createTRPCRouter({
         .select()
         .from(pillars)
         .where(filters)
-        .orderBy(desc(pillars.updatedAt));
+        .orderBy(asc(pillars.isActive), asc(pillars.order), asc(pillars.title));
 
       return result;
     }),
@@ -180,31 +180,34 @@ export const pillarsRouter = createTRPCRouter({
         updatedAt: new Date(),
       };
 
-      if (rest.title) {
+      if (rest.title !== undefined) {
         updateData.title = rest.title;
       }
-      if (rest.subtitle) {
+      if (rest.subtitle !== undefined) {
         updateData.subtitle = rest.subtitle;
       }
-      if (rest.iconUrl) {
+      if (rest.iconUrl !== undefined) {
         updateData.iconUrl = rest.iconUrl;
       }
-      if (rest.imageUrl) {
-        updateData.imageUrl = rest.imageUrl;
+      if (rest.imageUrl !== undefined) {
+        updateData.imageUrl =
+          typeof rest.imageUrl === "string" && rest.imageUrl.trim() === ""
+            ? null
+            : rest.imageUrl;
       }
-      if (rest.isActive) {
+      if (rest.isActive !== undefined) {
         updateData.isActive = rest.isActive;
       }
-      if (rest.imageKey) {
+      if (rest.imageKey !== undefined) {
         updateData.imageKey = rest.imageKey;
       }
-      if (rest.ctaText) {
+      if (rest.ctaText !== undefined) {
         updateData.ctaText = rest.ctaText;
       }
-      if (rest.ctaLink) {
+      if (rest.ctaLink !== undefined) {
         updateData.ctaLink = rest.ctaLink;
       }
-      if (rest.features) {
+      if (rest.features !== undefined) {
         updateData.features = rest.features;
       }
 

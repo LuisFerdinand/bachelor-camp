@@ -6,10 +6,10 @@ import {
   principleUpdateSchema,
 } from "@/db/schema/marketing/principles";
 import { requireRole } from "@/lib/access";
-import { generateUniqueSlug } from "@/lib/utils";
+
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
-import { and, desc, eq, gt, ilike, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gt, ilike, or, sql } from "drizzle-orm";
 import z from "zod";
 
 export const principlesRouter = createTRPCRouter({
@@ -43,7 +43,11 @@ export const principlesRouter = createTRPCRouter({
         .select()
         .from(principles)
         .where(filters)
-        .orderBy(desc(principles.updatedAt));
+        .orderBy(
+          asc(principles.isActive),
+          asc(principles.order),
+          asc(principles.title)
+        );
 
       return result;
     }),

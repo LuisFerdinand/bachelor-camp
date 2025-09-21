@@ -1,4 +1,4 @@
-import { FAQsView } from "@/modules/dashboard/ui/views/content/fAQs/FAQsView";
+import { FAQsView } from "@/modules/dashboard/ui/views/content/faqs/FAQsView";
 import { HydrateClient, trpc } from "@/trpc/server";
 import React from "react";
 

@@ -64,6 +64,7 @@ function createImageUploader<T extends { id: any }>(options: {
 
 // --- use the factory for each uploader ---
 import { banners, pillars, testimonials } from "@/db/schema";
+import { teamMembers } from "@/db/schema/marketing/teamMembers";
 
 export const ourFileRouter = {
   bannerMediaUploader: createImageUploader({
@@ -103,6 +104,12 @@ export const ourFileRouter = {
     idField: "milestoneId",
     keyColumn: "imageKey",
     urlColumn: "imageUrl",
+  }),
+  teamMemberAvatarUploader: createImageUploader({
+    table: teamMembers,
+    idField: "teamMemberId",
+    keyColumn: "avatarKey",
+    urlColumn: "avatarUrl",
   }),
 } satisfies FileRouter;
 

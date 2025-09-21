@@ -32,9 +32,23 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { PAGE_TYPES } from "@/db/schema/enums";
-import { Eye, EyeOff, ImageIcon, Plus, Tag, Trash2 } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  ImageIcon,
+  InfoIcon,
+  Plus,
+  Tag,
+  Trash2,
+} from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import Image from "next/image";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface UpdateAccreditationFormProps {
   accreditationId: string;
@@ -196,27 +210,46 @@ const UpdateAccreditationFormSuspense = ({
     setIsMutating(true);
 
     try {
-      // Handle image removal if applicable
-      const isRemovingImage =
-        !selectedFile && !previewUrl && accreditation.imageKey;
+      if (!previewUrl) {
+        if (accreditation.imageKey && accreditation.imageUrl) {
+          const res = await fetch(
+            `/api/file/accreditations/${accreditationId}`,
+            {
+              method: "DELETE",
+            }
+          );
+          const result = await res.json();
 
-      if (isRemovingImage) {
-        const res = await fetch(
-          `/api/accreditations/${accreditationId}/image`,
-          {
-            method: "DELETE",
+          if (!res.ok) {
+            throw new Error(result.message);
           }
-        );
-        const result = await res.json();
+          toast.success("Accreditation image removed!", { id: toastId });
+        } else if (accreditation.imageUrl && !accreditation.imageKey) {
+          await updateAccreditation.mutateAsync({
+            id: accreditationId,
+            imageUrl: "",
+          });
+        }
+      }
 
-        if (!res.ok) throw new Error(result.message);
+      if (previewUrl && selectedFile) {
+        toast.loading("Uploading accreditation image...", { id: toastId });
 
-        await utils.accreditations.getFiltered.invalidate();
-        toast.success("Accreditation updated and image removed!", {
-          id: toastId,
+        const res = await uploadFiles("accreditationImageUploader", {
+          files: [selectedFile],
+          input: { accreditationId },
         });
-        onSuccess?.(accreditationId);
-        return;
+
+        const uploadedFile = res[0];
+        if (!uploadedFile) throw new Error("Failed to upload image.");
+
+        await updateAccreditation.mutateAsync({
+          id: accreditationId,
+          imageUrl: uploadedFile.ufsUrl,
+          imageKey: uploadedFile.key,
+        });
+
+        setSelectedFile(null);
       }
 
       const updatedAccreditation = await updateAccreditation.mutateAsync({
@@ -247,6 +280,9 @@ const UpdateAccreditationFormSuspense = ({
       }
 
       await utils.accreditations.getFiltered.invalidate();
+      await utils.accreditations.getOneProtected.invalidate({
+        id: accreditationId,
+      });
       toast.success("Accreditation updated successfully!", { id: toastId });
       onSuccess?.(accreditationId);
     } catch (error: any) {
@@ -310,6 +346,46 @@ const UpdateAccreditationFormSuspense = ({
                           className="border-muted-foreground/50 min-h-[80px] resize-none"
                         />
                       </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="isActive"
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex items-center justify-between rounded-lg border px-3 py-2 bg-muted/40">
+                        <div className="flex items-center gap-2">
+                          <FormLabel className="font-medium">
+                            Active Accreditation
+                          </FormLabel>
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <InfoIcon className="w-4 h-4 text-muted-foreground cursor-pointer" />
+                              </TooltipTrigger>
+                              <TooltipContent
+                                side="right"
+                                className="max-w-xs text-sm"
+                              >
+                                {field.value === "true"
+                                  ? "Deactivating will hide this accreditation from the home page."
+                                  : "Activating will make this accreditation visible on the home page."}
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </div>
+                        <FormControl>
+                          <Switch
+                            checked={field.value === "true"}
+                            onCheckedChange={(checked) =>
+                              field.onChange(checked ? "true" : "false")
+                            }
+                            disabled={isMutating}
+                          />
+                        </FormControl>
+                      </div>
                       <FormMessage />
                     </FormItem>
                   )}

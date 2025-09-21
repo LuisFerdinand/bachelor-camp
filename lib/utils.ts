@@ -1,4 +1,6 @@
+// import { db } from "@/db";
 import { clsx, type ClassValue } from "clsx";
+import { eq } from "drizzle-orm";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -21,16 +23,16 @@ export function stringToColor(str: string, dark: boolean = false) {
 }
 
 export function formatOrdinal(n: number) {
-  if (n % 100 >= 11 && n % 100 <= 13) return `${n}th`;
+  if (n % 100 >= 11 && n % 100 <= 13) return `${n}ᵗʰ`;
   switch (n % 10) {
     case 1:
-      return `${n}st`;
+      return `${n}ˢᵗ`;
     case 2:
-      return `${n}nd`;
+      return `${n}ⁿᵈ`;
     case 3:
-      return `${n}rd`;
+      return `${n}ʳᵈ`;
     default:
-      return `${n}th`;
+      return `${n}ᵗʰ`;
   }
 }
 
@@ -43,30 +45,4 @@ export function generateSlug(input: string): string {
     .replace(/[^a-z0-9\-]/g, "")
     .replace(/\-{2,}/g, "-")
     .replace(/^-+|-+$/g, "");
-}
-
-// Ensure uniqueness by checking DB
-export async function generateUniqueSlug<T extends { slug: string }>(
-  input: string,
-  table: any
-): Promise<string> {
-  let baseSlug = generateSlug(input);
-  let slug = baseSlug;
-  let counter = 1;
-
-  // keep looping until we find a slug not in DB
-  while (true) {
-    const [existing] = await db
-      .select()
-      .from(table)
-      .where(eq(table.slug, slug))
-      .limit(1);
-
-    if (!existing) break;
-
-    slug = `${baseSlug}-${counter}`;
-    counter++;
-  }
-
-  return slug;
 }

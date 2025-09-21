@@ -18,14 +18,12 @@ interface MobileNavProps {
   isSignedIn: boolean;
 }
 
-
 export const MobileNav = ({
   navLinks,
   isOpen,
   closeMenus,
   isSignedIn,
 }: MobileNavProps) => {
-  
   return (
     <div
       className={`fixed inset-0 z-50 bg-black/50 transition-opacity lg:hidden ${
@@ -83,4 +81,4 @@ export const MobileNav = ({
       </div>
     </div>
   );
-}
+};

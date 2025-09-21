@@ -6,8 +6,9 @@ import { VisionMissionSection } from "@/modules/home/ui/components/about/VisionM
 import { AccreditationsSection } from "@/modules/home/ui/components/about/AccreditationsSection";
 import { TestimonialsSection } from "@/modules/home/ui/components/about/TestimonialsSection";
 import { MilestonesSection } from "@/modules/home/ui/components/about/MilestonesSection";
-import { TeamSection } from "@/modules/home/ui/components/about/TeamSection"; // Import the new TeamSection component
+
 import { Award, BookOpen, Globe, Users } from "lucide-react";
+import { TeamSection } from "../../components/about/TeamSection/page";
 
 // Define TypeScript interfaces for the CMS data
 interface CMSImage {
@@ -171,7 +172,6 @@ export default function AboutUsPage({ cmsData }: AboutPageProps) {
         <TestimonialsSection testimonials={testimonials} />
         <MilestonesSection milestones={milestones} />
         <TeamSection /> {/* Using the imported TeamSection component */}
-
       </main>
     </div>
   );
