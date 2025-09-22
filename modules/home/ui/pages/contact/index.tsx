@@ -20,15 +20,12 @@ export default function ContactPage({ cmsData }: ContactPageProps) {
   // Hero images with fallbacks
   const heroImages = {
     mobile: {
-      src:
-        cmsData?.heroMobileImage?.url ||
-        "https://images.unsplash.com/photo-1587560699334-cc4ff634909a?q=80&w=600&auto=format&fit=crop",
+      src: cmsData?.heroMobileImage?.url || "/HeroBg/Contact/ContactBanner.png",
       alt: cmsData?.heroMobileImage?.alt || "BachelorCamp - mobile view",
     },
     desktop: {
       src:
-        cmsData?.heroDesktopImage?.url ||
-        "https://images.unsplash.com/photo-1587560699334-cc4ff634909a?q=80&w=1170&auto=format&fit=crop",
+        cmsData?.heroDesktopImage?.url || "/HeroBg/Contact/ContactBanner.png",
       alt: cmsData?.heroDesktopImage?.alt || "BachelorCamp - desktop view",
     },
   };
