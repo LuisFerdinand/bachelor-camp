@@ -10,7 +10,6 @@ module.exports = withUt(
 			'./app/**/*.{js,ts,jsx,tsx,mdx}',
 			'./modules/**/*.{js,ts,jsx,tsx,mdx}',
 			'./hooks/**/*.{js,ts,jsx,tsx,mdx}',
-			'./public/**/*.{js,ts,jsx,tsx,mdx}',
 			'./src/**/*.{js,ts,jsx,tsx,mdx}',
 		],
 		prefix: "",
@@ -46,17 +45,17 @@ module.exports = withUt(
 						foreground: 'hsl(var(--muted-foreground))'
 					},
 					accent: {
-						'50': '#fff7ed',
-						'100': '#ffedd5',
-						'200': '#fed7aa',
-						'300': '#fdba74',
-						'400': '#fb923c',
-						'500': '#f97316',
-						'600': '#ea580c',
-						'700': '#c2410c',
-						'800': '#9a3412',
-						'900': '#7c2d12',
-						'950': '#431407',
+						'50': '#fefce8',
+						'100': '#fef9c3',
+						'200': '#fef08a',
+						'300': '#fde047',
+						'400': '#facc15',
+						'500': '#EFE914',
+						'600': '#ca8a04',
+						'700': '#a16207',
+						'800': '#854d0e',
+						'900': '#713f12',
+						'950': '#422006',
 						DEFAULT: 'hsl(var(--accent))',
 						foreground: 'hsl(var(--accent-foreground))'
 					},
@@ -75,11 +74,24 @@ module.exports = withUt(
 						'300': '#93c5fd',
 						'400': '#60a5fa',
 						'500': '#3b82f6',
-						'600': '#2563eb',
+						'600': '#083cbc',
 						'700': '#1d4ed8',
 						'800': '#1e40af',
 						'900': '#1e3a8a',
 						'950': '#172554'
+					},
+					electric: {
+						'50': '#f0f9ff',
+						'100': '#e0f2fe',
+						'200': '#bae6fd',
+						'300': '#7dd3fc',
+						'400': '#38bdf8',
+						'500': '#1F85F5',
+						'600': '#0284c7',
+						'700': '#0369a1',
+						'800': '#075985',
+						'900': '#0c4a6e',
+						'950': '#082f49'
 					},
 					success: {
 						'50': '#f0fdf4',
@@ -296,8 +308,9 @@ module.exports = withUt(
 					xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
 					'2xl': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
 					inner: 'inset 0 2px 4px 0 rgb(0 0 0 / 0.05)',
-					brand: '0 10px 15px -3px rgb(59 130 246 / 0.1), 0 4px 6px -4px rgb(59 130 246 / 0.1)',
-					accent: '0 10px 15px -3px rgb(249 115 22 / 0.1), 0 4px 6px -4px rgb(249 115 22 / 0.1)'
+					brand: '0 10px 15px -3px rgb(8 60 188 / 0.1), 0 4px 6px -4px rgb(8 60 188 / 0.1)',
+					accent: '0 10px 15px -3px rgb(239 233 20 / 0.1), 0 4px 6px -4px rgb(239 233 20 / 0.1)',
+					electric: '0 10px 15px -3px rgb(31 133 245 / 0.1), 0 4px 6px -4px rgb(31 133 245 / 0.1)'
 				}
 			}
 		},
