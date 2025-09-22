@@ -10,28 +10,28 @@ import "slick-carousel/slick/slick-theme.css";
 export const StudentLifeGallery = () => {
   const galleryImages = [
     {
-      src: "https://images.unsplash.com/photo-1659287590518-81891c997956?q=80&w=872&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      src: "/home/activity/Activity1.png",
       alt: "Group Activities",
     },
     {
-      src: "https://images.unsplash.com/photo-1521017432531-fbd92d768814?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+      src: "/home/activity/Activity2.png",
       alt: "Study Groups",
     },
     {
-      src: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-      alt: "Technology Lab",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+      src: "/home/activity/Activity3.png",
       alt: "Outdoor Learning",
     },
     {
-      src: "https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-      alt: "Individual Study",
+      src: "/home/activity/Activity4.png",
+      alt: "Voulunteer",
     },
     {
-      src: "https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-      alt: "Presentations",
+      src: "/home/activity/Activity5.png",
+      alt: "Cultural Study",
+    },
+    {
+      src: "/home/activity/Activity6.png",
+      alt: "International Program",
     },
   ];
 
@@ -105,7 +105,7 @@ export const StudentLifeGallery = () => {
           <div className="order-2 lg:order-2 lg:col-span-3 relative">
             <div className="relative">
               {/* Asymmetric Bubble Shape */}
-              <div className="bg-brand-500 p-8 md:p-10 rounded-3xl shadow-xl relative overflow-hidden">
+              <div className="bg-brand-600 p-8 md:p-10 rounded-3xl shadow-xl relative overflow-hidden">
                 {/* Bubble Pattern Overlay */}
                 <div className="absolute inset-0 opacity-10">
                   <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIyIiBmaWxsPSIjZmZmIi8+PC9zdmc+')]" />
@@ -175,7 +175,7 @@ export const StudentLifeGallery = () => {
 
               {/* Bubble Tail */}
               <div className="absolute top-1/2 -left-4 transform -translate-y-1/2 hidden lg:block">
-                <div className="w-0 h-0 border-t-[20px] border-t-transparent border-r-[30px] border-r-brand-500 border-b-[20px] border-b-transparent"></div>
+                <div className="w-0 h-0 border-t-[20px] border-t-transparent border-r-[30px] border-r-brand-600 border-b-[20px] border-b-transparent"></div>
               </div>
             </div>
           </div>

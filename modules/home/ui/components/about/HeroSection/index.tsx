@@ -17,7 +17,7 @@ interface HeroSectionProps {
 
 export function HeroSection({ heroImages }: HeroSectionProps) {
   return (
-    <section className="relative py-20 md:py-32 overflow-hidden">
+    <section className="relative py-20 md:py-40 overflow-hidden">
       {/* Background Images */}
       <div className="absolute inset-0">
         {/* Mobile Background */}
@@ -45,7 +45,7 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
           <div className="absolute inset-0 bg-black/50"></div>
         </div>
       </div>
-      
+
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
@@ -58,8 +58,7 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
           </h1>
           <p className="text-lg md:text-xl text-white/90 mb-8 max-w-3xl mx-auto drop-shadow-md leading-relaxed">
             For over a decade, we&apos;ve been providing world-class English
-            education with a focus on practical skills and cultural
-            immersion.
+            education with a focus on practical skills and cultural immersion.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button

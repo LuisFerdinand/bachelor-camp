@@ -26,17 +26,13 @@ export default function ProgramPage({ cmsData }: ProgramPageProps) {
   // Get hero images with fallbacks to local images
   const heroImages = {
     mobile: {
-      src:
-        cmsData?.heroMobileImage?.url ||
-        "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      src: cmsData?.heroMobileImage?.url || "/HeroBg/Program/ProgBanner.png",
       alt:
         cmsData?.heroMobileImage?.alt ||
         "English language classroom - mobile view",
     },
     desktop: {
-      src:
-        cmsData?.heroDesktopImage?.url ||
-        "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80",
+      src: cmsData?.heroDesktopImage?.url || "/HeroBg/Program/ProgBanner.png",
       alt:
         cmsData?.heroDesktopImage?.alt ||
         "English language classroom - desktop view",
