@@ -16,12 +16,14 @@ import { seedTeamMembers } from "./teamMembers.seed";
 import { seedFaqs } from "./faqs.seed";
 import { seedSocialMedias } from "./socialMedias.seed";
 import { seedLocations } from "./locations.seed";
+import { seedFacilities } from "./facilities.seed";
 
 async function main() {
   // 1. Clear tables
   await clearTables([
     "collection_posts",
     "departments",
+    "facilities",
     "faqs",
     "faq_categories",
     "highlights",
@@ -76,6 +78,8 @@ async function main() {
   await seedSocialMedias();
 
   await seedLocations();
+
+  await seedFacilities();
 
   console.log("✅ Seeding complete!");
 }
