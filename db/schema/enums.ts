@@ -49,7 +49,7 @@ export type RoomStatus = (typeof ROOM_STATUSES)[number];
 export const roomStatusEnum = pgEnum("room_status", ROOM_STATUSES);
 
 // Facilities
-export const FACILITY_STATUSES = ["active", "inactive"] as const;
+export const FACILITY_STATUSES = ["active", "inactive", "archived"] as const;
 export type FacilityStatus = (typeof FACILITY_STATUSES)[number];
 export const facilityStatusEnum = pgEnum("facility_status", FACILITY_STATUSES);
 

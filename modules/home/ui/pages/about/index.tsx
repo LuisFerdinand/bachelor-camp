@@ -38,17 +38,13 @@ export default function AboutUsPage({ cmsData }: AboutPageProps) {
   // Get hero images with fallbacks to Unsplash images
   const heroImages = {
     mobile: {
-      src:
-        cmsData?.heroMobileImage?.url ||
-        "https://images.unsplash.com/photo-1596495868845-63031cb496da?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      src: cmsData?.heroMobileImage?.url || "/HeroBg/About/AboutBanner.png",
       alt:
         cmsData?.heroMobileImage?.alt ||
         "Students learning in classroom - mobile view",
     },
     desktop: {
-      src:
-        cmsData?.heroDesktopImage?.url ||
-        "https://images.unsplash.com/photo-1596496356933-9b6e0b186b88?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      src: cmsData?.heroDesktopImage?.url || "/HeroBg/About/AboutBanner.png",
       alt:
         cmsData?.heroDesktopImage?.alt ||
         "Students collaborating in modern campus - desktop view",

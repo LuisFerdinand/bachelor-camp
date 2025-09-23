@@ -7,29 +7,28 @@ import { Separator } from "@/components/ui/separator";
 import { GradientSeparator } from "@/components/ui/Separator/SidebarSeparator";
 import { useState } from "react";
 
-import { FeaturedFacilitiesFilters } from "./FeaturedFacilitiesFilters";
+import { FacilityFilters } from "./FacilityFilters";
 import { DataTable } from "./Table/data-table";
-import { FeaturedFacilities } from "@/db/schema";
-import { getFeaturedFacilitiesColumns } from "./Table/columns";
-import { useFeaturedFacilitiesFilters } from "../../hooks/use-featured-facilities-filters";
+import { Facility } from "@/db/schema";
+import { getFacilityColumns } from "./Table/columns";
+import { useFacilityFilters } from "../../hooks/use-facility-filters";
 
-export const FeaturedFacilitiesViewSwitcher = () => {
+export const FacilitiesViewSwitcher = () => {
   const [view, setView] = useQueryState("view", {
     defaultValue: "table",
   });
 
-  const [filters] = useFeaturedFacilitiesFilters();
+  const [filters] = useFacilityFilters();
 
-  const columns = getFeaturedFacilitiesColumns();
+  const columns = getFacilityColumns();
 
-  const { data: featuredFacilities, isLoading } =
-    trpc.facilities.getFiltered.useQuery({
-      category: filters.category ?? undefined,
-      source: filters.source ?? undefined,
-      isFeatured: filters.isFeatured ?? undefined,
-      isShown: filters.isShown ?? undefined,
-      searchQuery: filters.searchQuery ?? undefined,
-    });
+  const { data: Facilities, isLoading } = trpc.facilities.getFiltered.useQuery({
+    category: filters.category ?? undefined,
+    status: filters.status ?? undefined,
+    featured: filters.featured ?? undefined,
+    type: filters.type ?? undefined,
+    searchQuery: filters.searchQuery ?? undefined,
+  });
 
   return (
     <>
@@ -53,13 +52,13 @@ export const FeaturedFacilitiesViewSwitcher = () => {
             </TabsList>
           </div>
           <GradientSeparator className="my-2" />
-          <FeaturedFacilitiesFilters />
+          <FacilityFilters />
           <>
             <TabsContent value="table">
-              {/* {JSON.stringify(featuredFacilities)} */}
-              <DataTable<FeaturedFacilities, unknown>
+              {/* {JSON.stringify(Facilities)} */}
+              <DataTable<Facility, unknown>
                 columns={columns}
-                data={featuredFacilities ?? []}
+                data={Facilities ?? []}
                 isLoading={isLoading}
               ></DataTable>
             </TabsContent>

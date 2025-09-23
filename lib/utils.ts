@@ -12,14 +12,21 @@ export function stringToColor(str: string, dark: boolean = false) {
   for (let i = 0; i < str.length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
-  const hue = hash % 360; // keep hue in [0, 360)
+  const hue = hash % 360;
 
-  // Light vs Dark variant
   if (dark) {
-    return `hsl(${hue}, 60%, 35%)`; // darker tone
-  } else {
-    return `hsl(${hue}, 70%, 75%)`; // bright pastel-like
+    return {
+      background: `hsl(${hue}, 30%, 20%)`, // Dark, muted background
+      text: `hsl(${hue}, 60%, 85%)`, // Light, readable text
+      border: `hsl(${hue}, 25%, 35%)`, // Subtle dark border
+    };
   }
+
+  return {
+    background: `hsl(${hue}, 45%, 96%)`, // Very light, subtle background
+    text: `hsl(${hue}, 60%, 45%)`, // Medium saturation text
+    border: `hsl(${hue}, 35%, 85%)`, // Soft border
+  };
 }
 
 export function formatOrdinal(n: number) {

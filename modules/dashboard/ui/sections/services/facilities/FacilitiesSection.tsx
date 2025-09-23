@@ -10,26 +10,24 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DEFAULT_LIMIT } from "@/constants";
-import { FeaturedFacilitiesViewSwitcher } from "@/modules/facilities/ui/components/FeaturedFacilitiesViewSwitcher";
+import { FacilitiesViewSwitcher } from "@/modules/facilities/ui/components/FacilitiesViewSwitcher";
 
 import React, { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
-export const FeaturedFacilitiesSection = () => {
+export const FacilitiesSection = () => {
   return (
     <Suspense
-      fallback={
-        <FeaturedFacilitiesSectionSkeleton></FeaturedFacilitiesSectionSkeleton>
-      }
+      fallback={<FacilitiesSectionSkeleton></FacilitiesSectionSkeleton>}
     >
       <ErrorBoundary fallback={<p>Error</p>}>
-        <FeaturedFacilitiesSectionSuspense></FeaturedFacilitiesSectionSuspense>
+        <FacilitiesSectionSuspense></FacilitiesSectionSuspense>
       </ErrorBoundary>
     </Suspense>
   );
 };
 
-const FeaturedFacilitiesSectionSkeleton = () => {
+const FacilitiesSectionSkeleton = () => {
   return (
     <>
       <div className="border-y">
@@ -84,11 +82,11 @@ const FeaturedFacilitiesSectionSkeleton = () => {
   );
 };
 
-export const FeaturedFacilitiesSectionSuspense = () => {
+export const FacilitiesSectionSuspense = () => {
   return (
     <div className="flex flex-col gap-4 mx-4">
       <div className="flex flex-wrap justify-between items-center">
-        <FeaturedFacilitiesViewSwitcher />
+        <FacilitiesViewSwitcher />
       </div>
     </div>
   );

@@ -62,6 +62,8 @@ export const CreateLocationForm = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [accordionValue, setAccordionValue] = useState<string>("basic");
 
+  const DAY_COLORS = DAY_OF_WEEK.map((day) => stringToColor(day));
+
   const form = useForm<z.infer<typeof locationCreateSchema>>({
     resolver: zodResolver(locationCreateSchema),
     defaultValues: {
@@ -108,7 +110,6 @@ export const CreateLocationForm = ({
     }
   };
 
-  // Quick actions for hours
   const setAllHours = (open: string, close: string) => {
     fields.forEach((_, index) => {
       setValue(`hours.${index}.open`, open);
@@ -443,17 +444,12 @@ export const CreateLocationForm = ({
                           {/* Day */}
                           <div className="col-span-2 md:col-span-2">
                             <Badge
-                              variant="outline"
                               style={{
-                                backgroundColor: stringToColor(
-                                  DAY_OF_WEEK[index],
-                                  false
-                                ),
-                                color: stringToColor(DAY_OF_WEEK[index], true),
+                                backgroundColor: DAY_COLORS[index].background,
+                                color: DAY_COLORS[index].text,
+                                border: `2px solid ${DAY_COLORS[index].border}`,
                               }}
-                              className={`text-sm font-medium px-3 py-1 ${
-                                isClosed ? "opacity-50" : ""
-                              }`}
+                              className={`text-sm font-medium px-3 py-1 ${isClosed ? "opacity-50" : ""}`}
                             >
                               {getAbbr(DAY_OF_WEEK[index])}
                             </Badge>

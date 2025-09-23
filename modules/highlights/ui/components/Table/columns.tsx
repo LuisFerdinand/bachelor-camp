@@ -8,6 +8,7 @@ import { cn, formatOrdinal, stringToColor } from "@/lib/utils";
 import { Highlight } from "@/db/schema";
 import { HighlightActionProvider } from "../HighlightContext";
 import HighlightActions from "./highlight-actions";
+import { OrderBadge } from "@/components/table/OrderBadge";
 
 export function getHighlightColumns(): ColumnDef<Highlight>[] {
   const columns: ColumnDef<Highlight>[] = [
@@ -31,7 +32,9 @@ export function getHighlightColumns(): ColumnDef<Highlight>[] {
             {iconUrl ? (
               <div
                 className="flex items-center justify-center w-10 h-10 rounded-full shrink-0"
-                style={{ backgroundColor: stringToColor(title, true) }}
+                style={{
+                  backgroundColor: stringToColor(title, true).border,
+                }}
               >
                 <ReactSVG
                   src={iconUrl}
@@ -140,11 +143,7 @@ export function getHighlightColumns(): ColumnDef<Highlight>[] {
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
-      cell: ({ row }) => (
-        <span className="text-sm text-muted-foreground items-center flex justify-center">
-          {row.original.order > 0 ? formatOrdinal(row.original.order) : "-"}
-        </span>
-      ),
+      cell: ({ row }) => <OrderBadge order={row.original.order}></OrderBadge>,
     },
     {
       accessorKey: "createdAt",

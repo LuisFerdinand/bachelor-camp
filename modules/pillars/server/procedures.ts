@@ -91,7 +91,6 @@ export const pillarsRouter = createTRPCRouter({
             "⚠️ Failed to delete pillar image from UploadThing:",
             error
           );
-          // Not critical enough to stop pillar deletion
         }
       }
 

@@ -18,9 +18,7 @@ export async function generateUniqueSlug<T extends { slug: string }>(
       .from(table as any)
       .where(eq((table as any).slug, slug))
       .limit(1);
-
     if (!existing) break;
-
     slug = `${baseSlug}-${counter}`;
     counter++;
   }
