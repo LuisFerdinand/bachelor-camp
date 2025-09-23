@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Wifi, Utensils, Dumbbell, Coffee, Globe, Home } from "lucide-react";
+import { FACILITIES_FALLBACKS } from "@/constants";
 
 export function CampusFacilitiesSection() {
   const facilities = [
@@ -11,7 +12,7 @@ export function CampusFacilitiesSection() {
       icon: Home,
       title: "Luxury Dormitories",
       description: "Air-conditioned rooms with modern amenities",
-      image: "/home/facilities/luxDorm.png",
+      image: FACILITIES_FALLBACKS.luxuryDorm,
     },
     {
       icon: Wifi,
@@ -24,7 +25,7 @@ export function CampusFacilitiesSection() {
       icon: Utensils,
       title: "International Cuisine",
       description: "Diverse dining options and healthy meals",
-      image: "/home/facilities/intFood.png",
+      image: FACILITIES_FALLBACKS.internetFood,
     },
     {
       icon: Dumbbell,
@@ -37,13 +38,13 @@ export function CampusFacilitiesSection() {
       icon: Coffee,
       title: "Study Lounges",
       description: "Comfortable spaces for group study",
-      image: "/home/facilities/StudyRoom.png",
+      image: FACILITIES_FALLBACKS.studyRoom,
     },
     {
       icon: Globe,
       title: "Cultural Center",
       description: "International community activities",
-      image: "/home/facilities/culCen.png",
+      image: FACILITIES_FALLBACKS.culinaryCenter,
     },
   ];
 
