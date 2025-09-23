@@ -3,22 +3,9 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, TrendingUp } from "lucide-react";
+import { BookOpen, CircleCheck, TrendingUp } from "lucide-react";
 import Image from "next/image";
-
-interface Value {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  icon: React.ComponentType<any>;
-  title: string;
-  description: string;
-  color: string;
-}
-
-interface Stat {
-  id: number;
-  value: string;
-  label: string;
-}
+import { trpc } from "@/trpc/client";
 
 interface CompanyInfo {
   paragraph1?: string;
@@ -26,16 +13,15 @@ interface CompanyInfo {
 }
 
 interface MainContentSectionProps {
-  values: Value[];
-  stats: Stat[];
   companyInfo?: CompanyInfo;
 }
 
-export function MainContentSection({
-  values,
-  stats,
-  companyInfo,
-}: MainContentSectionProps) {
+export function MainContentSection({ companyInfo }: MainContentSectionProps) {
+  const { data: stats, isLoading: isLoadingStats } =
+    trpc.statistics.getMany.useQuery();
+  const { data: principles, isLoading: isLoadingPrinciples } =
+    trpc.principles.getMany.useQuery();
+
   // Default company information
   const defaultCompanyInfo = {
     paragraph1:
@@ -108,7 +94,7 @@ export function MainContentSection({
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                {stats.map((stat) => (
+                {stats?.map((stat) => (
                   <div
                     key={stat.id}
                     className="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition-all duration-300 border-t-4 border-success-800"
@@ -141,8 +127,7 @@ export function MainContentSection({
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {values.map((value, index) => {
-                  const IconComponent = value.icon;
+                {principles?.map((principle, index) => {
                   return (
                     <Card
                       key={index}
@@ -151,16 +136,16 @@ export function MainContentSection({
                       <CardContent className="p-6">
                         <div className="flex items-start space-x-4">
                           <div
-                            className={`w-12 h-12 rounded-full ${value.color} flex items-center justify-center flex-shrink-0`}
+                            className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0`}
                           >
-                            <IconComponent className="h-6 w-6" />
+                            <CircleCheck className="h-6 w-6" />
                           </div>
                           <div>
                             <h4 className="font-bold text-lg mb-2">
-                              {value.title}
+                              {principle.title}
                             </h4>
                             <p className="text-neutral-600 text-sm leading-relaxed">
-                              {value.description}
+                              {principle.subtitle}
                             </p>
                           </div>
                         </div>

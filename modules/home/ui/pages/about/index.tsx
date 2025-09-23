@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 
-import { MainContentSection } from "@/modules/home/ui/components/about/MainContentSection";
 import { VisionMissionSection } from "@/modules/home/ui/components/about/VisionMissionSection";
 import { AccreditationsSection } from "@/modules/home/ui/components/about/AccreditationsSection";
 import { TestimonialsSection } from "@/modules/home/ui/components/about/TestimonialsSection";
@@ -11,6 +10,8 @@ import { Award, BookOpen, Globe, Users } from "lucide-react";
 import { TeamSection } from "../../components/about/TeamSection/page";
 import { ABOUT_BANNER_FALLBACK } from "@/constants";
 import { AboutHeroSection } from "../../sections/about/AboutHeroSection";
+import { MainContentSection } from "../../sections/about/MainContentSection";
+import { MainContentSection2 } from "../../sections/about/MainTest";
 
 // Define TypeScript interfaces for the CMS data
 interface CMSImage {
@@ -145,11 +146,8 @@ export default function AboutUsPage({ cmsData }: AboutPageProps) {
     <div className="min-h-screen flex flex-col bg-white">
       <main className="flex-grow">
         <AboutHeroSection></AboutHeroSection>
-        <MainContentSection
-          values={values}
-          stats={stats}
-          companyInfo={cmsData?.companyInfo}
-        />
+        <MainContentSection companyInfo={cmsData?.companyInfo} />
+        <MainContentSection2 companyInfo={cmsData?.companyInfo} />
         <VisionMissionSection data={cmsData?.visionMission} />
         <AccreditationsSection accreditations={accreditations} />
         <TestimonialsSection testimonials={testimonials} />

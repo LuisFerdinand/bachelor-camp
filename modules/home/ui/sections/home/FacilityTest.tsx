@@ -74,7 +74,6 @@ export function CampusFacilitiesSection2() {
       </div>
 
       <div className="container mx-auto px-4 relative">
-        {/* Enhanced Header Section */}
         <div className="text-center max-w-3xl mx-auto mb-20">
           <div className="relative inline-block">
             <Badge className="bg-brand-100 text-brand-800 hover:bg-brand-200 transition-colors duration-300 mb-6 px-6 py-2 text-sm font-semibold shadow-sm">
@@ -96,7 +95,6 @@ export function CampusFacilitiesSection2() {
           </p>
         </div>
 
-        {/* Enhanced Facilities Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {facilities?.map((facility, index) => (
             <Card
@@ -104,7 +102,6 @@ export function CampusFacilitiesSection2() {
               className="border-0 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden group bg-white/80 backdrop-blur-sm hover:-translate-y-2 cursor-pointer"
             >
               <div className="relative h-48 overflow-hidden">
-                {/* Enhanced Image with Multiple Fallback Layers */}
                 <div className="absolute inset-0 bg-gradient-to-br from-brand-500/20 to-brand-600/30"></div>
 
                 <Image
@@ -116,7 +113,6 @@ export function CampusFacilitiesSection2() {
                   priority={index < 3} // Prioritize first 3 images
                 />
 
-                {/* Enhanced Overlay with Better Gradient */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
 
                 {/* Animated Shine Effect */}
@@ -124,10 +120,10 @@ export function CampusFacilitiesSection2() {
                   <div className="absolute top-0 -left-full h-full w-full bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12 animate-[shine_2s_ease-in-out] group-hover:animate-[shine_2s_ease-in-out]" />
                 </div>
 
-                {/* Enhanced Content Area */}
+                {/* Content Area */}
                 <div className="absolute inset-0 flex items-end">
                   <div className="flex items-start space-x-4 p-6 w-full transform group-hover:translate-y-0 transition-transform duration-300">
-                    {/* Enhanced Icon Container */}
+                    {/* Icon Container */}
                     <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300 shadow-lg">
                       <ReactSVG
                         src={facility.iconUrl || ICON_URL_FALLBACK}
@@ -144,7 +140,7 @@ export function CampusFacilitiesSection2() {
                       />
                     </div>
 
-                    {/* Enhanced Text Content */}
+                    {/* Text Content */}
                     <div className="flex-1 min-w-0">
                       <h3 className="text-white font-bold text-lg mb-2 drop-shadow-sm group-hover:text-brand-100 transition-colors duration-300">
                         {facility.name}
@@ -182,7 +178,7 @@ export function CampusFacilitiesSection2() {
           ))}
         </div>
 
-        {/* Enhanced Empty State (if no facilities) */}
+        {/* Empty State (if no facilities) */}
         {facilities && facilities.length === 0 && (
           <div className="text-center py-20">
             <div className="w-24 h-24 bg-neutral-100 rounded-full flex items-center justify-center mx-auto mb-6">
