@@ -1,5 +1,14 @@
 import ContactPage from "@/modules/home/ui/pages/contact";
+import { HydrateClient } from "@/trpc/server";
 
-export default function ContactUsPage() {
-  return <ContactPage />;
-}
+export const dynamic = "force-dynamic";
+
+const Page = async () => {
+  return (
+    <HydrateClient>
+      <ContactPage />
+    </HydrateClient>
+  );
+};
+
+export default Page;

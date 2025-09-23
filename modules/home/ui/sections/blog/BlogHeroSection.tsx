@@ -1,16 +1,26 @@
 "use client";
+
 import React from "react";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { TagIcon } from "lucide-react";
+import Image from "next/image";
+import { Search, BookOpen, MessageSquare, TrendingUp } from "lucide-react";
 import { trpc } from "@/trpc/client";
-import { bannerStyles } from "@/constants";
+import { BLOG_IMAGE_FALLBACK, CAMP_DESKTOP_FALLBACK } from "@/constants";
 import Link from "next/link";
+import { Input } from "@/components/ui/input";
 
-export default function HomeHeroSection() {
+interface BlogHeroSectionProps {
+  searchTerm: string;
+  setSearchTerm: (term: string) => void;
+}
+
+export function BlogHeroSection({
+  searchTerm,
+  setSearchTerm,
+}: BlogHeroSectionProps) {
   const { data: banner, isLoading: isLoadingBanner } =
-    trpc.banners.getOne.useQuery({ type: "Home" });
+    trpc.banners.getOne.useQuery({ type: "Camp" });
 
   if (isLoadingBanner) {
     return (
@@ -67,31 +77,58 @@ export default function HomeHeroSection() {
   const show3 = !!banner?.ctas?.[2]?.isShown;
 
   return (
-    <section
-      className="relative py-20 md:py-32 min-h-screen flex items-center"
-      style={{
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${banner?.mediaUrl})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
-      <div className="container mx-auto px-4 w-full">
-        <div className="max-w-3xl text-center md:text-left mx-auto md:mx-0">
-          <Badge className={`mb-4 ${bannerStyles.badge.base}`}>
-            <TagIcon className="size-3 mr-1" />
+    <section className="relative py-20 md:py-32 overflow-hidden">
+      {/* Background Images */}
+      <div className="absolute inset-0">
+        <div className="block absolute inset-0">
+          <Image
+            src={banner?.mediaUrl || BLOG_IMAGE_FALLBACK}
+            alt={banner?.headline || "Blog Banner"}
+            fill
+            className="object-cover"
+            priority
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-black/60"></div>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 container mx-auto px-4">
+        <div className="max-w-5xl mx-auto text-center">
+          <Badge className="mb-6 bg-white/20 text-white hover:bg-white/30 border border-white/30 backdrop-blur-sm px-4 py-2">
+            <BookOpen className="w-4 h-4 mr-2" />
             {banner?.badgeText}
           </Badge>
-          <h1 className="text-display-md md:text-display-xl font-bold mb-6 text-white">
+          <h1 className="text-display-md md:text-display-xl font-bold mb-6 text-white drop-shadow-lg">
             {banner?.headline}
           </h1>
-          <p className="text-lg md:text-xl text-gray-100 mb-8 max-w-2xl">
+          <p className="text-lg md:text-xl text-white/90 mb-8 max-w-3xl mx-auto drop-shadow-md leading-relaxed">
             {banner?.subheadline}
           </p>
-          <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-4">
+
+          {/* Enhanced Search Bar */}
+          <div className="relative max-w-2xl mx-auto mb-12">
+            <div className="relative">
+              <Input
+                type="text"
+                placeholder="Search articles, topics, or tips..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full px-6 py-4 pr-14 rounded-xl bg-white/20 backdrop-blur-sm border border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent text-lg"
+              />
+              <Search className="absolute right-5 top-1/2 transform -translate-y-1/2 text-white h-6 w-6" />
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             {show1 && (
               <Link href={banner.ctas![0].ctaLink!}>
-                <Button size="lg" className={bannerStyles.buttons.primary.base}>
+                <Button
+                  size="lg"
+                  className="bg-brand-500 hover:bg-brand-600 text-white shadow-brand px-8 py-3 text-base font-semibold"
+                >
+                  <BookOpen className="w-5 h-5 mr-2" />
                   {banner.ctas![0].ctaText}
                 </Button>
               </Link>
@@ -100,9 +137,9 @@ export default function HomeHeroSection() {
               <Link href={banner.ctas![1].ctaLink!}>
                 <Button
                   size="lg"
-                  variant="outline"
-                  className={bannerStyles.buttons.outline.base}
+                  className="bg-accent-500 hover:bg-accent-600 text-white shadow-accent px-8 py-3 text-base font-semibold"
                 >
+                  <MessageSquare className="w-5 h-5 mr-2" />
                   {banner.ctas![1].ctaText}
                 </Button>
               </Link>
@@ -111,41 +148,14 @@ export default function HomeHeroSection() {
               <Link href={banner.ctas![2].ctaLink!}>
                 <Button
                   size="lg"
-                  className={`group ${bannerStyles.buttons.gradient.base}`}
+                  variant="outline"
+                  className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-brand-600 px-8 py-3 text-base font-semibold transition-all"
                 >
-                  <span className={bannerStyles.buttons.gradient.inner}>
-                    {banner.ctas![2].ctaText}
-                  </span>
-                  <span
-                    className={bannerStyles.buttons.gradient.hoverOverlay}
-                  ></span>
+                  <TrendingUp className="w-5 h-5 mr-2" />
+                  {banner.ctas![2].ctaText}
                 </Button>
               </Link>
             )}
-          </div>
-        </div>
-      </div>
-
-      {/* Floating Hero Images */}
-      <div className="absolute bottom-8 right-8 hidden lg:block">
-        <div className="flex space-x-4">
-          <div className="w-20 h-20 rounded-full overflow-hidden border-4 border-white/30 shadow-lg">
-            <Image
-              src="https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&q=80"
-              alt="Student studying"
-              width={80}
-              height={80}
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="w-16 h-16 rounded-full overflow-hidden border-4 border-white/30 shadow-lg mt-4">
-            <Image
-              src="https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&q=80"
-              alt="Group discussion"
-              width={64}
-              height={64}
-              className="w-full h-full object-cover"
-            />
           </div>
         </div>
       </div>

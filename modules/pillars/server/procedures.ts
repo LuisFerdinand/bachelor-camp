@@ -17,7 +17,8 @@ export const pillarsRouter = createTRPCRouter({
     const data = await db
       .select()
       .from(pillars)
-      .where(eq(pillars.isActive, "true"));
+      .where(eq(pillars.isActive, "true"))
+      .orderBy(asc(pillars.order));
     return data;
   }),
 

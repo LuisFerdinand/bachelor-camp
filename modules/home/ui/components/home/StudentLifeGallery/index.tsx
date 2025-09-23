@@ -6,31 +6,32 @@ import { Camera, ChevronRight } from "lucide-react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { ACTIVITY_FALLBACKS, STUDENT_LIFE_FALLBACKS } from "@/constants";
 
 export const StudentLifeGallery = () => {
   const galleryImages = [
     {
-      src: "/home/activity/Activity1.png",
+      src: ACTIVITY_FALLBACKS["activity1"],
       alt: "Group Activities",
     },
     {
-      src: "/home/activity/Activity2.png",
+      src: ACTIVITY_FALLBACKS["activity2"],
       alt: "Study Groups",
     },
     {
-      src: "/home/activity/Activity3.png",
+      src: ACTIVITY_FALLBACKS["activity3"],
       alt: "Outdoor Learning",
     },
     {
-      src: "/home/activity/Activity4.png",
+      src: ACTIVITY_FALLBACKS["activity4"],
       alt: "Voulunteer",
     },
     {
-      src: "/home/activity/Activity5.png",
+      src: ACTIVITY_FALLBACKS["activity5"],
       alt: "Cultural Study",
     },
     {
-      src: "/home/activity/Activity6.png",
+      src: ACTIVITY_FALLBACKS["activity6"],
       alt: "International Program",
     },
   ];
@@ -67,7 +68,7 @@ export const StudentLifeGallery = () => {
               {/* Mobile Image */}
               <div className="relative rounded-2xl overflow-hidden block lg:hidden">
                 <Image
-                  src="/home/student-life/student-life-mobile.png"
+                  src={STUDENT_LIFE_FALLBACKS["mobile"]}
                   alt="Students enjoying campus life"
                   width={400}
                   height={500}
@@ -78,7 +79,7 @@ export const StudentLifeGallery = () => {
               {/* Desktop Image */}
               <div className="relative rounded-2xl overflow-hidden hidden lg:block">
                 <Image
-                  src="/home/student-life/student-life.png"
+                  src={STUDENT_LIFE_FALLBACKS["desktop"]}
                   alt="Students enjoying campus life"
                   width={400}
                   height={500}

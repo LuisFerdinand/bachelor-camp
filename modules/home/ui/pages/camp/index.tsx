@@ -1,11 +1,13 @@
 "use client";
 
 import React from "react";
-import { HeroSection } from "@/modules/home/ui/components/camp/HeroSection";
+
 import { BuildingShowcase } from "@/modules/home/ui/components/camp/BuildingShowcase";
 import { BuildingCard } from "@/modules/home/ui/components/camp/BuildingCard";
 import { SeasonalCalendar } from "@/modules/home/ui/components/camp/SeasonalCalendar";
 import { getAllBuildings } from "@/app/util/buildingData";
+import { CAMP_DESKTOP_FALLBACK, CAMP_MOBILE_FALLBACK } from "@/constants";
+import { CampHeroSection } from "../../sections/camp/CampHeroSection";
 
 // Define TypeScript interfaces for the CMS data
 interface CMSImage {
@@ -24,22 +26,6 @@ interface CampPageProps {
 }
 
 export default function CampPage({ cmsData }: CampPageProps) {
-  // Get hero images with fallbacks to local images
-  const heroImages = {
-    mobile: {
-      src: cmsData?.heroMobileImage?.url || "/HeroBg/Camp/CampBgMobile.png",
-      alt:
-        cmsData?.heroMobileImage?.alt ||
-        "Student accommodation buildings - mobile view",
-    },
-    desktop: {
-      src: cmsData?.heroDesktopImage?.url || "/HeroBg/Camp/CampBgDesktop.png",
-      alt:
-        cmsData?.heroDesktopImage?.alt ||
-        "Student accommodation buildings - desktop view",
-    },
-  };
-
   // Building images slider data with facility titles
   const buildingSliderImages = [
     {
@@ -134,7 +120,7 @@ export default function CampPage({ cmsData }: CampPageProps) {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <main className="flex-grow">
-        <HeroSection heroImages={heroImages} />
+        <CampHeroSection></CampHeroSection>
         <BuildingShowcase buildingSliderImages={buildingSliderImages} />
 
         {/* Building Options Section */}

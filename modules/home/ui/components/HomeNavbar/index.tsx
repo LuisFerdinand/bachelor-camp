@@ -9,6 +9,7 @@ import BookMenu from "./BookMenu";
 
 import Image from "next/image";
 import { UserMenu } from "@/modules/auth/ui/components/UserMenu";
+import { LOGO_PRIMARY_FALLBACK, LOGO_SECONDARY_FALLBACK } from "@/constants";
 
 export const HomeNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -76,7 +77,7 @@ export const HomeNavbar = () => {
             <div className="relative w-32 h-10">
               {/* Logo for when not scrolled (top of page) */}
               <Image
-                src="/header/Logo2.png"
+                src={LOGO_SECONDARY_FALLBACK}
                 width={180}
                 height={180}
                 alt="Bachelor Camp Logo"
@@ -88,7 +89,7 @@ export const HomeNavbar = () => {
               />
               {/* Logo for when scrolled/menu open */}
               <Image
-                src="/header/Logo1.png"
+                src={LOGO_PRIMARY_FALLBACK}
                 width={180}
                 height={180}
                 alt="Bachelor Camp Logo Dark"

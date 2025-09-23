@@ -13,7 +13,7 @@ export const seedHighlights = async () => {
 
   const highlightData: HighlightInsert[] = [
     {
-      title: "Expert Instructors",
+      title: "Expert Native Instructors",
       // slug: "expert-instructors",
       iconUrl:
         "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXVzZXJzLWljb24gbHVjaWRlLXVzZXJzIj48cGF0aCBkPSJNMTYgMjF2LTJhNCA0IDAgMCAwLTQtNEg2YTQgNCAwIDAgMC00IDR2MiIvPjxwYXRoIGQ9Ik0xNiAzLjEyOGE0IDQgMCAwIDEgMCA3Ljc0NCIvPjxwYXRoIGQ9Ik0yMiAyMXYtMmE0IDQgMCAwIDAtMy0zLjg3Ii8+PGNpcmNsZSBjeD0iOSIgY3k9IjciIHI9IjQiLz48L3N2Zz4=",
@@ -25,10 +25,15 @@ export const seedHighlights = async () => {
         {
           text: "Native Speakers",
         },
+        {
+          text: "10+ Year Experience",
+        },
+        {
+          text: "Personalized Approach",
+        },
       ],
       isActive: "true",
-      subtitle:
-        "Native and certified English teachers with 10+ years of experience in language education.",
+      subtitle: "Learn from certified teachers with years of experience.",
       order: 1,
     },
     {
@@ -43,6 +48,12 @@ export const seedHighlights = async () => {
         },
         {
           text: "Fast Progress",
+        },
+        {
+          text: "Career Advancement",
+        },
+        {
+          text: "University Admission",
         },
       ],
       isActive: "true",
@@ -102,10 +113,10 @@ export const seedHighlights = async () => {
           text: "Your Schedule",
         },
       ],
-      isActive: "true",
+      isActive: "false",
       subtitle:
         "Choose from intensive camps, part-time courses, or online programs to fit your schedule.",
-      order: 5,
+      order: 0,
     },
     {
       title: "Official Certification",
@@ -121,10 +132,10 @@ export const seedHighlights = async () => {
           text: "Career Support",
         },
       ],
-      isActive: "true",
+      isActive: "false",
       subtitle:
         "Internationally recognized certificates and lifetime career support for our graduates.",
-      order: 6,
+      order: 0,
     },
     {
       title: "Modern Facilities",
@@ -132,10 +143,10 @@ export const seedHighlights = async () => {
       iconUrl:
         "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWNhc3RsZS1pY29uIGx1Y2lkZS1jYXN0bGUiPjxwYXRoIGQ9Ik0xMCA1VjMiLz48cGF0aCBkPSJNMTQgNVYzIi8+PHBhdGggZD0iTTE1IDIxdi0zYTMgMyAwIDAgMC02IDB2MyIvPjxwYXRoIGQ9Ik0xOCAzdjgiLz48cGF0aCBkPSJNMTggNUg2Ii8+PHBhdGggZD0iTTIyIDExSDIiLz48cGF0aCBkPSJNMjIgOXYxMGEyIDIgMCAwIDEtMiAySDRhMiAyIDAgMCAxLTItMlY5Ii8+PHBhdGggZD0iTTYgM3Y4Ii8+PC9zdmc+",
       features: [{ text: "Smart Classrooms" }, { text: "Digital Labs" }],
-      isActive: "true",
+      isActive: "false",
       subtitle:
         "State-of-the-art campus equipped with the latest technology for interactive learning.",
-      order: 7,
+      order: 0,
     },
     {
       title: "Global Community",
@@ -143,10 +154,10 @@ export const seedHighlights = async () => {
       iconUrl:
         "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWhhbmRzaGFrZS1pY29uIGx1Y2lkZS1oYW5kc2hha2UiPjxwYXRoIGQ9Im0xMSAxNyAyIDJhMSAxIDAgMSAwIDMtMyIvPjxwYXRoIGQ9Im0xNCAxNCAyLjUgMi41YTEgMSAwIDEgMCAzLTNsLTMuODgtMy44OGEzIDMgMCAwIDAtNC4yNCAwbC0uODguODhhMSAxIDAgMSAxLTMtM2wyLjgxLTIuODFhNS43OSA1Ljc5IDAgMCAxIDcuMDYtLjg3bC40Ny4yOGEyIDIgMCAwIDAgMS40Mi4yNUwyMSA0Ii8+PHBhdGggZD0ibTIxIDMgMSAxMWgtMiIvPjxwYXRoIGQ9Ik0zIDMgMiAxNGw2LjUgNi41YTEgMSAwIDEgMCAzLTMiLz48cGF0aCBkPSJNMyA0aDgiLz48L3N2Zz4=",
       features: [{ text: "30+ Nationalities" }, { text: "Cultural Exchange" }],
-      isActive: "true",
+      isActive: "false",
       subtitle:
         "Join a global network of learners, making friends and connections worldwide.",
-      order: 8,
+      order: 0,
     },
     {
       title: "Career Focused",
@@ -154,10 +165,10 @@ export const seedHighlights = async () => {
       iconUrl:
         "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWJyaWVmY2FzZS1idXNpbmVzcy1pY29uIGx1Y2lkZS1icmllZmNhc2UtYnVzaW5lc3MiPjxwYXRoIGQ9Ik0xMiAxMmguMDEiLz48cGF0aCBkPSJNMTYgNlY0YTIgMiAwIDAgMC0yLTJoLTRhMiAyIDAgMCAwLTIgMnYyIi8+PHBhdGggZD0iTTIyIDEzYTE4LjE1IDE4LjE1IDAgMCAxLTIwIDAiLz48cmVjdCB3aWR0aD0iMjAiIGhlaWdodD0iMTQiIHg9IjIiIHk9IjYiIHJ4PSIyIi8+PC9zdmc+",
       features: [{ text: "Job Placement" }, { text: "Internship Programs" }],
-      isActive: "true",
+      isActive: "false",
       subtitle:
         "Dedicated career services to help you apply your language skills in real-world settings.",
-      order: 9,
+      order: 0,
     },
     {
       title: "Affordable Pricing",
@@ -165,10 +176,10 @@ export const seedHighlights = async () => {
       iconUrl:
         "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXdhbGxldC1pY29uIGx1Y2lkZS13YWxsZXQiPjxwYXRoIGQ9Ik0xOSA3VjRhMSAxIDAgMCAwLTEtMUg1YTIgMiAwIDAgMCAwIDRoMTVhMSAxIDAgMCAxIDEgMXY0aC0zYTIgMiAwIDAgMCAwIDRoM2ExIDEgMCAwIDAgMS0xdi0yYTEgMSAwIDAgMC0xLTEiLz48cGF0aCBkPSJNMyA1djE0YTIgMiAwIDAgMCAyIDJoMTVhMSAxIDAgMCAwIDEtMXYtNCIvPjwvc3ZnPg==",
       features: [{ text: "Scholarships" }, { text: "Flexible Payments" }],
-      isActive: "true",
+      isActive: "false",
       subtitle:
         "High-quality education at accessible prices with various scholarship opportunities.",
-      order: 10,
+      order: 0,
     },
     {
       title: "Interactive Learning",
@@ -176,10 +187,10 @@ export const seedHighlights = async () => {
       iconUrl:
         "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWdhbWVwYWQyLWljb24gbHVjaWRlLWdhbWVwYWQtMiI+PGxpbmUgeDE9IjYiIHgyPSIxMCIgeTE9IjExIiB5Mj0iMTEiLz48bGluZSB4MT0iOCIgeDI9IjgiIHkxPSI5IiB5Mj0iMTMiLz48bGluZSB4MT0iMTUiIHgyPSIxNS4wMSIgeTE9IjEyIiB5Mj0iMTIiLz48bGluZSB4MT0iMTgiIHgyPSIxOC4wMSIgeTE9IjEwIiB5Mj0iMTAiLz48cGF0aCBkPSJNMTcuMzIgNUg2LjY4YTQgNCAwIDAgMC0zLjk3OCAzLjU5Yy0uMDA2LjA1Mi0uMDEuMTAxLS4wMTcuMTUyQzIuNjA0IDkuNDE2IDIgMTQuNDU2IDIgMTZhMyAzIDAgMCAwIDMgM2MxIDAgMS41LS41IDItMWwxLjQxNC0xLjQxNEEyIDIgMCAwIDEgOS44MjggMTZoNC4zNDRhMiAyIDAgMCAxIDEuNDE0LjU4NkwxNyAxOGMuNS41IDEgMSAyIDFhMyAzIDAgMCAwIDMtM2MwLTEuNTQ1LS42MDQtNi41ODQtLjY4NS03LjI1OC0uMDA3LS4wNS0uMDExLS4xLS4wMTctLjE1MUE0IDQgMCAwIDAgMTcuMzIgNXoiLz48L3N2Zz4=",
       features: [{ text: "Gamified Lessons" }, { text: "Engaging Activities" }],
-      isActive: "true",
+      isActive: "false",
       subtitle:
         "Learning made fun with interactive activities, simulations, and role plays.",
-      order: 11,
+      order: 0,
     },
     {
       title: "24/7 Support",
@@ -190,10 +201,10 @@ export const seedHighlights = async () => {
         { text: "Round-the-clock Help" },
         { text: "Dedicated Mentors" },
       ],
-      isActive: "true",
+      isActive: "false",
       subtitle:
         "Get assistance anytime, from academic questions to personal guidance.",
-      order: 12,
+      order: 0,
     },
     {
       title: "Technology Integrated",
@@ -201,10 +212,10 @@ export const seedHighlights = async () => {
       iconUrl:
         "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWNwdS1pY29uIGx1Y2lkZS1jcHUiPjxwYXRoIGQ9Ik0xMiAyMHYyIi8+PHBhdGggZD0iTTEyIDJ2MiIvPjxwYXRoIGQ9Ik0xNyAyMHYyIi8+PHBhdGggZD0iTTE3IDJ2MiIvPjxwYXRoIGQ9Ik0yIDEyaDIiLz48cGF0aCBkPSJNMiAxN2gyIi8+PHBhdGggZD0iTTIgN2gyIi8+PHBhdGggZD0iTTIwIDEyaDIiLz48cGF0aCBkPSJNMjAgMTdoMiIvPjxwYXRoIGQ9Ik0yMCA3aDIiLz48cGF0aCBkPSJNNyAyMHYyIi8+PHBhdGggZD0iTTcgMnYyIi8+PHJlY3QgeD0iNCIgeT0iNCIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiByeD0iMiIvPjxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSI4IiBoZWlnaHQ9IjgiIHJ4PSIxIi8+PC9zdmc+",
       features: [{ text: "AI Tutors" }, { text: "Mobile Learning" }],
-      isActive: "true",
+      isActive: "false",
       subtitle:
         "Cutting-edge tech with AI-powered practice and mobile apps for continuous learning.",
-      order: 13,
+      order: 0,
     },
     {
       title: "Cultural Immersion",
@@ -212,10 +223,10 @@ export const seedHighlights = async () => {
       iconUrl:
         "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXBhbGV0dGUtaWNvbiBsdWNpZGUtcGFsZXR0ZSI+PHBhdGggZD0iTTEyIDIyYTEgMSAwIDAgMSAwLTIwIDEwIDkgMCAwIDEgMTAgOSA1IDUgMCAwIDEtNSA1aC0yLjI1YTEuNzUgMS43NSAwIDAgMC0xLjQgMi44bC4zLjRhMS43NSAxLjc1IDAgMCAxLTEuNCAyLjh6Ii8+PGNpcmNsZSBjeD0iMTMuNSIgY3k9IjYuNSIgcj0iLjUiIGZpbGw9ImN1cnJlbnRDb2xvciIvPjxjaXJjbGUgY3g9IjE3LjUiIGN5PSIxMC41IiByPSIuNSIgZmlsbD0iY3VycmVudENvbG9yIi8+PGNpcmNsZSBjeD0iNi41IiBjeT0iMTIuNSIgcj0iLjUiIGZpbGw9ImN1cnJlbnRDb2xvciIvPjxjaXJjbGUgY3g9IjguNSIgY3k9IjcuNSIgcj0iLjUiIGZpbGw9ImN1cnJlbnRDb2xvciIvPjwvc3ZnPg==",
       features: [{ text: "Local Trips" }, { text: "Cultural Workshops" }],
-      isActive: "true",
+      isActive: "false",
       subtitle:
         "Beyond classrooms: cultural activities, local tours, and events to deepen learning.",
-      order: 14,
+      order: 0,
     },
     {
       title: "Fast-Track Courses",
@@ -226,10 +237,10 @@ export const seedHighlights = async () => {
         { text: "Accelerated Learning" },
         { text: "Intensive Tracks" },
       ],
-      isActive: "true",
+      isActive: "false",
       subtitle:
         "Special intensive courses for learners who need to achieve fluency quickly.",
-      order: 15,
+      order: 0,
     },
     {
       title: "Trusted Worldwide",
@@ -237,10 +248,10 @@ export const seedHighlights = async () => {
       iconUrl:
         "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWF3YXJkLWljb24gbHVjaWRlLWF3YXJkIj48cGF0aCBkPSJtMTUuNDc3IDEyLjg5IDEuNTE1IDguNTI2YS41LjUgMCAwIDEtLjgxLjQ3bC0zLjU4LTIuNjg3YTEgMSAwIDAgMC0xLjE5NyAwbC0zLjU4NiAyLjY4NmEuNS41IDAgMCAxLS44MS0uNDY5bDEuNTE0LTguNTI2Ii8+PGNpcmNsZSBjeD0iMTIiIGN5PSI4IiByPSI2Ii8+PC9zdmc+",
       features: [{ text: "10,000+ Alumni" }, { text: "Global Recognition" }],
-      isActive: "true",
+      isActive: "false",
       subtitle:
         "Recognized by universities and employers worldwide for language excellence.",
-      order: 16,
+      order: 0,
     },
   ];
 

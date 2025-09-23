@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { HeroSection } from "@/modules/home/ui/components/about/HeroSection";
+
 import { MainContentSection } from "@/modules/home/ui/components/about/MainContentSection";
 import { VisionMissionSection } from "@/modules/home/ui/components/about/VisionMissionSection";
 import { AccreditationsSection } from "@/modules/home/ui/components/about/AccreditationsSection";
@@ -9,6 +9,8 @@ import { MilestonesSection } from "@/modules/home/ui/components/about/Milestones
 
 import { Award, BookOpen, Globe, Users } from "lucide-react";
 import { TeamSection } from "../../components/about/TeamSection/page";
+import { ABOUT_BANNER_FALLBACK } from "@/constants";
+import { AboutHeroSection } from "../../sections/about/AboutHeroSection";
 
 // Define TypeScript interfaces for the CMS data
 interface CMSImage {
@@ -35,21 +37,6 @@ interface AboutPageProps {
 
 // About Us Page Component
 export default function AboutUsPage({ cmsData }: AboutPageProps) {
-  // Get hero images with fallbacks to Unsplash images
-  const heroImages = {
-    mobile: {
-      src: cmsData?.heroMobileImage?.url || "/HeroBg/About/AboutBanner.png",
-      alt:
-        cmsData?.heroMobileImage?.alt ||
-        "Students learning in classroom - mobile view",
-    },
-    desktop: {
-      src: cmsData?.heroDesktopImage?.url || "/HeroBg/About/AboutBanner.png",
-      alt:
-        cmsData?.heroDesktopImage?.alt ||
-        "Students collaborating in modern campus - desktop view",
-    },
-  };
   const accreditations = [
     {
       id: 1,
@@ -157,7 +144,7 @@ export default function AboutUsPage({ cmsData }: AboutPageProps) {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <main className="flex-grow">
-        <HeroSection heroImages={heroImages} />
+        <AboutHeroSection></AboutHeroSection>
         <MainContentSection
           values={values}
           stats={stats}

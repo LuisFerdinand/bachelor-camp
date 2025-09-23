@@ -8,6 +8,7 @@ import { CampusFacilitiesSection } from "../../sections/home/CampusFacilitiesSec
 import { TestimonialsSection } from "../../sections/home/TestimonialsSection";
 import { SpecialBundlesSection } from "../../sections/home/SpecialBundlesSection";
 import { StudentLifeGallery } from "../../components/home/StudentLifeGallery";
+import WhyChooseUsDisplayPage from "../../sections/home/Test";
 
 export const HomePage = () => {
   const { data: pillars, isLoading: isLoadingPillars } =
@@ -19,6 +20,8 @@ export const HomePage = () => {
         <HomeHeroSection />
 
         <WhyChooseUsSection />
+
+        {/* <WhyChooseUsDisplayPage></WhyChooseUsDisplayPage> */}
 
         <HomePillarsSection pillars={pillars} isLoading={isLoadingPillars} />
 
