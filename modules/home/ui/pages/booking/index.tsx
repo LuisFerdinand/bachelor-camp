@@ -1,20 +1,25 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Home, Info } from "lucide-react";
+import { ArrowLeft, Info } from "lucide-react";
 import {
-  Building,
-  buildings,
-  getBuildingBySlug,
-} from "@/app/util/buildingData";
-import { Course, courses, getCourseBySlug } from "@/app/util/bookingData";
+  BookingType,
+  getAllCourses,
+  getCourseBySlug,
+} from "@/app/util/bookingData";
+import { getAllBuildings } from "@/app/util/buildingData";
+import { useBookingFlow } from "@/hooks/useBookingFlow";
+
+// Import components
+import { BookingTypeSelector } from "@/components/booking/BookingTypeSelector";
+import { ProgramStartMonthSelector } from "@/components/booking/ProgramStartMonthSelector";
+
+// Import existing components that we'll update
 import { BuildingSelection } from "@/modules/home/ui/components/booking/BuildingSelection";
 import { ProgramSelection } from "@/modules/home/ui/components/booking/ProgramSelection";
-import { DurationSelection } from "@/modules/home/ui/components/booking/DurationSelection";
 import { AccommodationSelection } from "@/modules/home/ui/components/booking/AccommodationSelection";
 import { BookingSummary } from "@/modules/home/ui/components/booking/BookingSummary";
 import { MobileSummary } from "@/modules/home/ui/components/booking/MobileSummary";
@@ -23,142 +28,117 @@ export default function BookingPage() {
   const searchParams = useSearchParams();
   const courseSlug = searchParams.get("course");
 
-  // State variables
-  const [selectedBuilding, setSelectedBuilding] = useState<Building | null>(
-    null
-  );
-  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
-  const [selectedPricing, setSelectedPricing] = useState<
-    Building["pricing"][0] | null
-  >(null);
-  const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(null);
-  const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
-  const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [availabilityData, setAvailabilityData] = useState<{
-    [key: string]: { available: boolean; capacity: number };
-  }>({});
-  const [isLoading, setIsLoading] = useState(true);
-  const [personCount, setPersonCount] = useState<number>(1);
-  const [isSummaryOpen, setIsSummaryOpen] = useState(false);
+  const {
+    state,
+    setBookingType,
+    setSelectedBuilding,
+    setSelectedCourse,
+    setSelectedPricing,
+    setPersonCount,
+    setSelectedStartMonth,
+    currentBookingItem, // Use the computed booking item directly
+    resetBooking,
+    isBookingComplete,
+    getNextStep,
+  } = useBookingFlow();
 
-  // Initialize with first building if none selected
+  const [buildings] = useState(() => getAllBuildings());
+  const [courses] = useState(() => getAllCourses());
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSummaryOpen, setIsSummaryOpen] = useState(false);
+  const [currentStep, setCurrentStep] = useState<string>("booking-type");
+
+  // Initialize with course from URL if provided
   useEffect(() => {
-    if (!selectedBuilding && buildings.length > 0) {
-      setSelectedBuilding(buildings[0]);
+    if (courseSlug) {
+      const course = getCourseBySlug(courseSlug);
+      if (course) {
+        setBookingType(BookingType.PROGRAM_WITH_ACCOMMODATION);
+        setSelectedCourse(course);
+        setCurrentStep("accommodation");
+      }
     }
     setIsLoading(false);
-  }, [selectedBuilding]);
+  }, [courseSlug, setBookingType, setSelectedCourse]);
 
-  // Check for course in URL parameters
-  useEffect(() => {
-    if (courseSlug && selectedBuilding) {
-      const course = getCourseBySlug(courseSlug);
-      if (course && course.suitableBuildings.includes(selectedBuilding.id)) {
-        setSelectedCourse(course);
-      }
+  // Navigate to appropriate next step
+  const handleBookingTypeSelect = (bookingType: BookingType) => {
+    setBookingType(bookingType);
+
+    switch (bookingType) {
+      case BookingType.ACCOMMODATION_ONLY:
+        setCurrentStep("accommodation");
+        break;
+      case BookingType.PROGRAM_ONLY:
+        setCurrentStep("program");
+        break;
+      case BookingType.PROGRAM_WITH_ACCOMMODATION:
+        setCurrentStep("program");
+        break;
     }
-  }, [courseSlug, selectedBuilding]);
-
-  // Mock availability data - in real app this would come from API
-  useEffect(() => {
-    const generateAvailabilityData = () => {
-      const data: { [key: string]: { available: boolean; capacity: number } } =
-        {};
-      const today = new Date();
-
-      // Generate 6 months of availability data
-      for (let i = 0; i < 180; i++) {
-        const date = new Date(today);
-        date.setDate(today.getDate() + i);
-        const dateStr = date.toISOString().split("T")[0];
-
-        // Mock logic: weekends have lower availability, some random unavailable days
-        const isWeekend = date.getDay() === 0 || date.getDay() === 6;
-        const randomUnavailable = Math.random() < 0.1; // 10% chance of being unavailable
-
-        data[dateStr] = {
-          available: !randomUnavailable,
-          capacity: isWeekend ? 5 : 10,
-        };
-      }
-
-      setAvailabilityData(data);
-    };
-
-    generateAvailabilityData();
-  }, []);
-
-  // Filter courses suitable for the selected building
-  const suitableCourses = selectedBuilding
-    ? courses.filter((course) =>
-        course.suitableBuildings.includes(selectedBuilding.id)
-      )
-    : [];
-
-  // Event handlers
-  const handleBuildingSelect = (building: Building) => {
-    setSelectedBuilding(building);
-    setSelectedCourse(null);
-    setSelectedPricing(null);
-    setSelectedStartDate(null);
-    setSelectedEndDate(null);
   };
 
-  const handleCourseSelect = (course: Course) => {
-    setSelectedCourse(course);
-    setSelectedPricing(null);
-    setSelectedStartDate(null);
-    setSelectedEndDate(null);
+  const handleBackToBookingType = () => {
+    resetBooking();
+    setCurrentStep("booking-type");
   };
 
-  const handleResetCourse = () => {
-    setSelectedCourse(null);
-    setSelectedPricing(null);
-    setSelectedStartDate(null);
-    setSelectedEndDate(null);
-  };
-
-  const handlePricingSelect = (pricing: Building["pricing"][0]) => {
-    setSelectedPricing(pricing);
-    // Set person count to the minimum capacity of the selected pricing
-    setPersonCount(pricing.capacity);
-  };
-
-  const handlePersonCountChange = (count: number) => {
+  const handleContinueToAccommodation = () => {
     if (
-      selectedPricing &&
-      count >= selectedPricing.capacity &&
-      count <= selectedPricing.maxCapacity
+      state.bookingType === BookingType.PROGRAM_WITH_ACCOMMODATION &&
+      state.selectedCourse
     ) {
-      setPersonCount(count);
+      setCurrentStep("accommodation");
     }
   };
 
-  const handleDateClick = (date: Date) => {
-    if (!selectedCourse) return;
-
-    if (!selectedStartDate) {
-      // First click - set start date
-      setSelectedStartDate(date);
-      setSelectedEndDate(null);
-    } else if (!selectedEndDate) {
-      // Second click - set end date
-      if (date < selectedStartDate) {
-        // If clicked date is before start date, swap them
-        setSelectedEndDate(selectedStartDate);
-        setSelectedStartDate(date);
-      } else {
-        setSelectedEndDate(date);
-      }
-    } else {
-      // Third click - reset and start over
-      setSelectedStartDate(date);
-      setSelectedEndDate(null);
+  const handleContinueToStartMonth = () => {
+    if (
+      state.bookingType === BookingType.PROGRAM_ONLY &&
+      state.selectedCourse
+    ) {
+      setCurrentStep("start-month");
+    } else if (
+      state.bookingType === BookingType.PROGRAM_WITH_ACCOMMODATION &&
+      state.selectedBuilding &&
+      state.selectedPricing
+    ) {
+      setCurrentStep("start-month");
     }
   };
 
-  const handleMonthChange = (date: Date) => {
-    setCurrentMonth(date);
+  const getStepTitle = () => {
+    switch (currentStep) {
+      case "booking-type":
+        return "Choose Your Booking Type";
+      case "program":
+        return "Select Your Program";
+      case "accommodation":
+        return state.bookingType === BookingType.ACCOMMODATION_ONLY
+          ? "Select Your Accommodation"
+          : "Select Your Accommodation";
+      case "start-month":
+        return "Select Start Month";
+      default:
+        return "Book Your Experience";
+    }
+  };
+
+  const getStepDescription = () => {
+    switch (currentStep) {
+      case "booking-type":
+        return "Choose the option that best fits your learning and accommodation needs";
+      case "program":
+        return "Select the program that matches your learning goals";
+      case "accommodation":
+        return state.bookingType === BookingType.ACCOMMODATION_ONLY
+          ? "Choose your accommodation and number of people"
+          : "Choose accommodation that complements your program";
+      case "start-month":
+        return "Select when you want to start your program";
+      default:
+        return "Customize your English learning experience with our flexible booking options";
+    }
   };
 
   if (isLoading) {
@@ -182,21 +162,25 @@ export default function BookingPage() {
           <div className="relative z-10 container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
               <Badge className="mb-6 bg-white/20 text-white hover:bg-white/30 border border-white/30 backdrop-blur-sm px-4 py-2">
-                Book Your Experience
+                {state.bookingType
+                  ? `${state.bookingType
+                      .replace("_", " ")
+                      .replace(/\b\w/g, (l) => l.toUpperCase())} Booking`
+                  : "Book Your Experience"}
               </Badge>
               <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white drop-shadow-lg">
-                Reserve Your Spot
+                {getStepTitle()}
               </h1>
               <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto drop-shadow-md leading-relaxed">
-                Customize your English learning experience with our flexible
-                booking options.
+                {getStepDescription()}
               </p>
-              {selectedBuilding && (
+
+              {/* Progress indicator */}
+              {state.bookingType && (
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 max-w-md mx-auto border border-white/20">
-                  <div className="flex items-center justify-center">
-                    <Home className="h-5 w-5 text-white mr-2" />
-                    <span className="text-white font-medium">
-                      Booking for: {selectedBuilding.name}
+                  <div className="flex items-center justify-center text-white">
+                    <span className="text-sm font-medium">
+                      {getNextStep || "Ready to proceed"}
                     </span>
                   </div>
                 </div>
@@ -209,94 +193,152 @@ export default function BookingPage() {
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Booking Form */}
             <div className="lg:w-2/3">
-              <Tabs defaultValue="building" className="w-full">
-                <TabsList className="grid w-full grid-cols-4 mb-8 bg-neutral-100 p-1 rounded-lg">
-                  <TabsTrigger
-                    value="building"
-                    className="rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm font-medium"
+              {/* Back button */}
+              {currentStep !== "booking-type" && (
+                <div className="mb-6">
+                  <Button
+                    variant="outline"
+                    onClick={handleBackToBookingType}
+                    className="flex items-center bg-transparent"
                   >
-                    <span className="hidden sm:inline">Building</span>
-                    <span className="sm:hidden">Building</span>
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="program"
-                    className="rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm font-medium"
-                  >
-                    <span className="hidden sm:inline">Program</span>
-                    <span className="sm:hidden">Program</span>
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="duration"
-                    className="rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm font-medium"
-                  >
-                    <span className="hidden sm:inline">Duration & Dates</span>
-                    <span className="sm:hidden">Duration</span>
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="accommodation"
-                    className="rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm font-medium"
-                  >
-                    <span className="hidden sm:inline">Accommodation</span>
-                    <span className="sm:hidden">Room</span>
-                  </TabsTrigger>
-                </TabsList>
+                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    Back to Booking Type
+                  </Button>
+                </div>
+              )}
 
-                {/* Building Selection */}
-                <TabsContent value="building" className="space-y-6">
-                  <BuildingSelection
-                    buildings={buildings}
-                    selectedBuilding={selectedBuilding}
-                    onBuildingSelect={handleBuildingSelect}
-                  />
-                </TabsContent>
+              {/* Step Content */}
+              {currentStep === "booking-type" && (
+                <BookingTypeSelector
+                  selectedBookingType={state.bookingType}
+                  onBookingTypeSelect={handleBookingTypeSelect}
+                />
+              )}
 
-                {/* Program Selection */}
-                <TabsContent value="program" className="space-y-6">
+              {currentStep === "program" && (
+                <div className="space-y-6">
                   <ProgramSelection
-                    selectedBuilding={selectedBuilding}
-                    suitableCourses={suitableCourses}
-                    selectedCourse={selectedCourse}
+                    selectedBuilding={null} // Not needed for new flow
+                    suitableCourses={courses}
+                    selectedCourse={state.selectedCourse}
                     courseSlug={courseSlug}
-                    onCourseSelect={handleCourseSelect}
-                    onResetCourse={handleResetCourse}
+                    onCourseSelect={setSelectedCourse}
+                    onResetCourse={() => setSelectedCourse(null)}
                   />
-                </TabsContent>
 
-                {/* Duration & Date Selection */}
-                <TabsContent value="duration" className="space-y-6">
-                  <DurationSelection
-                    selectedCourse={selectedCourse}
-                    selectedStartDate={selectedStartDate}
-                    selectedEndDate={selectedEndDate}
-                    currentMonth={currentMonth}
-                    availabilityData={availabilityData}
-                    onDateClick={handleDateClick}
-                    onMonthChange={handleMonthChange}
-                  />
-                </TabsContent>
+                  {state.selectedCourse && (
+                    <div className="text-center">
+                      <Button
+                        className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold px-8 py-2"
+                        onClick={() => {
+                          if (state.bookingType === BookingType.PROGRAM_ONLY) {
+                            setCurrentStep("start-month");
+                          } else {
+                            handleContinueToAccommodation();
+                          }
+                        }}
+                      >
+                        {state.bookingType === BookingType.PROGRAM_ONLY
+                          ? "Continue to Start Month"
+                          : "Continue to Accommodation"}
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              )}
 
-                {/* Accommodation Selection */}
-                <TabsContent value="accommodation" className="space-y-6">
-                  <AccommodationSelection
-                    selectedBuilding={selectedBuilding}
-                    selectedPricing={selectedPricing}
-                    personCount={personCount}
-                    onPricingSelect={handlePricingSelect}
-                    onPersonCountChange={handlePersonCountChange}
+              {currentStep === "accommodation" && (
+                <div className="space-y-6">
+                  {state.bookingType === BookingType.ACCOMMODATION_ONLY && (
+                    <BuildingSelection
+                      buildings={buildings}
+                      selectedBuilding={state.selectedBuilding}
+                      onBuildingSelect={setSelectedBuilding}
+                    />
+                  )}
+
+                  {state.bookingType ===
+                    BookingType.PROGRAM_WITH_ACCOMMODATION &&
+                    state.selectedCourse && (
+                      <BuildingSelection
+                        buildings={buildings.filter((building) =>
+                          state.selectedCourse?.suitableBuildings.includes(
+                            building.id
+                          )
+                        )}
+                        selectedBuilding={state.selectedBuilding}
+                        onBuildingSelect={setSelectedBuilding}
+                      />
+                    )}
+
+                  {state.selectedBuilding && (
+                    <AccommodationSelection
+                      selectedBuilding={state.selectedBuilding}
+                      selectedPricing={state.selectedPricing}
+                      personCount={state.personCount}
+                      onPricingSelect={setSelectedPricing}
+                      onPersonCountChange={setPersonCount}
+                    />
+                  )}
+
+                  {state.selectedBuilding && state.selectedPricing && (
+                    <div className="text-center">
+                      <Button
+                        className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold px-8 py-2"
+                        onClick={() => {
+                          if (
+                            state.bookingType ===
+                            BookingType.PROGRAM_WITH_ACCOMMODATION
+                          ) {
+                            handleContinueToStartMonth();
+                          }
+                          // For accommodation-only, booking is complete
+                        }}
+                      >
+                        {state.bookingType ===
+                        BookingType.PROGRAM_WITH_ACCOMMODATION
+                          ? "Continue to Start Month"
+                          : "Complete Booking"}
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {currentStep === "start-month" && (
+                <div className="space-y-6">
+                  <ProgramStartMonthSelector
+                    selectedCourse={state.selectedCourse}
+                    selectedStartMonth={state.selectedStartMonth}
+                    onStartMonthSelect={setSelectedStartMonth}
                   />
-                </TabsContent>
-              </Tabs>
+
+                  {state.selectedStartMonth && (
+                    <div className="text-center">
+                      <Button
+                        className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold px-8 py-2"
+                        onClick={() => {
+                          // Complete booking
+                          console.log("Booking complete:", currentBookingItem);
+                        }}
+                      >
+                        Complete Booking
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Booking Summary - Desktop */}
             <div className="hidden lg:block lg:w-1/3">
               <BookingSummary
-                selectedBuilding={selectedBuilding}
-                selectedCourse={selectedCourse}
-                selectedPricing={selectedPricing}
-                selectedStartDate={selectedStartDate}
-                selectedEndDate={selectedEndDate}
-                personCount={personCount}
+                selectedBuilding={state.selectedBuilding}
+                selectedCourse={state.selectedCourse}
+                selectedPricing={state.selectedPricing}
+                selectedStartDate={null} // Not used in new flow
+                selectedEndDate={null} // Not used in new flow
+                personCount={state.personCount}
                 courseSlug={courseSlug}
               />
             </div>
@@ -314,12 +356,12 @@ export default function BookingPage() {
 
       {/* Mobile Summary Overlay */}
       <MobileSummary
-        selectedBuilding={selectedBuilding}
-        selectedCourse={selectedCourse}
-        selectedPricing={selectedPricing}
-        selectedStartDate={selectedStartDate}
-        selectedEndDate={selectedEndDate}
-        personCount={personCount}
+        selectedBuilding={state.selectedBuilding}
+        selectedCourse={state.selectedCourse}
+        selectedPricing={state.selectedPricing}
+        selectedStartDate={null} // Not used in new flow
+        selectedEndDate={null} // Not used in new flow
+        personCount={state.personCount}
         courseSlug={courseSlug}
         isOpen={isSummaryOpen}
         onClose={() => setIsSummaryOpen(false)}

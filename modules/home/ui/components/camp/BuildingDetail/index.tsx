@@ -144,12 +144,11 @@ export function BuildingDetail({ building }: BuildingDetailProps) {
       {/* Main Content */}
       <div className="lg:col-span-2">
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-8">
+          <TabsList className="grid w-full grid-cols-4 mb-8">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="rooms">Rooms</TabsTrigger>
             <TabsTrigger value="programs">Programs</TabsTrigger>
             <TabsTrigger value="amenities">Amenities</TabsTrigger>
-            <TabsTrigger value="gallery">Gallery</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}

@@ -534,7 +534,7 @@ export function getBuildingBySlug(slug: string): Building | undefined {
 // Function to get related buildings (excluding the current building)
 export function getRelatedBuildings(
   currentBuildingId: number,
-  limit = 2,
+  limit = 2
 ): Building[] {
   return buildings
     .filter((building) => building.id !== currentBuildingId)

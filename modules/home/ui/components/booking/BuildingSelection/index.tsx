@@ -1,10 +1,8 @@
 "use client";
-
-import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Home, MapPin, CheckCircle } from "lucide-react";
-import { Building } from "@/app/util/buildingData";
+import type { Building } from "@/app/util/buildingData";
 
 interface BuildingSelectionProps {
   buildings: Building[];
