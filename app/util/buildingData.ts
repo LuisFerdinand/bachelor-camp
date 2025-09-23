@@ -166,7 +166,7 @@ export const buildings: Building[] = [
       },
     ],
     badge: "Most Popular",
-    badgeColor: "bg-accent-500",
+    badgeColor: "bg-electric-500",
     location: {
       address: "123 Education Street, Central Jakarta, Indonesia 10110",
       mapUrl: "https://maps.google.com/?q=123+Education+Street+Central+Jakarta",

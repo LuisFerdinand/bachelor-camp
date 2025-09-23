@@ -17,7 +17,7 @@ export function BookingTypeSelector({
   const bookingOptions = [
     {
       type: BookingType.ACCOMMODATION_ONLY,
-      title: "Accommodation Only",
+      title: "Accommodation",
       description:
         "Book accommodation and choose number of people. Admin will arrange rooms manually.",
       icon: Home,
@@ -32,7 +32,7 @@ export function BookingTypeSelector({
     },
     {
       type: BookingType.PROGRAM_ONLY,
-      title: "Program Only",
+      title: "Program",
       description:
         "Select programs with available start months set by admin. Pay static program price.",
       icon: BookOpen,
@@ -47,7 +47,7 @@ export function BookingTypeSelector({
     },
     {
       type: BookingType.PROGRAM_WITH_ACCOMMODATION,
-      title: "Program + Accommodation",
+      title: "Camp",
       description:
         "Complete package with program and accommodation. Select program first, then available accommodation.",
       icon: Package,
@@ -89,10 +89,10 @@ export function BookingTypeSelector({
                 <CardContent className="p-6 flex-grow">
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex items-center">
-                      <Icon className="h-6 w-6 text-blue-500 mr-2" />
-                      <h3 className="font-bold text-neutral-900">
+                      <Icon className="size-8 text-blue-500 mr-2" />
+                      <h5 className="font-bold text-neutral-900">
                         {option.title}
-                      </h3>
+                      </h5>
                     </div>
                     {isSelected && (
                       <CheckCircle className="h-5 w-5 text-blue-500" />

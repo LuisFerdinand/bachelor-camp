@@ -729,7 +729,8 @@ export function getAllBookingCombinations(): BookingItem[] {
             building,
             course,
             pricingOption,
-            1
+            1,
+            { month: "January", year: 2025 }
           )
         );
       });

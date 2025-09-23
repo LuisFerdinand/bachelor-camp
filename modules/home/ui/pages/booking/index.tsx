@@ -340,6 +340,8 @@ export default function BookingPage() {
                 selectedEndDate={null} // Not used in new flow
                 personCount={state.personCount}
                 courseSlug={courseSlug}
+                bookingType={state.bookingType} // Add missing bookingType prop
+                selectedStartMonth={state.selectedStartMonth} // Add missing selectedStartMonth prop
               />
             </div>
           </div>
@@ -363,6 +365,8 @@ export default function BookingPage() {
         selectedEndDate={null} // Not used in new flow
         personCount={state.personCount}
         courseSlug={courseSlug}
+        bookingType={state.bookingType} // Add missing bookingType prop
+        selectedStartMonth={state.selectedStartMonth} // Add missing selectedStartMonth prop
         isOpen={isSummaryOpen}
         onClose={() => setIsSummaryOpen(false)}
       />

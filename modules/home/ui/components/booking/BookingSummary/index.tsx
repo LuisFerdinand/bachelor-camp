@@ -7,6 +7,9 @@ import {
   type Building,
   type Course,
   BookingType,
+  calculateAccommodationOnlyPrice,
+  calculateProgramOnlyPrice,
+  calculateProgramWithAccommodationPrice,
 } from "@/app/util/bookingData";
 import { formatCurrency, getBookingTypeLabel } from "@/app/util/bookingUtils";
 
@@ -14,12 +17,24 @@ interface BookingSummaryProps {
   selectedBuilding: Building | null;
   selectedCourse: Course | null;
   selectedPricing: Building["pricing"][0] | null;
-  selectedStartDate: Date | null; // Legacy prop - not used in new flow
-  selectedEndDate: Date | null; // Legacy prop - not used in new flow
+  selectedStartDate: Date | null;
+  selectedEndDate: Date | null;
   personCount: number;
   courseSlug: string | null;
   bookingType?: BookingType | null;
   selectedStartMonth?: { month: string; year: number } | null;
+}
+
+// Helper function to calculate duration in months from course duration string
+function calculateDurationInMonths(duration: string): number {
+  if (duration.includes("Bulan")) {
+    const months = Number.parseInt(duration.split(" ")[0]);
+    return months;
+  } else if (duration.includes("Minggu")) {
+    const weeks = Number.parseInt(duration.split(" ")[0]);
+    return Math.ceil(weeks / 4); // Convert weeks to months (round up)
+  }
+  return 1; // Default to 1 month minimum
 }
 
 export function BookingSummary({
@@ -37,28 +52,28 @@ export function BookingSummary({
     switch (bookingType) {
       case BookingType.ACCOMMODATION_ONLY:
         if (selectedBuilding && selectedPricing) {
-          return selectedPricing.numericPrice * personCount;
+          return calculateAccommodationOnlyPrice(
+            selectedBuilding,
+            selectedPricing,
+            personCount
+          );
         }
         break;
 
       case BookingType.PROGRAM_ONLY:
         if (selectedCourse) {
-          return selectedCourse.investment;
+          return calculateProgramOnlyPrice(selectedCourse);
         }
         break;
 
       case BookingType.PROGRAM_WITH_ACCOMMODATION:
         if (selectedBuilding && selectedCourse && selectedPricing) {
-          // Calculate duration in months from course duration
-          const durationInMonths = selectedCourse.duration.includes("Bulan")
-            ? Number.parseInt(selectedCourse.duration.split(" ")[0])
-            : selectedCourse.duration.includes("Minggu")
-            ? Number.parseInt(selectedCourse.duration.split(" ")[0]) / 4
-            : 1;
-
-          const accommodationCost =
-            selectedPricing.numericPrice * personCount * durationInMonths;
-          return accommodationCost + selectedCourse.investment;
+          return calculateProgramWithAccommodationPrice(
+            selectedBuilding,
+            selectedCourse,
+            selectedPricing,
+            personCount
+          );
         }
         break;
     }
@@ -127,7 +142,7 @@ export function BookingSummary({
                   Duration: {selectedCourse.duration}
                 </div>
                 <div className="font-bold text-blue-600 mt-1">
-                  Rp {selectedCourse.investment.toLocaleString("id-ID")}
+                  {formatCurrency(selectedCourse.investment)}
                 </div>
               </div>
             ) : (
@@ -193,22 +208,24 @@ export function BookingSummary({
                     <div className="font-bold text-blue-600 mt-1">
                       {bookingType === BookingType.ACCOMMODATION_ONLY ? (
                         <>
-                          Rp{" "}
-                          {(
+                          {formatCurrency(
                             selectedPricing.numericPrice * personCount
-                          ).toLocaleString("id-ID")}
-                          /month
+                          )}
+                          <span className="text-xs">/month</span>
                         </>
                       ) : (
                         <>
-                          Rp{" "}
-                          {(
+                          {formatCurrency(
                             selectedPricing.numericPrice * personCount
-                          ).toLocaleString("id-ID")}
-                          /month
+                          )}
+                          <span className="text-xs">/month</span>
                           {selectedCourse && (
                             <div className="text-xs text-neutral-500">
-                              × {selectedCourse.duration}
+                              ×{" "}
+                              {calculateDurationInMonths(
+                                selectedCourse.duration
+                              )}{" "}
+                              months
                             </div>
                           )}
                         </>
@@ -231,7 +248,9 @@ export function BookingSummary({
             <span className="font-bold text-lg text-neutral-900">Total</span>
             <span className="font-bold text-xl text-blue-600">
               {formatCurrency(total)}
-              {bookingType === BookingType.ACCOMMODATION_ONLY && "/month"}
+              {bookingType === BookingType.ACCOMMODATION_ONLY && (
+                <span className="text-sm font-normal">/month</span>
+              )}
             </span>
           </div>
           {bookingType === BookingType.ACCOMMODATION_ONLY && (

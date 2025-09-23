@@ -42,12 +42,53 @@ export function BuildingCard({ building }: BuildingCardProps) {
     setCourses(suitableCourses);
   }, [building.id]);
 
+  // Define color schemes for each building
+  const getColorScheme = (buildingId: number) => {
+    switch (buildingId) {
+      case 1:
+        return {
+          ring: "ring-2 ring-electric-200",
+          gradient: "bg-gradient-to-r from-electric-400 to-electric-500",
+          buttonGradient:
+            "bg-gradient-to-r from-electric-500 to-electric-600 hover:from-electric-600 hover:to-electric-700",
+          shadow: "shadow-electric",
+          highlightBg: "bg-gradient-to-r from-electric-50 to-electric-100",
+          highlightBorder: "border-electric-200",
+          highlightText: "text-electric-700",
+        };
+      case 2:
+        return {
+          ring: "ring-2 ring-success-200",
+          gradient: "bg-gradient-to-r from-success-400 to-success-500",
+          buttonGradient:
+            "bg-gradient-to-r from-success-500 to-success-600 hover:from-success-600 hover:to-success-700",
+          shadow: "shadow-sm",
+          highlightBg: "bg-gradient-to-r from-success-50 to-success-100",
+          highlightBorder: "border-success-200",
+          highlightText: "text-success-700",
+        };
+      default:
+        return {
+          ring: "ring-2 ring-brand-200",
+          gradient: "bg-gradient-to-r from-brand-500 to-brand-600",
+          buttonGradient:
+            "bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700",
+          shadow: "shadow-brand",
+          highlightBg: "bg-gradient-to-r from-brand-50 to-brand-100",
+          highlightBorder: "border-brand-200",
+          highlightText: "text-brand-700",
+        };
+    }
+  };
+
+  const colorScheme = getColorScheme(building.id);
+
   return (
     <Card
       className={`
         border-0 shadow-lg hover:shadow-xl transition-all duration-300 
         relative overflow-hidden flex flex-col h-full
-        ${building.id === 1 ? "ring-2 ring-accent-200 lg:scale-105" : ""}
+        ${building.id === 1 ? `${colorScheme.ring} lg:scale-105` : ""}
         ${building.id === 1 ? "lg:order-2 order-1" : ""}
         ${building.id === 2 ? "lg:order-1 order-2" : ""}
         ${building.id === 3 ? "lg:order-3 order-3" : ""}
@@ -72,15 +113,7 @@ export function BuildingCard({ building }: BuildingCardProps) {
           </div>
         )}
       </div>
-      <div
-        className={`h-2 flex-shrink-0 ${
-          building.id === 1
-            ? "bg-gradient-to-r from-accent-400 to-accent-500"
-            : building.id === 2
-            ? "bg-gradient-to-r from-success-400 to-success-500"
-            : "bg-gradient-to-r from-brand-500 to-brand-600"
-        }`}
-      ></div>
+      <div className={`h-2 flex-shrink-0 ${colorScheme.gradient}`}></div>
       <CardHeader className="pb-4 flex-shrink-0">
         <CardTitle className="text-xl text-neutral-900">
           {building.name}
@@ -109,7 +142,7 @@ export function BuildingCard({ building }: BuildingCardProps) {
                   key={price.id}
                   className={`p-4 rounded-xl border-2 transition-all ${
                     price.highlight
-                      ? "bg-gradient-to-r from-brand-50 to-accent-50 border-brand-200 shadow-sm"
+                      ? `${colorScheme.highlightBg} ${colorScheme.highlightBorder} shadow-sm`
                       : "bg-neutral-50 border-neutral-200"
                   }`}
                 >
@@ -119,7 +152,7 @@ export function BuildingCard({ building }: BuildingCardProps) {
                   <div
                     className={`font-bold ${
                       price.highlight
-                        ? "text-brand-700 text-lg"
+                        ? `${colorScheme.highlightText} text-lg`
                         : "text-neutral-800"
                     }`}
                   >
@@ -153,13 +186,7 @@ export function BuildingCard({ building }: BuildingCardProps) {
           <div className="flex gap-2">
             <Link href={`/camp/${building.slug}`} className="flex-1">
               <Button
-                className={`w-full py-3 font-semibold text-base transition-all ${
-                  building.id === 1
-                    ? "bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 shadow-accent"
-                    : building.id === 2
-                    ? "bg-gradient-to-r from-success-500 to-success-600 hover:from-success-600 hover:to-success-700 shadow-sm"
-                    : "bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 shadow-brand"
-                } text-white`}
+                className={`w-full py-3 font-semibold text-base transition-all ${colorScheme.buttonGradient} ${colorScheme.shadow} text-white`}
               >
                 View Details
               </Button>
