@@ -4,49 +4,21 @@ import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Wifi, Utensils, Dumbbell, Coffee, Globe, Home } from "lucide-react";
-import { FACILITIES_FALLBACKS } from "@/constants";
+import {
+  FACILITIES_FALLBACKS,
+  ICON_URL_FALLBACK,
+  PRODUCT_IMAGE_FALLBACK,
+} from "@/constants";
+import { trpc } from "@/trpc/client";
+import { ReactSVG } from "react-svg";
 
 export function CampusFacilitiesSection() {
-  const facilities = [
-    {
-      icon: Home,
-      title: "Luxury Dormitories",
-      description: "Air-conditioned rooms with modern amenities",
-      image: FACILITIES_FALLBACKS["luxuryDorm"],
-    },
-    {
-      icon: Wifi,
-      title: "High-Speed Internet",
-      description: "24/7 WiFi access throughout campus",
-      image:
-        "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-    },
-    {
-      icon: Utensils,
-      title: "International Cuisine",
-      description: "Diverse dining options and healthy meals",
-      image: FACILITIES_FALLBACKS["interFood"],
-    },
-    {
-      icon: Dumbbell,
-      title: "Fitness Center",
-      description: "Modern gym and sports facilities",
-      image:
-        "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-    },
-    {
-      icon: Coffee,
-      title: "Study Lounges",
-      description: "Comfortable spaces for group study",
-      image: FACILITIES_FALLBACKS["studyRoom"],
-    },
-    {
-      icon: Globe,
-      title: "Cultural Center",
-      description: "International community activities",
-      image: FACILITIES_FALLBACKS["culturalCenter"],
-    },
-  ];
+  const { data: facilities, isLoading: isLoadingFacilites } =
+    trpc.facilities.getFeatured.useQuery();
+
+  if (isLoadingFacilites) {
+    return <>Loading</>;
+  }
 
   return (
     <section className="py-16 bg-gradient-to-b from-neutral-50 to-white">
@@ -65,8 +37,7 @@ export function CampusFacilitiesSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {facilities.map((facility, index) => {
-            const IconComponent = facility.icon;
+          {facilities?.map((facility, index) => {
             return (
               <Card
                 key={index}
@@ -74,19 +45,27 @@ export function CampusFacilitiesSection() {
               >
                 <div className="relative h-40 overflow-hidden">
                   <Image
-                    src={facility.image}
-                    alt={facility.title}
+                    src={facility.imageUrl || PRODUCT_IMAGE_FALLBACK}
+                    alt={facility.name}
                     fill
                     className="object-cover transition-transform group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end">
                     <div className="flex items-center space-x-3 p-4">
                       <div className="w-10 h-10 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                        <IconComponent className="h-5 w-5 text-white" />
+                        {/* <div className="w-6 h-6 rounded-full bg-brand-600 flex items-center justify-center flex-shrink-0 mt-1"> */}
+                        <ReactSVG
+                          src={facility.iconUrl || ICON_URL_FALLBACK}
+                          beforeInjection={(svg) => {
+                            svg.setAttribute("class", "h-5 w-5 text-white");
+                          }}
+                          className="flex items-center justify-center"
+                        />
+                        {/* </div> */}
                       </div>
                       <div>
                         <h3 className="text-white font-semibold">
-                          {facility.title}
+                          {facility.name}
                         </h3>
                         <p className="text-white/80 text-sm">
                           {facility.description}

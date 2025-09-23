@@ -14,7 +14,11 @@ import {
 } from "@/db/schema/enums";
 import { requireRole } from "@/lib/access";
 import { generateUniqueSlug } from "@/server/utils/generateUniqueSlug";
-import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
+import {
+  baseProcedure,
+  createTRPCRouter,
+  protectedProcedure,
+} from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { and, asc, eq, gt, ilike, or, sql } from "drizzle-orm";
 import { UTApi } from "uploadthing/server";
@@ -370,4 +374,12 @@ export const facilitiesRouter = createTRPCRouter({
 
       return facility;
     }),
+  getFeatured: baseProcedure.query(async () => {
+    const data = await db
+      .select()
+      .from(facilities)
+      .where(eq(facilities.isFeatured, "true"))
+      .orderBy(asc(facilities.order));
+    return data;
+  }),
 });
