@@ -6,32 +6,39 @@ import { Camera, ChevronRight } from "lucide-react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { ACTIVITY_FALLBACKS } from "@/constants";
 
 export const StudentLifeGallery = () => {
   const galleryImages = [
     {
       src: "/home/activity/Activity1.png",
       alt: "Group Activities",
+      fallback: ACTIVITY_FALLBACKS.activity1,
     },
     {
       src: "/home/activity/Activity2.png",
       alt: "Study Groups",
+      fallback: ACTIVITY_FALLBACKS.activity2,
     },
     {
       src: "/home/activity/Activity3.png",
       alt: "Outdoor Learning",
+      fallback: ACTIVITY_FALLBACKS.activity3,
     },
     {
       src: "/home/activity/Activity4.png",
-      alt: "Voulunteer",
+      alt: "Volunteer",
+      fallback: ACTIVITY_FALLBACKS.activity4,
     },
     {
       src: "/home/activity/Activity5.png",
       alt: "Cultural Study",
+      fallback: ACTIVITY_FALLBACKS.activity5,
     },
     {
       src: "/home/activity/Activity6.png",
       alt: "International Program",
+      fallback: ACTIVITY_FALLBACKS.activity6,
     },
   ];
 

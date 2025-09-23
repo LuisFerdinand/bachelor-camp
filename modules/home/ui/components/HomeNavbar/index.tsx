@@ -9,6 +9,7 @@ import BookMenu from "./BookMenu";
 
 import Image from "next/image";
 import { UserMenu } from "@/modules/auth/ui/components/UserMenu";
+import { LOGO_PRIMARY_FALLBACK, LOGO_SECONDARY_FALLBACK } from "@/constants";
 
 export const HomeNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -76,7 +77,7 @@ export const HomeNavbar = () => {
             <div className="relative w-32 h-10">
               {/* Logo for when not scrolled (top of page) */}
               <Image
-                src="/header/Logo2.png"
+                src={LOGO_SECONDARY_FALLBACK}
                 width={180}
                 height={180}
                 alt="Bachelor Camp Logo"
@@ -88,7 +89,7 @@ export const HomeNavbar = () => {
               />
               {/* Logo for when scrolled/menu open */}
               <Image
-                src="/header/Logo1.png"
+                src={LOGO_PRIMARY_FALLBACK}
                 width={180}
                 height={180}
                 alt="Bachelor Camp Logo Dark"
@@ -167,11 +168,17 @@ export const HomeNavbar = () => {
 
       {/* Mobile Navigation */}
       <div
-        className={`lg:hidden bg-white/95 backdrop-blur-md overflow-hidden transition-all duration-500 ease-in-out ${isMenuOpen ? "max-h-screen py-4 opacity-100" : "max-h-0 opacity-0"}`}
+        className={`lg:hidden bg-white/95 backdrop-blur-md overflow-hidden transition-all duration-500 ease-in-out ${
+          isMenuOpen ? "max-h-screen py-4 opacity-100" : "max-h-0 opacity-0"
+        }`}
       >
         <div className="container mx-auto px-4">
           <nav
-            className={`flex flex-col space-y-1 transition-all duration-500 ease-in-out delay-150 ${isMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-4 opacity-0"}`}
+            className={`flex flex-col space-y-1 transition-all duration-500 ease-in-out delay-150 ${
+              isMenuOpen
+                ? "translate-y-0 opacity-100"
+                : "-translate-y-4 opacity-0"
+            }`}
           >
             {navLinks.map((link, index) => (
               <Link
@@ -181,7 +188,11 @@ export const HomeNavbar = () => {
                   pathname === link.href
                     ? "text-brand-600 bg-brand-50"
                     : "text-gray-600 hover:text-brand-600 hover:bg-gray-50"
-                } ${isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"}`}
+                } ${
+                  isMenuOpen
+                    ? "translate-x-0 opacity-100"
+                    : "-translate-x-4 opacity-0"
+                }`}
                 style={{
                   transitionDelay: isMenuOpen ? `${200 + index * 50}ms` : "0ms",
                 }}
@@ -193,13 +204,21 @@ export const HomeNavbar = () => {
 
             {/* Mobile Book Section */}
             <div
-              className={`border-t border-gray-200 mt-4 pt-4 transition-all duration-300 ease-in-out ${isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"}`}
+              className={`border-t border-gray-200 mt-4 pt-4 transition-all duration-300 ease-in-out ${
+                isMenuOpen
+                  ? "translate-x-0 opacity-100"
+                  : "-translate-x-4 opacity-0"
+              }`}
               style={{ transitionDelay: isMenuOpen ? "500ms" : "0ms" }}
             >
               <div className="space-y-1">
                 <Link
                   href="/booking"
-                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"}`}
+                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${
+                    isMenuOpen
+                      ? "translate-x-0 opacity-100"
+                      : "-translate-x-4 opacity-0"
+                  }`}
                   style={{ transitionDelay: isMenuOpen ? "550ms" : "0ms" }}
                   onClick={closeMenus}
                 >
@@ -221,7 +240,11 @@ export const HomeNavbar = () => {
                 </Link>
                 <Link
                   href="/booking"
-                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"}`}
+                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${
+                    isMenuOpen
+                      ? "translate-x-0 opacity-100"
+                      : "-translate-x-4 opacity-0"
+                  }`}
                   style={{ transitionDelay: isMenuOpen ? "600ms" : "0ms" }}
                   onClick={closeMenus}
                 >
@@ -244,7 +267,11 @@ export const HomeNavbar = () => {
                 <div className="border-t border-gray-200 my-2"></div>
                 <Link
                   href="/login"
-                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"}`}
+                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${
+                    isMenuOpen
+                      ? "translate-x-0 opacity-100"
+                      : "-translate-x-4 opacity-0"
+                  }`}
                   style={{ transitionDelay: isMenuOpen ? "650ms" : "0ms" }}
                   onClick={closeMenus}
                 >
@@ -266,7 +293,11 @@ export const HomeNavbar = () => {
                 </Link>
                 <Link
                   href="/register"
-                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"}`}
+                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${
+                    isMenuOpen
+                      ? "translate-x-0 opacity-100"
+                      : "-translate-x-4 opacity-0"
+                  }`}
                   style={{ transitionDelay: isMenuOpen ? "700ms" : "0ms" }}
                   onClick={closeMenus}
                 >
@@ -288,7 +319,11 @@ export const HomeNavbar = () => {
                 </Link>
                 <Link
                   href="/profile"
-                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"}`}
+                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${
+                    isMenuOpen
+                      ? "translate-x-0 opacity-100"
+                      : "-translate-x-4 opacity-0"
+                  }`}
                   style={{ transitionDelay: isMenuOpen ? "750ms" : "0ms" }}
                   onClick={closeMenus}
                 >
