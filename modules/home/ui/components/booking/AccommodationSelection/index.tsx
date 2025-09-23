@@ -1,11 +1,9 @@
 "use client";
-
-import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Home, Users, CheckCircle } from "lucide-react";
-import { Building } from "@/app/util/buildingData";
+import type { Building } from "@/app/util/buildingData";
 
 interface AccommodationSelectionProps {
   selectedBuilding: Building | null;
@@ -127,11 +125,14 @@ export function AccommodationSelection({
                     </span>
                   </div>
                   <div className="mt-4 text-sm text-neutral-600">
-                    Total accommodation cost: Rp{" "}
+                    Monthly accommodation cost: Rp{" "}
                     {(
                       selectedPricing.numericPrice * personCount
                     ).toLocaleString("id-ID")}
                     /month
+                  </div>
+                  <div className="mt-2 text-xs text-neutral-500">
+                    * Admin will arrange room assignments based on availability
                   </div>
                 </CardContent>
               </Card>

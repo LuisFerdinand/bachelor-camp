@@ -1,32 +1,35 @@
 "use client";
-
-import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, ChevronLeft, ChevronRight } from "lucide-react";
-import { Course } from "@/app/util/bookingData";
+import type { Building } from "@/app/util/buildingData";
 import {
   formatDate,
   isDateAvailable,
-  isDateSelected,
   isDateInRange,
   getDaysInMonth,
   getFirstDayOfMonth,
   getSelectedWeeks,
+  getSelectedMonths,
+  calculateAccommodationDurationPrice,
 } from "@/modules/home/ui/utils/booking";
 
 interface DurationSelectionProps {
-  selectedCourse: Course | null;
+  selectedBuilding: Building | null;
+  selectedPricing: Building["pricing"][0] | null;
+  personCount: number;
   selectedStartDate: Date | null;
   selectedEndDate: Date | null;
   currentMonth: Date;
-  availabilityData: any;
+  availabilityData: Record<string, { capacity: number }>;
   onDateClick: (date: Date) => void;
   onMonthChange: (date: Date) => void;
 }
 
 export function DurationSelection({
-  selectedCourse,
+  selectedBuilding,
+  selectedPricing,
+  personCount,
   selectedStartDate,
   selectedEndDate,
   currentMonth,
@@ -50,6 +53,23 @@ export function DurationSelection({
   ];
 
   const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  const calculateTotalPrice = (): number => {
+    if (
+      !selectedPricing ||
+      !selectedStartDate ||
+      !selectedEndDate ||
+      !personCount
+    ) {
+      return 0;
+    }
+    return calculateAccommodationDurationPrice(
+      selectedPricing,
+      personCount,
+      selectedStartDate,
+      selectedEndDate
+    );
+  };
 
   const renderCalendar = () => {
     const daysInMonth = getDaysInMonth(currentMonth);
@@ -83,13 +103,17 @@ export function DurationSelection({
         <div
           key={day}
           onClick={() =>
-            !isPast && isAvailable && selectedCourse && onDateClick(date)
+            !isPast &&
+            isAvailable &&
+            selectedBuilding &&
+            selectedPricing &&
+            onDateClick(date)
           }
           className={`
             h-10 flex items-center justify-center text-sm rounded-lg cursor-pointer transition-all relative
             ${isPast ? "text-neutral-300 cursor-not-allowed" : ""}
             ${
-              !isPast && isAvailable && selectedCourse
+              !isPast && isAvailable && selectedBuilding && selectedPricing
                 ? "hover:bg-blue-100"
                 : ""
             }
@@ -98,7 +122,11 @@ export function DurationSelection({
                 ? "text-neutral-400 cursor-not-allowed bg-neutral-100"
                 : ""
             }
-            ${!selectedCourse ? "cursor-not-allowed text-neutral-400" : ""}
+            ${
+              !selectedBuilding || !selectedPricing
+                ? "cursor-not-allowed text-neutral-400"
+                : ""
+            }
             ${isSelected ? "bg-blue-500 text-white" : ""}
             ${
               selectedStartDate && formatDate(selectedStartDate) === dateStr
@@ -130,15 +158,15 @@ export function DurationSelection({
       <CardHeader>
         <CardTitle className="flex items-center text-neutral-900">
           <Calendar className="h-5 w-5 mr-2 text-blue-500" />
-          Select Your Study Period
+          Select Your Stay Duration
         </CardTitle>
       </CardHeader>
       <CardContent>
-        {!selectedCourse ? (
+        {!selectedBuilding || !selectedPricing ? (
           <div className="text-center py-8">
             <Calendar className="h-12 w-12 text-neutral-300 mx-auto mb-4" />
             <p className="text-neutral-500">
-              Select a program to view available dates
+              Select accommodation and room type to view available dates
             </p>
           </div>
         ) : (
@@ -224,11 +252,13 @@ export function DurationSelection({
             {selectedStartDate && (
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <h4 className="font-semibold text-neutral-900 mb-2">
-                  Selected Period
+                  Selected Stay Period
                 </h4>
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-sm text-neutral-600">Start Date</div>
+                    <div className="text-sm text-neutral-600">
+                      Check-in Date
+                    </div>
                     <div className="font-medium">
                       {selectedStartDate.toLocaleDateString()}
                     </div>
@@ -237,7 +267,9 @@ export function DurationSelection({
                     <>
                       <div className="text-neutral-400">→</div>
                       <div>
-                        <div className="text-sm text-neutral-600">End Date</div>
+                        <div className="text-sm text-neutral-600">
+                          Check-out Date
+                        </div>
                         <div className="font-medium">
                           {selectedEndDate.toLocaleDateString()}
                         </div>
@@ -246,16 +278,48 @@ export function DurationSelection({
                         <div className="text-sm text-neutral-600">Duration</div>
                         <div className="font-medium">
                           {getSelectedWeeks(selectedStartDate, selectedEndDate)}{" "}
-                          weeks
+                          weeks (
+                          {getSelectedMonths(
+                            selectedStartDate,
+                            selectedEndDate
+                          )}{" "}
+                          months)
                         </div>
                       </div>
                     </>
                   ) : (
                     <div className="text-sm text-neutral-500">
-                      Select end date
+                      Select check-out date
                     </div>
                   )}
                 </div>
+
+                {selectedEndDate && (
+                  <div className="mt-4 pt-4 border-t border-blue-200">
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <div className="text-sm text-neutral-600">
+                          Total Accommodation Cost
+                        </div>
+                        <div className="text-xs text-neutral-500">
+                          {selectedPricing.type} × {personCount} persons ×{" "}
+                          {getSelectedMonths(
+                            selectedStartDate,
+                            selectedEndDate
+                          )}{" "}
+                          months
+                        </div>
+                      </div>
+                      <div className="font-bold text-blue-600 text-lg">
+                        Rp {calculateTotalPrice().toLocaleString("id-ID")}
+                      </div>
+                    </div>
+                    <div className="text-xs text-neutral-500 mt-2">
+                      * Admin will arrange room assignments based on
+                      availability
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>

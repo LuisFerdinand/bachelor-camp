@@ -1,4 +1,4 @@
-import { Building } from "./buildingData";
+import type { Building } from "./buildingData";
 
 // Course interface based on your provided course list
 export interface Course {
@@ -17,24 +17,38 @@ export interface Course {
   investment: number;
   targetAudience: string[];
   suitableBuildings: number[]; // IDs of buildings that are suitable for this course
+  availableStartMonths: {
+    month: string; // e.g., "January", "February"
+    year: number;
+    available: boolean;
+  }[];
+}
+
+export enum BookingType {
+  ACCOMMODATION_ONLY = "accommodation_only",
+  PROGRAM_ONLY = "program_only",
+  PROGRAM_WITH_ACCOMMODATION = "program_with_accommodation",
 }
 
 // Combined booking item that includes both building and course selection
 export interface BookingItem {
-  building: Building;
-  course: Course;
-  pricingOption: Building["pricing"][0]; // Selected pricing option for the building
+  bookingType: BookingType;
+  building?: Building; // Optional for program-only bookings
+  course?: Course; // Optional for accommodation-only bookings
+  pricingOption?: Building["pricing"][0]; // Optional for program-only bookings
+  personCount?: number; // For accommodation bookings
+  selectedStartMonth?: { month: string; year: number }; // For program bookings
   totalPrice: number;
-  durationInMonths: number;
+  durationInMonths?: number; // Only relevant for accommodation bookings
 }
 
 // Calculate duration in months from course duration string
 const calculateDurationInMonths = (duration: string): number => {
   if (duration.includes("Bulan")) {
-    const months = parseInt(duration.split(" ")[0]);
+    const months = Number.parseInt(duration.split(" ")[0]);
     return months;
   } else if (duration.includes("Minggu")) {
-    const weeks = parseInt(duration.split(" ")[0]);
+    const weeks = Number.parseInt(duration.split(" ")[0]);
     return weeks / 4; // Approximate: 4 weeks = 1 month
   }
   return 0; // Default case
@@ -82,6 +96,14 @@ export const courses: Course[] = [
       "Mahasiswa / pelajar yang ingin menyiapkan studi luar negeri di masa depan",
     ],
     suitableBuildings: [1, 2, 3], // All buildings suitable
+    availableStartMonths: [
+      { month: "January", year: 2025, available: true },
+      { month: "February", year: 2025, available: true },
+      { month: "March", year: 2025, available: false },
+      { month: "April", year: 2025, available: true },
+      { month: "May", year: 2025, available: true },
+      { month: "June", year: 2025, available: true },
+    ],
   },
   {
     id: 2,
@@ -125,6 +147,14 @@ export const courses: Course[] = [
       "Mereka yang serius mempersiapkan ujian IELTS dalam jangka 3 bulan",
     ],
     suitableBuildings: [1, 3], // Premium buildings recommended
+    availableStartMonths: [
+      { month: "February", year: 2025, available: true },
+      { month: "March", year: 2025, available: true },
+      { month: "April", year: 2025, available: false },
+      { month: "May", year: 2025, available: true },
+      { month: "June", year: 2025, available: true },
+      { month: "July", year: 2025, available: true },
+    ],
   },
   {
     id: 3,
@@ -164,6 +194,14 @@ export const courses: Course[] = [
       "Mereka yang ingin tes prediksi atau uji kemampuan sebelum ujian resmi",
     ],
     suitableBuildings: [1, 2, 3], // All buildings suitable
+    availableStartMonths: [
+      { month: "January", year: 2025, available: true },
+      { month: "February", year: 2025, available: true },
+      { month: "March", year: 2025, available: true },
+      { month: "April", year: 2025, available: true },
+      { month: "May", year: 2025, available: false },
+      { month: "June", year: 2025, available: true },
+    ],
   },
   {
     id: 4,
@@ -203,6 +241,14 @@ export const courses: Course[] = [
       "Calon test-taker yang ingin mengukur kesiapan akhir",
     ],
     suitableBuildings: [1, 2, 3], // All buildings suitable
+    availableStartMonths: [
+      { month: "January", year: 2025, available: true },
+      { month: "February", year: 2025, available: true },
+      { month: "March", year: 2025, available: true },
+      { month: "April", year: 2025, available: true },
+      { month: "May", year: 2025, available: true },
+      { month: "June", year: 2025, available: true },
+    ],
   },
   // TOEFL Courses
   {
@@ -245,6 +291,14 @@ export const courses: Course[] = [
       "Siswa yang butuh fondasi sebelum lanjut ke TOEFL Advanced",
     ],
     suitableBuildings: [1, 2, 3], // All buildings suitable
+    availableStartMonths: [
+      { month: "January", year: 2025, available: true },
+      { month: "February", year: 2025, available: true },
+      { month: "March", year: 2025, available: true },
+      { month: "April", year: 2025, available: true },
+      { month: "May", year: 2025, available: true },
+      { month: "June", year: 2025, available: true },
+    ],
   },
   {
     id: 6,
@@ -287,6 +341,14 @@ export const courses: Course[] = [
       "Profesional yang ingin sertifikasi TOEFL untuk karier",
     ],
     suitableBuildings: [1, 3], // Premium buildings recommended
+    availableStartMonths: [
+      { month: "January", year: 2025, available: true },
+      { month: "February", year: 2025, available: true },
+      { month: "March", year: 2025, available: true },
+      { month: "April", year: 2025, available: true },
+      { month: "May", year: 2025, available: true },
+      { month: "June", year: 2025, available: true },
+    ],
   },
   // TOEIC Courses
   {
@@ -328,6 +390,14 @@ export const courses: Course[] = [
       "Peserta yang ingin melatih listening & reading comprehension untuk dunia kerja",
     ],
     suitableBuildings: [1, 3], // Premium buildings recommended
+    availableStartMonths: [
+      { month: "January", year: 2025, available: true },
+      { month: "February", year: 2025, available: true },
+      { month: "March", year: 2025, available: true },
+      { month: "April", year: 2025, available: true },
+      { month: "May", year: 2025, available: true },
+      { month: "June", year: 2025, available: true },
+    ],
   },
   {
     id: 8,
@@ -367,6 +437,14 @@ export const courses: Course[] = [
       "Mereka yang ingin percaya diri berbicara & menulis dalam konteks bisnis internasional",
     ],
     suitableBuildings: [1, 3], // Premium buildings recommended
+    availableStartMonths: [
+      { month: "January", year: 2025, available: true },
+      { month: "February", year: 2025, available: true },
+      { month: "March", year: 2025, available: true },
+      { month: "April", year: 2025, available: true },
+      { month: "May", year: 2025, available: true },
+      { month: "June", year: 2025, available: true },
+    ],
   },
   // Pronunciation Courses
   {
@@ -407,6 +485,14 @@ export const courses: Course[] = [
       "Siswa yang ingin lancar dalam percakapan sederhana",
     ],
     suitableBuildings: [1, 2, 3], // All buildings suitable
+    availableStartMonths: [
+      { month: "January", year: 2025, available: true },
+      { month: "February", year: 2025, available: true },
+      { month: "March", year: 2025, available: true },
+      { month: "April", year: 2025, available: true },
+      { month: "May", year: 2025, available: true },
+      { month: "June", year: 2025, available: true },
+    ],
   },
   {
     id: 10,
@@ -446,6 +532,14 @@ export const courses: Course[] = [
       "Mahasiswa/profesional yang sering menggunakan bahasa Inggris sehari-hari",
     ],
     suitableBuildings: [1, 2, 3], // All buildings suitable
+    availableStartMonths: [
+      { month: "January", year: 2025, available: true },
+      { month: "February", year: 2025, available: true },
+      { month: "March", year: 2025, available: true },
+      { month: "April", year: 2025, available: true },
+      { month: "May", year: 2025, available: true },
+      { month: "June", year: 2025, available: true },
+    ],
   },
   {
     id: 11,
@@ -485,6 +579,14 @@ export const courses: Course[] = [
       "Calon public speaker, presenter, atau pengajar bahasa Inggris",
     ],
     suitableBuildings: [1, 3], // Premium buildings recommended
+    availableStartMonths: [
+      { month: "January", year: 2025, available: true },
+      { month: "February", year: 2025, available: true },
+      { month: "March", year: 2025, available: true },
+      { month: "April", year: 2025, available: true },
+      { month: "May", year: 2025, available: true },
+      { month: "June", year: 2025, available: true },
+    ],
   },
 ];
 
@@ -530,41 +632,83 @@ export function getSuitableCourses(buildingId: number): Course[] {
   );
 }
 
-// Function to calculate total booking price
-export function calculateBookingPrice(
+// Utility functions for the updated booking system
+export function calculateAccommodationOnlyPrice(
+  building: Building,
+  pricingOption: Building["pricing"][0],
+  personCount: number
+): number {
+  return pricingOption.numericPrice * personCount;
+}
+
+export function calculateProgramOnlyPrice(course: Course): number {
+  return course.investment;
+}
+
+export function calculateProgramWithAccommodationPrice(
   building: Building,
   course: Course,
-  pricingOption: Building["pricing"][0]
+  pricingOption: Building["pricing"][0],
+  personCount: number
 ): number {
-  // Extract numeric price from string (e.g., "Rp 2,500,000" -> 2500000)
-  const priceString = pricingOption.price.replace(/[^\d]/g, "");
-  const monthlyPrice = parseInt(priceString, 10);
-
-  // Calculate duration in months
   const durationInMonths = calculateDurationInMonths(course.duration);
-
-  // Calculate total accommodation cost
-  const accommodationCost = monthlyPrice * durationInMonths;
-
-  // Total price = accommodation cost + course investment
+  const accommodationCost =
+    pricingOption.numericPrice * personCount * durationInMonths;
   return accommodationCost + course.investment;
 }
 
-// Function to create a booking item
-export function createBookingItem(
+export function createAccommodationOnlyBooking(
+  building: Building,
+  pricingOption: Building["pricing"][0],
+  personCount: number
+): BookingItem {
+  return {
+    bookingType: BookingType.ACCOMMODATION_ONLY,
+    building,
+    pricingOption,
+    personCount,
+    totalPrice: calculateAccommodationOnlyPrice(
+      building,
+      pricingOption,
+      personCount
+    ),
+  };
+}
+
+export function createProgramOnlyBooking(
+  course: Course,
+  selectedStartMonth: { month: string; year: number }
+): BookingItem {
+  return {
+    bookingType: BookingType.PROGRAM_ONLY,
+    course,
+    selectedStartMonth,
+    totalPrice: calculateProgramOnlyPrice(course),
+  };
+}
+
+export function createProgramWithAccommodationBooking(
   building: Building,
   course: Course,
-  pricingOption: Building["pricing"][0]
+  pricingOption: Building["pricing"][0],
+  personCount: number,
+  selectedStartMonth: { month: string; year: number }
 ): BookingItem {
   const durationInMonths = calculateDurationInMonths(course.duration);
-  const totalPrice = calculateBookingPrice(building, course, pricingOption);
-
   return {
+    bookingType: BookingType.PROGRAM_WITH_ACCOMMODATION,
     building,
     course,
     pricingOption,
-    totalPrice,
+    personCount,
+    selectedStartMonth,
     durationInMonths,
+    totalPrice: calculateProgramWithAccommodationPrice(
+      building,
+      course,
+      pricingOption,
+      personCount
+    ),
   };
 }
 
@@ -580,9 +724,37 @@ export function getAllBookingCombinations(): BookingItem[] {
 
     suitableBuildings.forEach((building) => {
       building.pricing.forEach((pricingOption) => {
-        combinations.push(createBookingItem(building, course, pricingOption));
+        combinations.push(
+          createProgramWithAccommodationBooking(
+            building,
+            course,
+            pricingOption,
+            1,
+            { month: "January", year: 2025 }
+          )
+        );
       });
     });
+
+    // Add program-only bookings
+    combinations.push(
+      createProgramOnlyBooking(course, { month: "January", year: 2025 })
+    );
+    combinations.push(
+      createProgramOnlyBooking(course, { month: "February", year: 2025 })
+    );
+    combinations.push(
+      createProgramOnlyBooking(course, { month: "March", year: 2025 })
+    );
+    combinations.push(
+      createProgramOnlyBooking(course, { month: "April", year: 2025 })
+    );
+    combinations.push(
+      createProgramOnlyBooking(course, { month: "May", year: 2025 })
+    );
+    combinations.push(
+      createProgramOnlyBooking(course, { month: "June", year: 2025 })
+    );
   });
 
   return combinations;
@@ -593,7 +765,7 @@ export function getBookingCombinationsByBuilding(
   buildingId: number
 ): BookingItem[] {
   return getAllBookingCombinations().filter(
-    (item) => item.building.id === buildingId
+    (item) => item.building?.id === buildingId
   );
 }
 
@@ -602,7 +774,7 @@ export function getBookingCombinationsByCourse(
   courseId: number
 ): BookingItem[] {
   return getAllBookingCombinations().filter(
-    (item) => item.course.id === courseId
+    (item) => item.course?.id === courseId
   );
 }
 
@@ -611,7 +783,7 @@ export function getBookingCombinationsByCategory(
   category: Course["category"]
 ): BookingItem[] {
   return getAllBookingCombinations().filter(
-    (item) => item.course.category === category
+    (item) => item.course?.category === category
   );
 }
 
