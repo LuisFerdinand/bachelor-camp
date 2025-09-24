@@ -45,8 +45,6 @@ export const seedTestimonials = async () => {
       rating: "4.8",
       isFeatured: "true",
       isShown: "true",
-      imageUrl:
-        "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80",
       order: 1,
       categories: ["Home", "Camp"],
     },

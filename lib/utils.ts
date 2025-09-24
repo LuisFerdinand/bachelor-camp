@@ -59,3 +59,32 @@ export const capitalize = (str: string) =>
 
 export const getAbbr = (day: string) =>
   day.charAt(0).toUpperCase() + day.slice(1, 3);
+
+export const getTestimonialSourceIcon = (source: string) => {
+  switch (source) {
+    case "student":
+      return "🎓";
+    case "parent":
+      return "👨‍👩‍👧‍👦";
+    case "teacher":
+      return "👩‍🏫";
+    case "partner":
+      return "🤝";
+    default:
+      return "👤";
+  }
+};
+export const getTestimonialSourceBadgeColor = (source: string) => {
+  switch (source) {
+    case "student":
+      return "bg-blue-100 text-blue-800 border-blue-300";
+    case "parent":
+      return "bg-green-100 text-green-800 border-green-300";
+    case "teacher":
+      return "bg-purple-100 text-purple-800 border-purple-300";
+    case "partner":
+      return "bg-orange-100 text-orange-800 border-orange-300";
+    default:
+      return "bg-gray-100 text-gray-800 border-gray-300";
+  }
+};

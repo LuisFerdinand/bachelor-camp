@@ -2,7 +2,6 @@
 import React from "react";
 
 import { VisionMissionSection } from "@/modules/home/ui/components/about/VisionMissionSection";
-import { TestimonialsSection } from "@/modules/home/ui/components/about/TestimonialsSection";
 
 import { Award, BookOpen, Globe, Users } from "lucide-react";
 import { TeamSection } from "../../components/about/TeamSection/page";
@@ -13,6 +12,8 @@ import { MainContentSection2 } from "../../sections/about/MainTest";
 import { AccreditationsSection } from "../../sections/about/AccreditationSection";
 import { AccreditationsSection2 } from "../../sections/about/AccreTest";
 import { MilestonesSection } from "../../sections/about/MilestonesSection";
+import { trpc } from "@/trpc/client";
+import { TestimonialsSection } from "../../sections/about/AboutTestimonialSection";
 
 // Define TypeScript interfaces for the CMS data
 interface CMSImage {
@@ -39,23 +40,9 @@ interface AboutPageProps {
 
 // About Us Page Component
 export default function AboutUsPage({ cmsData }: AboutPageProps) {
-  const testimonials = [
-    {
-      name: "Michael T.",
-      text: "The instructors are incredibly knowledgeable and supportive.",
-      rating: 5,
-    },
-    {
-      name: "Priya K.",
-      text: "I improved my IELTS score by 1.5 bands in just 8 weeks!",
-      rating: 5,
-    },
-    {
-      name: "Juan P.",
-      text: "The camp experience was life-changing. I made friends from around the world.",
-      rating: 5,
-    },
-  ];
+  const { data: testimonials, isLoading: isLoadingTestimonials } =
+    trpc.testimonials.getMany.useQuery({ category: "About" });
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <main className="flex-grow">
@@ -65,9 +52,12 @@ export default function AboutUsPage({ cmsData }: AboutPageProps) {
         <VisionMissionSection data={cmsData?.visionMission} />
         <AccreditationsSection2></AccreditationsSection2>
         <AccreditationsSection />
-        <TestimonialsSection testimonials={testimonials} />
+        <TestimonialsSection
+          testimonials={testimonials!}
+          isLoading={isLoadingTestimonials}
+        />
         <MilestonesSection />
-        <TeamSection /> {/* Using the imported TeamSection component */}
+        <TeamSection />
       </main>
     </div>
   );

@@ -8,13 +8,58 @@ import {
 } from "@/db/schema";
 import { booleanTypeEnum, testimonialSourceEnum } from "@/db/schema/enums";
 import { requireRole } from "@/lib/access";
-import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
+import {
+  baseProcedure,
+  createTRPCRouter,
+  protectedProcedure,
+} from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { and, asc, desc, eq, ilike, or } from "drizzle-orm";
 import { UTApi } from "uploadthing/server";
 import z from "zod";
 
 export const testimonialsRouter = createTRPCRouter({
+  getMany: baseProcedure
+    .input(
+      z.object({
+        category: z.string().min(1),
+      })
+    )
+    .query(async ({ input }) => {
+      const { category } = input;
+
+      const data = await db
+        .select({
+          id: testimonials.id,
+          name: testimonials.name,
+          role: testimonials.role,
+          source: testimonials.source,
+          imageUrl: testimonials.imageUrl,
+          content: testimonials.content,
+          rating: testimonials.rating,
+          isFeatured: testimonials.isFeatured,
+          isShown: testimonials.isShown,
+          order: testimonials.order,
+        })
+        .from(testimonials)
+        .innerJoin(
+          testimonialCategoryRelations,
+          eq(testimonialCategoryRelations.testimonialId, testimonials.id)
+        )
+        .innerJoin(
+          testimonialCategories,
+          eq(testimonialCategoryRelations.categoryId, testimonialCategories.id)
+        )
+        .where(
+          and(
+            eq(testimonials.isShown, "true"), // only shown
+            eq(testimonialCategories.name, category) // category filter
+          )
+        )
+        .orderBy(asc(testimonials.order));
+
+      return data;
+    }),
   getFiltered: protectedProcedure
     .input(
       z.object({
