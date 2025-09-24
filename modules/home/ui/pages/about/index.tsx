@@ -4,7 +4,7 @@ import React from "react";
 import { VisionMissionSection } from "@/modules/home/ui/components/about/VisionMissionSection";
 
 import { Award, BookOpen, Globe, Users } from "lucide-react";
-import { TeamSection } from "../../components/about/TeamSection/page";
+
 import { ABOUT_BANNER_FALLBACK } from "@/constants";
 import { AboutHeroSection } from "../../sections/about/AboutHeroSection";
 import { MainContentSection } from "../../sections/about/MainContentSection";
@@ -14,6 +14,7 @@ import { AccreditationsSection2 } from "../../sections/about/AccreTest";
 import { MilestonesSection } from "../../sections/about/MilestonesSection";
 import { trpc } from "@/trpc/client";
 import { TestimonialsSection } from "../../sections/about/AboutTestimonialSection";
+import { TeamSection } from "../../sections/about/TeamSection";
 
 // Define TypeScript interfaces for the CMS data
 interface CMSImage {

@@ -7,13 +7,57 @@ import {
   teamMemberUpdateSchema,
 } from "@/db/schema/marketing/teamMembers";
 import { requireRole } from "@/lib/access";
-import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
+import {
+  baseProcedure,
+  createTRPCRouter,
+  protectedProcedure,
+} from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { and, asc, desc, eq, gt, ilike, or, sql } from "drizzle-orm";
 import { UTApi } from "uploadthing/server";
 import z from "zod";
 
 export const teamMembersRouter = createTRPCRouter({
+  getMany: baseProcedure.query(async () => {
+    // Fetch all active departments (ordered)
+    const departmentData = await db
+      .select({
+        id: departments.id,
+        name: departments.name,
+        description: departments.description,
+        order: departments.order,
+      })
+      .from(departments)
+      .where(eq(departments.isActive, "true"))
+      .orderBy(asc(departments.order));
+
+    // Fetch all active team members (ordered)
+    const teamData = await db
+      .select({
+        id: teamMembers.id,
+        name: teamMembers.name,
+        title: teamMembers.title,
+        departmentId: teamMembers.departmentId,
+        avatarUrl: teamMembers.avatarUrl,
+        bio: teamMembers.bio,
+        socialLinks: teamMembers.socialLinks,
+        order: teamMembers.order,
+      })
+      .from(teamMembers)
+      .where(eq(teamMembers.isActive, "true"))
+      .orderBy(asc(teamMembers.order));
+
+    // Group members by department name
+    const grouped: Record<string, typeof teamData> = {};
+
+    departmentData.forEach((dept) => {
+      grouped[dept.name] = teamData.filter(
+        (member) => member.departmentId === dept.id
+      );
+    });
+
+    return { grouped };
+  }),
   getFilteredMembers: protectedProcedure
     .input(
       z.object({
