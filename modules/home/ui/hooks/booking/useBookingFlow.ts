@@ -233,7 +233,7 @@ export function useBookingFlow() {
     setSelectedPricing,
     setPersonCount,
     setSelectedStartMonth,
-    currentBookingItem, // Return the computed booking item directly
+    currentBookingItem,
     resetBooking,
     isBookingComplete,
     getAvailableBuildings,
