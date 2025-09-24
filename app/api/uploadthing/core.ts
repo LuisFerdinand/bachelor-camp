@@ -5,7 +5,13 @@ import { z } from "zod";
 
 import { auth } from "@clerk/nextjs/server";
 import { db } from "@/db";
-import { accreditations, highlights, milestones, users } from "@/db/schema";
+import {
+  accreditations,
+  facilities,
+  highlights,
+  milestones,
+  users,
+} from "@/db/schema";
 
 const f = createUploadthing();
 
@@ -110,6 +116,12 @@ export const ourFileRouter = {
     idField: "teamMemberId",
     keyColumn: "avatarKey",
     urlColumn: "avatarUrl",
+  }),
+  facilityImageUploader: createImageUploader({
+    table: facilities,
+    idField: "facilityId",
+    keyColumn: "imageKey",
+    urlColumn: "imageUrl",
   }),
 } satisfies FileRouter;
 

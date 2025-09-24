@@ -6,7 +6,11 @@ import {
   highlightUpdateSchema,
 } from "@/db/schema/marketing/highlights";
 import { requireRole } from "@/lib/access";
-import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
+import {
+  baseProcedure,
+  createTRPCRouter,
+  protectedProcedure,
+} from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { and, asc, desc, eq, gt, ilike, or, sql } from "drizzle-orm";
 import z from "zod";
@@ -352,4 +356,12 @@ export const highlightsRouter = createTRPCRouter({
 
       return highlight;
     }),
+  getMany: baseProcedure.query(async () => {
+    const data = await db
+      .select()
+      .from(highlights)
+      .where(eq(highlights.isActive, "true"))
+      .orderBy(highlights.order);
+    return data;
+  }),
 });

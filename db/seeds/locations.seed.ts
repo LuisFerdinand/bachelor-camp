@@ -12,12 +12,12 @@ export const seedLocations = async () => {
   type LocationInsert = typeof locations.$inferInsert;
 
   const defaultHours = [
-    { day: "monday", open: "08:00", close: "17:00" },
-    { day: "tuesday", open: "08:00", close: "17:00" },
-    { day: "wednesday", open: "08:00", close: "17:00" },
-    { day: "thursday", open: "08:00", close: "17:00" },
-    { day: "friday", open: "08:00", close: "17:00" },
-    { day: "saturday", open: "09:00", close: "14:00" },
+    { day: "monday", open: "08:00", close: "17:00", isClosed: false },
+    { day: "tuesday", open: "08:00", close: "17:00", isClosed: false },
+    { day: "wednesday", open: "08:00", close: "17:00", isClosed: false },
+    { day: "thursday", open: "08:00", close: "17:00", isClosed: false },
+    { day: "friday", open: "08:00", close: "17:00", isClosed: false },
+    { day: "saturday", open: "09:00", close: "14:00", isClosed: false },
     { day: "sunday", open: "00:00", close: "00:00", isClosed: true },
   ];
 

@@ -79,14 +79,11 @@ export const TestimonialFilters = () => {
           <SelectTrigger className={triggerClass(isActive(isFeatured))}>
             <div className="flex items-center pr-2 leading-none">
               <StarIcon className="size-4 mr-2" />{" "}
-              <SelectValue
-                className="leading-none"
-                placeholder="All Featured"
-              />
+              <SelectValue className="leading-none" placeholder="Show All" />
             </div>
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Featured</SelectItem>
+            <SelectItem value="all">Show All</SelectItem>
             <SelectSeparator />
             {featuredOptions.map((opt) => (
               <SelectItem key={opt.value} value={opt.value}>

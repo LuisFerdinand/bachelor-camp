@@ -11,25 +11,14 @@ import {
   FAQItem,
   ContactFormData,
 } from "./types";
+import { CONTACT_BANNER_FALLBACK } from "@/constants";
+import { ContactHeroSection } from "../../sections/contact/ContactHeroSection";
 
 interface ContactPageProps {
   cmsData?: ContactPageCMSData;
 }
 
 export default function ContactPage({ cmsData }: ContactPageProps) {
-  // Hero images with fallbacks
-  const heroImages = {
-    mobile: {
-      src: cmsData?.heroMobileImage?.url || "/HeroBg/Contact/ContactBanner.png",
-      alt: cmsData?.heroMobileImage?.alt || "BachelorCamp - mobile view",
-    },
-    desktop: {
-      src:
-        cmsData?.heroDesktopImage?.url || "/HeroBg/Contact/ContactBanner.png",
-      alt: cmsData?.heroDesktopImage?.alt || "BachelorCamp - desktop view",
-    },
-  };
-
   // BachelorCamp information - Updated to match InformationSection expectations
   const bachelorCamp: BachelorCampInfo = {
     name: "BachelorCamp English Learning Center",
@@ -129,7 +118,7 @@ export default function ContactPage({ cmsData }: ContactPageProps) {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <main className="flex-grow">
-        <HeroSection heroImages={heroImages} scrollToForm={scrollToForm} />
+        <ContactHeroSection scrollToForm={scrollToForm} />
         <InformationSection bachelorCamp={bachelorCamp} />
         <ContactFormSection
           formData={formData}

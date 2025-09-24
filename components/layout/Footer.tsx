@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Map from "@/components/common/Map";
+import { LOGO_SECONDARY_FALLBACK } from "@/constants";
 
 const Footer = () => {
   // Kediri coordinates
@@ -30,7 +31,7 @@ const Footer = () => {
             <div className="flex items-center space-x-2 mb-4">
               <div className="flex items-center space-x-2">
                 <Image
-                  src="/header/Logo2.png"
+                  src={LOGO_SECONDARY_FALLBACK}
                   alt="Bachelor Camp Logo"
                   width={180}
                   height={80}

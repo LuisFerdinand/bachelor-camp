@@ -355,7 +355,7 @@ export function UpdateTestimonialForm({
                       options={allCategories!.map((c) => ({
                         label: c.name,
                         value: c.id,
-                        color: stringToColor(c.name, true),
+                        color: stringToColor(c.name, true).text,
                       }))}
                       value={field.value!}
                       onChange={field.onChange}

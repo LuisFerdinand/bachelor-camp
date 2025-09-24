@@ -128,3 +128,23 @@ export const SOCIAL_PLATFORMS = [
 ] as const;
 export type SocialPlatform = (typeof SOCIAL_PLATFORMS)[number];
 export const socialPlatformEnum = pgEnum("social_platform", SOCIAL_PLATFORMS);
+
+export const FACILITY_CATEGORIES = [
+  "general",
+  "amenities",
+  "accommodation",
+  "dining",
+  "comfort",
+  "study",
+  "sports",
+  "health",
+  "community",
+  "entertainment",
+  "services",
+  "safety",
+] as const;
+export type FacilityCategory = (typeof FACILITY_CATEGORIES)[number];
+export const facilityCategoryEnum = pgEnum(
+  "facility_category",
+  FACILITY_CATEGORIES
+);

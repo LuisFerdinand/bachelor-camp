@@ -17,6 +17,7 @@ import { InferSelectModel } from "drizzle-orm";
 import { pillars } from "@/db/schema";
 import { PillarActionProvider } from "../PillarContext";
 import PillarActions from "./pillar-actions";
+import { OrderBadge } from "@/components/table/OrderBadge";
 
 export type Pillar = InferSelectModel<typeof pillars>;
 
@@ -177,11 +178,7 @@ export function getPillarColumns(): ColumnDef<Pillar>[] {
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
-      cell: ({ row }) => (
-        <span className="text-sm text-muted-foreground items-center flex justify-center">
-          {row.original.order > 0 ? formatOrdinal(row.original.order) : "-"}
-        </span>
-      ),
+      cell: ({ row }) => <OrderBadge order={row.original.order}></OrderBadge>,
     },
     {
       accessorKey: "createdAt",
