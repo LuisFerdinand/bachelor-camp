@@ -12,17 +12,11 @@ import z from "zod";
 
 export const statistics = pgTable("statistics", {
   id: uuid("id").defaultRandom().primaryKey(),
-  // Number/Value
-  value: varchar("value", { length: 50 }).notNull(), // e.g. "15,000+", "98%", "50+"
-  // Label
-  label: varchar("label", { length: 100 }).notNull(), // e.g. "Students", "Satisfaction Rate"
-  // Optional short description if needed
+  value: varchar("value", { length: 50 }).notNull(),
+  label: varchar("label", { length: 100 }).notNull(),
   description: text("description"),
-  // Optional icon (for flexibility if design changes)
   iconUrl: text("icon_url"),
-  // Order for display
   order: integer("order").default(0).notNull(),
-  // Active toggle
   isActive: booleanTypeEnum("is_active").default("false"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),

@@ -6,6 +6,7 @@ import MobileSidebar from "../DashboardSidebar/MobileSidebar";
 import Link from "next/link";
 import Image from "next/image";
 import AuthButton from "@/modules/auth/ui/components/AuthButton";
+import { LOGO_PRIMARY_FALLBACK } from "@/constants";
 
 export const DashboardNavbar = () => {
   const isMobile = useIsMobile();
@@ -19,7 +20,7 @@ export const DashboardNavbar = () => {
           <Link prefetch href="/dashboard">
             <div className="hidden md:block items-center gap-1 p-4">
               <Image
-                src="/header/Logo1.png"
+                src={LOGO_PRIMARY_FALLBACK}
                 alt="Logo"
                 height={30}
                 width={150}
@@ -27,7 +28,7 @@ export const DashboardNavbar = () => {
             </div>
             <div className="block md:hidden items-center pl-2">
               <Image
-                src="/header/Logo1.png"
+                src={LOGO_PRIMARY_FALLBACK}
                 alt="Logo"
                 height={150}
                 width={150}

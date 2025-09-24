@@ -1,11 +1,13 @@
 "use client";
 
 import React from "react";
-import { HeroSection } from "@/modules/home/ui/components/program/HeroSection";
+
 import { CourseSlider } from "@/modules/home/ui/components/program/CourseSlider";
 import { SchedulePricing } from "@/modules/home/ui/components/program/SchedulePricing";
 import { PlacementTestForm } from "@/modules/home/ui/components/program/PlacementTestForm";
 import { getAllCourses } from "@/app/util/bookingData";
+import { PROGRAM_BANNER_FALLBACK } from "@/constants";
+import { ProgramHeroSection } from "../../sections/program/ProgramHeroSection";
 
 // Define TypeScript interfaces for the CMS data
 interface CMSImage {
@@ -23,22 +25,6 @@ interface ProgramPageProps {
 }
 
 export default function ProgramPage({ cmsData }: ProgramPageProps) {
-  // Get hero images with fallbacks to local images
-  const heroImages = {
-    mobile: {
-      src: cmsData?.heroMobileImage?.url || "/HeroBg/Program/ProgBanner.png",
-      alt:
-        cmsData?.heroMobileImage?.alt ||
-        "English language classroom - mobile view",
-    },
-    desktop: {
-      src: cmsData?.heroDesktopImage?.url || "/HeroBg/Program/ProgBanner.png",
-      alt:
-        cmsData?.heroDesktopImage?.alt ||
-        "English language classroom - desktop view",
-    },
-  };
-
   // Get all courses
   const courses = getAllCourses();
 
@@ -98,7 +84,7 @@ export default function ProgramPage({ cmsData }: ProgramPageProps) {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <main className="flex-grow">
-        <HeroSection heroImages={heroImages} />
+        <ProgramHeroSection></ProgramHeroSection>
 
         {/* Programs Section with Slider */}
         <section className="py-16 bg-white">

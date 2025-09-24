@@ -27,6 +27,8 @@ import { locations } from "@/db/schema";
 import { cn } from "@/lib/utils";
 import { LocationActionProvider } from "../LocationContext";
 import LocationActions from "./location-actions";
+import LastUpdatedDisplay from "@/components/table/LastUpdatedDisplay";
+import { ActiveStatusBadge } from "@/components/table/ActiveStatusBadge";
 
 export type Location = InferSelectModel<typeof locations>;
 
@@ -185,7 +187,7 @@ export function getLocationColumns(): ColumnDef<Location>[] {
       header: () => (
         <Button variant="ghost" className="h-8 px-2 lg:px-3">
           <Clock className="w-4 h-4 mr-1" />
-          Hours & Status
+          Operating Hours
         </Button>
       ),
       cell: ({ row }) => {
@@ -280,30 +282,14 @@ export function getLocationColumns(): ColumnDef<Location>[] {
       accessorKey: "isActive",
       header: () => (
         <Button variant="ghost" className="h-8 px-2 lg:px-3">
-          Account Status
+          Status
         </Button>
       ),
       cell: ({ row }) => {
-        const { isActive } = row.original;
-        const active = isActive === "true";
-
         return (
-          <Badge
-            variant={active ? "default" : "secondary"}
-            className={cn(
-              "text-xs font-medium",
-              active
-                ? "bg-emerald-100 text-emerald-700 border-emerald-200"
-                : "bg-red-100 text-red-700 border-red-200"
-            )}
-          >
-            {active ? (
-              <CheckCircle2 className="w-3 h-3 mr-1" />
-            ) : (
-              <XCircle className="w-3 h-3 mr-1" />
-            )}
-            {active ? "Active" : "Inactive"}
-          </Badge>
+          <ActiveStatusBadge
+            isActive={row.original.isActive}
+          ></ActiveStatusBadge>
         );
       },
     },
@@ -358,37 +344,7 @@ export function getLocationColumns(): ColumnDef<Location>[] {
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
-      cell: ({ row }) => {
-        const date = new Date(row.original.updatedAt!);
-        const now = Date.now();
-        const diffMs = now - date.getTime();
-        const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-
-        let timeAgo = "";
-        if (diffDays === 0) {
-          const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-          timeAgo = diffHours === 0 ? "Just now" : `${diffHours}h ago`;
-        } else if (diffDays < 7) {
-          timeAgo = `${diffDays}d ago`;
-        } else {
-          timeAgo = `${Math.floor(diffDays / 7)}w ago`;
-        }
-
-        return (
-          <div className="flex flex-col text-xs">
-            <span className="font-medium">{date.toLocaleDateString()}</span>
-            <span className="text-muted-foreground">
-              {date.toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-            </span>
-            <span className="text-muted-foreground text-[10px] mt-0.5">
-              {timeAgo}
-            </span>
-          </div>
-        );
-      },
+      cell: ({ row }) => <LastUpdatedDisplay value={row.original.updatedAt!} />,
     },
     {
       id: "actions",

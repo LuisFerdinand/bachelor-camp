@@ -66,11 +66,6 @@ const contentRoutes = [
   { label: "Accreditations", url: "/content/accreditations", icon: Award },
   { label: "Banners", url: "/content/banners", icon: ImageIcon },
   { label: "FAQs", url: "/content/faqs", icon: HelpCircle },
-  {
-    label: "Featured Facilities",
-    url: "/content/featured-facilities",
-    icon: Building2,
-  },
   { label: "Highlights", url: "/content/highlights", icon: Sparkles },
   { label: "Locations", url: "/content/locations", icon: MapPin },
   { label: "Milestones", url: "/content/milestones", icon: Flag },

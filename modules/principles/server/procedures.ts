@@ -7,7 +7,11 @@ import {
 } from "@/db/schema/marketing/principles";
 import { requireRole } from "@/lib/access";
 
-import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
+import {
+  baseProcedure,
+  createTRPCRouter,
+  protectedProcedure,
+} from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { and, asc, desc, eq, gt, ilike, or, sql } from "drizzle-orm";
 import z from "zod";
@@ -352,4 +356,12 @@ export const principlesRouter = createTRPCRouter({
 
       return principle;
     }),
+  getMany: baseProcedure.query(async () => {
+    const data = await db
+      .select()
+      .from(principles)
+      .where(eq(principles.isActive, "true"))
+      .orderBy(asc(principles.order));
+    return data;
+  }),
 });

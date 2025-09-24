@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { TestimonialSlider } from "@/components/common/TestimonialSlider";
+import { TEST_IMAGE_FALLBACK } from "@/constants";
 
 export function TestimonialsSection() {
   const testimonials = [
@@ -70,8 +71,7 @@ export function TestimonialsSection() {
     <section
       className="py-16 relative"
       style={{
-        backgroundImage:
-          "linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(/home/testi/testi.png)",
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${TEST_IMAGE_FALLBACK})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundAttachment: "fixed",

@@ -6,7 +6,11 @@ import {
   statisticUpdateSchema,
 } from "@/db/schema/marketing/statistics";
 import { requireRole } from "@/lib/access";
-import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
+import {
+  baseProcedure,
+  createTRPCRouter,
+  protectedProcedure,
+} from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { and, asc, desc, eq, gt, ilike, or, sql } from "drizzle-orm";
 import z from "zod";
@@ -355,4 +359,12 @@ export const statisticsRouter = createTRPCRouter({
 
       return statistic;
     }),
+  getMany: baseProcedure.query(async () => {
+    const data = await db
+      .select()
+      .from(statistics)
+      .where(eq(statistics.isActive, "true"))
+      .orderBy(asc(statistics.order));
+    return data;
+  }),
 });

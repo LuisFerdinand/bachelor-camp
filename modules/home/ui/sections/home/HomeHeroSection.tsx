@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { TagIcon } from "lucide-react";
 import { trpc } from "@/trpc/client";
 import { bannerStyles } from "@/constants";
+import Link from "next/link";
 
 export default function HomeHeroSection() {
   const { data: banner, isLoading: isLoadingBanner } =
@@ -13,8 +14,50 @@ export default function HomeHeroSection() {
 
   if (isLoadingBanner) {
     return (
-      <section className="relative py-20 md:py-32 min-h-screen flex items-center justify-center bg-gray-100">
-        <p>Loading...</p>
+      <section className="relative py-20 md:py-32 min-h-screen flex items-center bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="container mx-auto px-4 w-full">
+          <div className="max-w-3xl text-center md:text-left mx-auto md:mx-0">
+            {/* Badge Skeleton */}
+            <div className="mb-4 inline-flex items-center">
+              <div className="h-6 w-24 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 bg-[length:200%_100%] animate-pulse rounded-full"></div>
+            </div>
+
+            {/* Headline Skeleton */}
+            <div className="mb-6 space-y-3">
+              <div className="h-12 md:h-16 w-full max-w-2xl bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 bg-[length:200%_100%] animate-pulse rounded-lg"></div>
+              <div className="h-12 md:h-16 w-3/4 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 bg-[length:200%_100%] animate-pulse rounded-lg"></div>
+            </div>
+
+            {/* Subheadline Skeleton */}
+            <div className="mb-8 space-y-2">
+              <div className="h-6 w-full max-w-xl bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 bg-[length:200%_100%] animate-pulse rounded-md"></div>
+              <div className="h-6 w-2/3 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 bg-[length:200%_100%] animate-pulse rounded-md"></div>
+            </div>
+
+            {/* Buttons Skeleton */}
+            <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-4">
+              <div className="h-12 w-36 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 bg-[length:200%_100%] animate-pulse rounded-lg"></div>
+              <div className="h-12 w-32 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 bg-[length:200%_100%] animate-pulse rounded-lg"></div>
+              <div className="h-12 w-40 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 bg-[length:200%_100%] animate-pulse rounded-lg"></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Floating Images Skeleton */}
+        <div className="absolute bottom-8 right-8 hidden lg:block">
+          <div className="flex space-x-4">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 bg-[length:200%_100%] animate-pulse border-4 border-gray-300/30 shadow-lg"></div>
+            <div className="w-16 h-16 rounded-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 bg-[length:200%_100%] animate-pulse border-4 border-gray-300/30 shadow-lg mt-4"></div>
+          </div>
+        </div>
+
+        {/* Loading Indicator */}
+        <div className="absolute bottom-4 left-4 flex items-center space-x-2 text-gray-500 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-full shadow-sm">
+          <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+          <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+          <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
+          <span className="text-sm font-medium">Loading content...</span>
+        </div>
       </section>
     );
   }
@@ -47,31 +90,37 @@ export default function HomeHeroSection() {
           </p>
           <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-4">
             {show1 && (
-              <Button size="lg" className={bannerStyles.buttons.primary.base}>
-                {banner.ctas![0].ctaText}
-              </Button>
+              <Link href={banner.ctas![0].ctaLink!}>
+                <Button size="lg" className={bannerStyles.buttons.primary.base}>
+                  {banner.ctas![0].ctaText}
+                </Button>
+              </Link>
             )}
             {show2 && (
-              <Button
-                size="lg"
-                variant="outline"
-                className={bannerStyles.buttons.outline.base}
-              >
-                {banner.ctas![1].ctaText}
-              </Button>
+              <Link href={banner.ctas![1].ctaLink!}>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className={bannerStyles.buttons.outline.base}
+                >
+                  {banner.ctas![1].ctaText}
+                </Button>
+              </Link>
             )}
             {show3 && (
-              <Button
-                size="lg"
-                className={`group ${bannerStyles.buttons.gradient.base}`}
-              >
-                <span className={bannerStyles.buttons.gradient.inner}>
-                  {banner.ctas![2].ctaText}
-                </span>
-                <span
-                  className={bannerStyles.buttons.gradient.hoverOverlay}
-                ></span>
-              </Button>
+              <Link href={banner.ctas![2].ctaLink!}>
+                <Button
+                  size="lg"
+                  className={`group ${bannerStyles.buttons.gradient.base}`}
+                >
+                  <span className={bannerStyles.buttons.gradient.inner}>
+                    {banner.ctas![2].ctaText}
+                  </span>
+                  <span
+                    className={bannerStyles.buttons.gradient.hoverOverlay}
+                  ></span>
+                </Button>
+              </Link>
             )}
           </div>
         </div>
