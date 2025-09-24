@@ -4,18 +4,16 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { History } from "lucide-react";
+import { trpc } from "@/trpc/client";
 
-interface Milestone {
-  year: string;
-  title: string;
-  description: string;
-}
+export function MilestonesSection() {
+  const { data: milestones, isLoading: isLoadingMilestones } =
+    trpc.milestones.getMany.useQuery();
 
-interface MilestonesSectionProps {
-  milestones: Milestone[];
-}
+  if (isLoadingMilestones) {
+    return <>Loading</>;
+  }
 
-export function MilestonesSection({ milestones }: MilestonesSectionProps) {
   return (
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
@@ -36,7 +34,7 @@ export function MilestonesSection({ milestones }: MilestonesSectionProps) {
           <div className="relative">
             {/* Timeline line */}
             <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-brand-200 to-accent-200"></div>
-            {milestones.map((milestone, index) => (
+            {milestones?.map((milestone, index) => (
               <div
                 key={milestone.year}
                 className={`relative mb-12 ${index % 2 === 0 ? "text-right" : "text-left"}`}

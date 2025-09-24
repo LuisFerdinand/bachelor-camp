@@ -6,7 +6,11 @@ import {
 } from "@/db/schema";
 import { booleanTypeEnum } from "@/db/schema/enums";
 import { requireRole } from "@/lib/access";
-import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
+import {
+  baseProcedure,
+  createTRPCRouter,
+  protectedProcedure,
+} from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { and, asc, desc, eq, gt, gte, ilike, or, sql } from "drizzle-orm";
 import { UTApi } from "uploadthing/server";
@@ -734,5 +738,13 @@ export const milestonesRouter = createTRPCRouter({
       .orderBy(milestones.year);
 
     return years.map((y) => y.year).filter((y): y is number => !!y);
+  }),
+  getMany: baseProcedure.query(async () => {
+    const data = await db
+      .select()
+      .from(milestones)
+      .where(eq(milestones.isActive, "true"))
+      .orderBy(asc(milestones.order));
+    return data;
   }),
 });

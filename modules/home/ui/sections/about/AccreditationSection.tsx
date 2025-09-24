@@ -4,21 +4,16 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Award } from "lucide-react";
+import { trpc } from "@/trpc/client";
 
-interface Accreditation {
-  id: number;
-  name: string;
-  description: string;
-  logo: string;
-}
+export function AccreditationsSection() {
+  const { data: accreditations, isLoading: isLoadingAccreditations } =
+    trpc.accreditations.getMany.useQuery();
 
-interface AccreditationsSectionProps {
-  accreditations: Accreditation[];
-}
+  if (isLoadingAccreditations) {
+    return <>Loading</>;
+  }
 
-export function AccreditationsSection({
-  accreditations,
-}: AccreditationsSectionProps) {
   return (
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
@@ -36,7 +31,7 @@ export function AccreditationsSection({
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {accreditations.map((accreditation) => (
+          {accreditations?.map((accreditation) => (
             <Card
               key={accreditation.id}
               className="border-0 shadow-md hover:shadow-lg transition-all duration-300"
@@ -44,10 +39,12 @@ export function AccreditationsSection({
               <CardContent className="p-6 text-center">
                 <div className="w-16 h-16 rounded-full bg-brand-100 flex items-center justify-center mx-auto mb-4">
                   <span className="text-xl font-bold text-brand-600">
-                    {accreditation.logo}
+                    {accreditation.imageUrl}
                   </span>
                 </div>
-                <h3 className="font-bold text-lg mb-2">{accreditation.name}</h3>
+                <h3 className="font-bold text-lg mb-2">
+                  {accreditation.title}
+                </h3>
                 <p className="text-neutral-600 text-sm">
                   {accreditation.description}
                 </p>
