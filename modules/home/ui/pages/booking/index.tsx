@@ -11,7 +11,7 @@ import {
   getCourseBySlug,
 } from "@/app/util/bookingData";
 import { getAllBuildings } from "@/app/util/buildingData";
-import { useBookingFlow } from "@/hooks/useBookingFlow";
+import { useBookingFlow } from "@/modules/home/ui/hooks/booking/useBookingFlow";
 
 // Import components
 import { BookingTypeSelector } from "@/components/booking/BookingTypeSelector";
