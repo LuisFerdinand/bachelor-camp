@@ -78,6 +78,7 @@ export const seedTeamMembers = async () => {
         title: "Director of Program",
         departmentId: leadershipId,
         bio: "Oversees overall program strategy and leadership initiatives at BachelorCamp.",
+        isActive: "true",
         order: 1,
         socialLinks: [
           { type: "email", url: "sarah.johnson@bachelorcamp.id" },
@@ -89,6 +90,7 @@ export const seedTeamMembers = async () => {
         title: "Head of Operations",
         departmentId: leadershipId,
         bio: "Handles day-to-day operations, resource allocation, and team coordination.",
+        isActive: "true",
         order: 2,
         socialLinks: [
           { type: "email", url: "michael.tan@bachelorcamp.id" },
@@ -100,6 +102,7 @@ export const seedTeamMembers = async () => {
         title: "Deputy Director",
         departmentId: leadershipId,
         bio: "Supports program leadership and ensures smooth execution of academic and extracurricular activities.",
+        isActive: "true",
         order: 3,
         socialLinks: [
           { type: "email", url: "priya.sharma@bachelorcamp.id" },
@@ -113,6 +116,7 @@ export const seedTeamMembers = async () => {
         title: "Instructor – Grammar & Writing",
         departmentId: academicId,
         bio: "Expert in academic writing and grammar, helping students achieve high standards in English proficiency.",
+        isActive: "true",
         order: 1,
         socialLinks: [
           { type: "email", url: "anita.dewi@bachelorcamp.id" },
@@ -124,6 +128,7 @@ export const seedTeamMembers = async () => {
         title: "Instructor – Speaking & Presentation",
         departmentId: academicId,
         bio: "Coaches students in public speaking, effective communication, and presentation skills.",
+        isActive: "true",
         order: 2,
         socialLinks: [
           { type: "email", url: "james.wong@bachelorcamp.id" },
@@ -135,6 +140,7 @@ export const seedTeamMembers = async () => {
         title: "Curriculum Designer",
         departmentId: academicId,
         bio: "Designs innovative curricula and learning materials to enhance the BachelorCamp experience.",
+        isActive: "true",
         order: 3,
         socialLinks: [
           { type: "email", url: "emily.carter@bachelorcamp.id" },

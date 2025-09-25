@@ -5,10 +5,9 @@ import HomeHeroSection from "../../sections/home/HomeHeroSection";
 import HomePillarsSection from "../../sections/home/HomePillarsSection";
 import { WhyChooseUsSection } from "../../sections/home/WhyChooseUsSection";
 import { CampusFacilitiesSection } from "../../sections/home/CampusFacilitiesSection";
-import { TestimonialsSection } from "../../sections/home/TestimonialsSection";
+import { TestimonialsSection } from "../../sections/home/HomeTestimonialsSection";
 import { SpecialBundlesSection } from "../../sections/home/SpecialBundlesSection";
 import { StudentLifeGallery } from "../../components/home/StudentLifeGallery";
-import WhyChooseUsDisplayPage from "../../sections/home/Test";
 import { CampusFacilitiesSection2 } from "../../sections/home/FacilityTest";
 
 export const HomePage = () => {
@@ -21,8 +20,6 @@ export const HomePage = () => {
         <HomeHeroSection />
 
         <WhyChooseUsSection />
-
-        {/* <WhyChooseUsDisplayPage></WhyChooseUsDisplayPage> */}
 
         <HomePillarsSection pillars={pillars} isLoading={isLoadingPillars} />
 
