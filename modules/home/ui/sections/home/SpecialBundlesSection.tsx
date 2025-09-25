@@ -101,7 +101,11 @@ export function SpecialBundlesSection() {
       <div className="container mx-auto px-4">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <h2 className="text-display-sm md:text-display-md font-bold mb-4">
-            Special Bundles
+            Special{" "}
+            <span className="text-accent-500 relative">
+              Bundles
+              <div className="absolute -bottom-2 left-0 right-0 h-3 bg-accent-100 -rotate-2 rounded-full opacity-70"></div>
+            </span>
           </h2>
           <p className="text-lg text-neutral-600">
             Save more with our specially curated program bundles.

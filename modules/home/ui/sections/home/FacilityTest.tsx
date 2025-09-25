@@ -2,7 +2,6 @@
 import React from "react";
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import {
   FACILITIES_FALLBACKS,
   ICON_URL_FALLBACK,
@@ -74,27 +73,22 @@ export function CampusFacilitiesSection2() {
       </div>
 
       <div className="container mx-auto px-4 relative">
+        {/* Heading */}
         <div className="text-center max-w-3xl mx-auto mb-20">
-          <div className="relative inline-block">
-            <Badge className="bg-brand-100 text-brand-800 hover:bg-brand-200 transition-colors duration-300 mb-6 px-6 py-2 text-sm font-semibold shadow-sm">
-              <span className="relative z-10">🏆 World-Class Facilities</span>
-            </Badge>
-          </div>
-
-          <h2 className="text-display-sm md:text-display-lg font-bold mb-6 text-neutral-900 leading-tight">
-            Everything You Need for{" "}
-            <span className="text-brand-600 relative">
+          <h2 className="text-display-sm md:text-display-md font-bold mb-6 text-neutral-900 leading-tight">
+            Everything You Need for <br />
+            <span className="text-electric-600 relative">
               Success
-              <div className="absolute -bottom-2 left-0 right-0 h-3 bg-brand-100 -rotate-1 rounded-full opacity-60"></div>
+              <div className="absolute -bottom-2 left-0 right-0 h-3 bg-electric-100 -rotate-1 rounded-full opacity-60"></div>
             </span>
           </h2>
-
           <p className="text-xl text-neutral-600 leading-relaxed max-w-2xl mx-auto">
             Our comprehensive facilities ensure you have everything needed for
             an optimal learning experience in a modern, inspiring environment.
           </p>
         </div>
 
+        {/* Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {facilities?.map((facility, index) => (
             <Card
@@ -102,7 +96,7 @@ export function CampusFacilitiesSection2() {
               className="border-0 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden group bg-white/80 backdrop-blur-sm hover:-translate-y-2 cursor-pointer"
             >
               <div className="relative h-48 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-brand-500/20 to-brand-600/30"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-electric-100/20 to-electric-600/30"></div>
 
                 <Image
                   src={facility.imageUrl || PRODUCT_IMAGE_FALLBACK}
@@ -142,7 +136,7 @@ export function CampusFacilitiesSection2() {
 
                     {/* Text Content */}
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-white font-bold text-lg mb-2 drop-shadow-sm group-hover:text-brand-100 transition-colors duration-300">
+                      <h3 className="text-white font-bold text-lg mb-2 drop-shadow-sm group-hover:text-electric-100 transition-colors duration-300">
                         {facility.name}
                       </h3>
                       <p className="text-white/90 text-sm leading-relaxed line-clamp-2 drop-shadow-sm group-hover:text-white transition-colors duration-300">
@@ -165,7 +159,7 @@ export function CampusFacilitiesSection2() {
                 {/* Order/Priority Indicator for Featured Items */}
                 {facility.order !== undefined && (
                   <div className="absolute top-4 right-4">
-                    <div className="w-8 h-8 bg-brand-600 text-white rounded-full flex items-center justify-center text-sm font-bold shadow-lg">
+                    <div className="w-8 h-8 bg-electric-300 text-white rounded-full flex items-center justify-center text-sm font-bold shadow-lg">
                       {facility.order!}
                     </div>
                   </div>
@@ -173,10 +167,10 @@ export function CampusFacilitiesSection2() {
               </div>
 
               {/* Subtle Bottom Glow Effect */}
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-500 to-brand-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-electric-500 to-electric-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </Card>
           ))}
-        </div>
+        </div>z
 
         {/* Empty State (if no facilities) */}
         {facilities && facilities.length === 0 && (
@@ -211,7 +205,7 @@ export function CampusFacilitiesSection2() {
             <p className="text-neutral-600 mb-4">
               Want to see more of our facilities?
             </p>
-            <button className="inline-flex items-center space-x-2 text-brand-600 hover:text-brand-700 font-semibold transition-colors duration-200 group">
+            <button className="inline-flex items-center space-x-2 text-electric-600 hover:text-electric-700 font-semibold transition-colors duration-200 group">
               <span>Schedule a Campus Tour</span>
               <svg
                 className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200"

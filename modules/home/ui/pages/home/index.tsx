@@ -7,8 +7,8 @@ import { WhyChooseUsSection } from "../../sections/home/WhyChooseUsSection";
 import { CampusFacilitiesSection } from "../../sections/home/CampusFacilitiesSection";
 import { TestimonialsSection } from "../../sections/home/HomeTestimonialsSection";
 import { SpecialBundlesSection } from "../../sections/home/SpecialBundlesSection";
-import { StudentLifeGallery } from "../../components/home/StudentLifeGallery";
 import { CampusFacilitiesSection2 } from "../../sections/home/FacilityTest";
+import { StudentLifeGallery } from "../../sections/home/StudentLifeGallery";
 
 export const HomePage = () => {
   const { data: pillars, isLoading: isLoadingPillars } =
@@ -24,8 +24,6 @@ export const HomePage = () => {
         <HomePillarsSection pillars={pillars} isLoading={isLoadingPillars} />
 
         <CampusFacilitiesSection2></CampusFacilitiesSection2>
-
-        <CampusFacilitiesSection />
 
         <TestimonialsSection />
 
