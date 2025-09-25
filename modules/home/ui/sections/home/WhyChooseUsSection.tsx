@@ -84,8 +84,8 @@ const LoadingState = () => (
                 <div className="flex items-center space-x-3 mb-3">
                   <SkeletonCircle className="w-8 h-8" />
                   <div>
-                    <SkeletonText className="h-4 w-24 mb-1" />
-                    <SkeletonText className="h-3 w-20" />
+                    <SkeletonText className="h-4 w-full mb-1" />
+                    <SkeletonText className="h-3 w-full" />
                   </div>
                 </div>
 
@@ -136,7 +136,10 @@ export function WhyChooseUsSection() {
             <div className="max-w-xl">
               <h2 className="text-display-sm lg:text-display-md font-bold text-neutral-900 mb-6">
                 Your Success Is Our{" "}
-                <span className="text-brand-600">Priority</span>
+                <span className="text-brand-600 relative">
+                  Priority
+                  <div className="absolute -bottom-3 left-0 right-0 h-3 bg-brand-100 -rotate-1 rounded-full opacity-70"></div>
+                </span>
               </h2>
 
               <p className="text-lg text-neutral-600 mb-8 leading-relaxed">

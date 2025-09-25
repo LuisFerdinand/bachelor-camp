@@ -99,11 +99,15 @@ export default function HomePillarsSection({ pillars, isLoading }: Props) {
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <h2 className="text-display-sm md:text-display-md font-bold mb-4">
-            Our Learning Pillars
+        <div className="text-center max-w-3xl mx-auto mb-20">
+          <h2 className="text-display-sm md:text-display-md font-bold mb-6 text-neutral-900 leading-tight">
+            Our Learning{" "}
+            <span className="text-accent-500 relative">
+              Pillars
+              <div className="absolute -bottom-2 left-0 right-0 h-3 bg-accent-100 rotate-1 rounded-full opacity-60"></div>
+            </span>
           </h2>
-          <p className="text-lg text-neutral-600">
+          <p className="text-xl text-neutral-600 leading-relaxed max-w-2xl mx-auto">
             We focus on three core areas to ensure comprehensive English
             language mastery.
           </p>

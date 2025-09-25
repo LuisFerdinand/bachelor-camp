@@ -19,11 +19,16 @@ export function TestimonialsSection() {
       }}
     >
       <div className="container mx-auto px-4">
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <h2 className="text-display-sm md:text-display-md font-bold mb-4 text-white">
-            Student Success Stories
+        {/* Heading */}
+        <div className="text-center max-w-3xl mx-auto mb-20">
+          <h2 className="text-display-sm md:text-display-md font-bold mb-6 text-white leading-tight">
+            Student Success{" "}
+            <span className="text-electric-500 relative">
+              Stories
+              <div className="absolute -bottom-2 left-0 right-0 h-3 bg-electric-300 rotate-2 rounded-full opacity-70"></div>
+            </span>
           </h2>
-          <p className="text-lg text-gray-200">
+          <p className="text-xl text-gray-200 leading-relaxed max-w-2xl mx-auto">
             Hear from our students who have transformed their English skills and
             future opportunities.
           </p>
