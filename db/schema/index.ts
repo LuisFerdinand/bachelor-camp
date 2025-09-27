@@ -10,5 +10,5 @@ export * from "./users";
 
 // Service
 export * from "./tests";
-export * from "./camps";
+export * from "./buildings";
 export * from "./courses";

@@ -1,15 +1,19 @@
-import { pgTable, timestamp, uuid } from "drizzle-orm/pg-core";
+import { integer, pgTable, timestamp, uuid } from "drizzle-orm/pg-core";
 import { photos } from "./photos";
-import { entityTypeEnum } from "../enums";
+import { booleanTypeEnum, entityTypeEnum } from "../enums";
 
 export const photoRelations = pgTable("photo_relations", {
-  id: uuid("id").primaryKey(),
+  id: uuid("id").defaultRandom().primaryKey(),
   photoId: uuid("photo_id")
     .references(() => photos.id, { onDelete: "cascade" })
     .notNull(),
 
-  targetId: uuid("target_id").notNull(), // ID of camp, roomType, etc.
-  entityType: entityTypeEnum("entity_type").notNull(), // e.g., "camp", "roomType"
+  targetId: uuid("target_id").notNull(),
+  entityType: entityTypeEnum("entity_type").notNull(),
 
-  createdAt: timestamp("created_at").defaultNow(),
+  order: integer("order").default(0),
+  isFeatured: booleanTypeEnum("is_featured").default("false"),
+
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

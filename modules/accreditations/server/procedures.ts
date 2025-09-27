@@ -6,6 +6,7 @@ import {
 } from "@/db/schema";
 import { booleanTypeEnum } from "@/db/schema/enums";
 import { requireRole } from "@/lib/access";
+import { generateUniqueSlug } from "@/server/utils/generateUniqueSlug";
 import {
   baseProcedure,
   createTRPCRouter,
@@ -29,6 +30,7 @@ export const accreditationsRouter = createTRPCRouter({
         .insert(accreditations)
         .values({
           title: input.title,
+          slug: await generateUniqueSlug(input.title, accreditations),
           description: input.description,
           isActive: "false",
         })
@@ -324,7 +326,13 @@ export const accreditationsRouter = createTRPCRouter({
       };
 
       if (rest.title !== undefined) {
-        updateData.title = rest.title;
+        if (rest.title !== existing.title) {
+          updateData.slug = await generateUniqueSlug(
+            rest.title,
+            accreditations
+          );
+          updateData.title = rest.title;
+        }
       }
       if (rest.description !== undefined) {
         updateData.description = rest.description;

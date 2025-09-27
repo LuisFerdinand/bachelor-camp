@@ -21,21 +21,21 @@ import {
 
 import { usePathname, useRouter } from "next/navigation";
 import { ProductImage } from "@/components/ProductImage";
-import { cn, stringToColor } from "@/lib/utils";
+import {
+  cn,
+  stringToColor,
+  stringToColorPalette,
+  stringToModernColor,
+} from "@/lib/utils";
 import { BannerActionProvider } from "../BannerContext";
 import BannerActions from "./banner-actions";
 import { InferSelectModel } from "drizzle-orm";
 import { Banner } from "@/db/schema";
-
-const typeIcons: Record<string, React.ElementType> = {
-  Home: Home,
-  Camp: Tent,
-  Programs: BookOpen,
-  Tests: FileText,
-  About: Info,
-  Blog: Rss,
-  Contact: Mail,
-};
+import { CTATableCell } from "@/components/table/CTAList";
+import LastUpdatedDisplay from "@/components/table/LastUpdatedDisplay";
+import CreatedAtDisplay from "@/components/table/CreatedAtDisplay";
+import { BooleanStatusBadge } from "@/components/table/StatusBadge";
+import { CategoryBadge } from "@/components/table/CategoryBadge";
 
 export function getBannerColumns(): ColumnDef<Banner>[] {
   const router = useRouter();
@@ -59,13 +59,7 @@ export function getBannerColumns(): ColumnDef<Banner>[] {
 
         return (
           <>
-            <div
-              className="flex items-start gap-4 max-w-full"
-              //   onClick={(e) => {
-              //     e.stopPropagation();
-              //     router.push(`${pathname}/${id}`);
-              //   }}
-            >
+            <div className="flex items-start gap-4 max-w-full">
               <div className="relative w-20 shrink-0">
                 <ProductImage imageUrl={mediaUrl} title={headline} />
               </div>
@@ -97,22 +91,8 @@ export function getBannerColumns(): ColumnDef<Banner>[] {
       },
       cell: ({ row }: { row: Row<Banner> }) => {
         const { type } = row.original;
-        const Icon = typeIcons[type] || Info;
 
-        return (
-          <div className="flex items-center gap-1">
-            <span
-              className="text-xs px-2 py-0.5 rounded-full text-white inline-flex items-center gap-1 line-clamp-1 truncate"
-              style={{
-                backgroundColor: stringToColor(type),
-                color: "black",
-              }}
-            >
-              <Icon className="w-3.5 h-3.5" />
-              {type}
-            </span>
-          </div>
-        );
+        return <CategoryBadge category={{ name: type }}></CategoryBadge>;
       },
     },
     {
@@ -130,26 +110,11 @@ export function getBannerColumns(): ColumnDef<Banner>[] {
         const { isActive } = row.original;
 
         return (
-          <div className="flex items-center justify-center">
-            <span
-              className={cn(
-                "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium",
-                isActive === "true"
-                  ? "bg-green-100 text-green-700"
-                  : "bg-red-100 text-red-700"
-              )}
-            >
-              <span
-                className={cn(
-                  "w-2 h-2 rounded-full",
-                  isActive === "true" ? "bg-green-500" : "bg-red-500"
-                )}
-              />
-              <p className="leading-none">
-                {isActive === "true" ? "Active" : "Inactive"}
-              </p>
-            </span>
-          </div>
+          <BooleanStatusBadge
+            status={isActive!}
+            type="active"
+            showIcon
+          ></BooleanStatusBadge>
         );
       },
     },
@@ -170,14 +135,13 @@ export function getBannerColumns(): ColumnDef<Banner>[] {
 
         if (!badgeText) return null;
 
-        const Icon = typeIcons[type] || Info;
-
         return (
           <span
             className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium truncate"
             style={{
-              backgroundColor: stringToColor(type),
-              color: "black",
+              backgroundColor: stringToColorPalette(type).background,
+              color: stringToColorPalette(type).text,
+              border: `2px solid ${stringToColorPalette(type).border}`,
             }}
           >
             <TagIcon className="w-3 h-3" />
@@ -192,42 +156,7 @@ export function getBannerColumns(): ColumnDef<Banner>[] {
       cell: ({ row }) => {
         const ctas = row.original.ctas || [];
 
-        return (
-          <div className="flex flex-row">
-            <ul className={cn(`space-y-1 list-disc`)}>
-              {ctas.map((cta, i) =>
-                cta.ctaText ? (
-                  <li
-                    key={i}
-                    className={cn(
-                      `list-item text-xs`,
-                      cta.isShown
-                        ? "marker:text-green-500"
-                        : "marker:text-red-500"
-                    )}
-                  >
-                    <div className="flex items-center gap-1">
-                      {cta.isShown ? (
-                        <a
-                          href={cta.ctaLink || "#"}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-neutral-800 hover:underline flex items-center gap-1"
-                        >
-                          {cta.ctaText}
-                        </a>
-                      ) : (
-                        <span className="text-neutral-400 line-through">
-                          {cta.ctaText}
-                        </span>
-                      )}
-                    </div>
-                  </li>
-                ) : null
-              )}
-            </ul>
-          </div>
-        );
+        return <CTATableCell row={row}></CTATableCell>;
       },
     },
 
@@ -243,28 +172,8 @@ export function getBannerColumns(): ColumnDef<Banner>[] {
         </Button>
       ),
       cell: ({ row }: { row: Row<Banner> }) => {
-        const { createdAt, id } = row.original;
-        const date = new Date(createdAt!);
-        const formatted = date.toLocaleString("en-US", {
-          year: "numeric",
-          month: "numeric",
-          day: "numeric",
-          hour: "numeric",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: false,
-        });
-
         return (
-          <div
-            className="text-sm text-muted-foreground text-center"
-            // onClick={(e) => {
-            //   e.stopPropagation(); // prevent modal/dropdown bugs
-            //   router.push(`${pathname}/${id}`);
-            // }}
-          >
-            {formatted}
-          </div>
+          <CreatedAtDisplay value={row.original.createdAt!}></CreatedAtDisplay>
         );
       },
     },
@@ -280,28 +189,10 @@ export function getBannerColumns(): ColumnDef<Banner>[] {
         </Button>
       ),
       cell: ({ row }: { row: Row<Banner> }) => {
-        const { updatedAt, id } = row.original;
-        const date = new Date(row.original.updatedAt!);
-        const formatted = date.toLocaleString("en-US", {
-          year: "numeric",
-          month: "numeric",
-          day: "numeric",
-          hour: "numeric",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: false,
-        });
-
         return (
-          <div
-            className="text-sm text-muted-foreground text-center truncate"
-            onClick={(e) => {
-              e.stopPropagation(); // prevent modal/dropdown bugs
-              router.push(`${pathname}/${id}`);
-            }}
-          >
-            {formatted}
-          </div>
+          <LastUpdatedDisplay
+            value={row.original.updatedAt!}
+          ></LastUpdatedDisplay>
         );
       },
     },

@@ -6,11 +6,11 @@ export const BOOLEAN_TYPES = ["true", "false"] as const;
 export type BooleanType = (typeof BOOLEAN_TYPES)[number];
 export const booleanTypeEnum = pgEnum("boolean_type", BOOLEAN_TYPES);
 
-export const SERVICE_TYPES = ["camp_room", "test", "course"] as const;
+export const SERVICE_TYPES = ["building_room", "test", "course"] as const;
 export type ServiceType = (typeof SERVICE_TYPES)[number];
 export const serviceTypeEnum = pgEnum("service_type", SERVICE_TYPES);
 
-export const ENTITY_TYPES = ["camp", "roomType", "course", "test"] as const;
+export const ENTITY_TYPES = ["building", "roomType", "course", "test"] as const;
 export type EntityType = (typeof ENTITY_TYPES)[number];
 export const entityTypeEnum = pgEnum("entity_type", ENTITY_TYPES);
 
@@ -53,7 +53,7 @@ export const FACILITY_STATUSES = ["active", "inactive", "archived"] as const;
 export type FacilityStatus = (typeof FACILITY_STATUSES)[number];
 export const facilityStatusEnum = pgEnum("facility_status", FACILITY_STATUSES);
 
-export const FACILITY_TYPES = ["camp", "roomType"] as const;
+export const FACILITY_TYPES = ["building", "roomType"] as const;
 export type FacilityType = (typeof FACILITY_TYPES)[number];
 export const facilityTypeEnum = pgEnum("facility_type", FACILITY_TYPES);
 
@@ -148,3 +148,26 @@ export const facilityCategoryEnum = pgEnum(
   "facility_category",
   FACILITY_CATEGORIES
 );
+
+export const COURSE_CATEGORIES = [
+  "IELTS",
+  "TOEFL",
+  "TOEIC",
+  "Pronounciation",
+] as const;
+export type CourseCategory = (typeof COURSE_CATEGORIES)[number];
+export const courseCategoryEnum = pgEnum("course_category", COURSE_CATEGORIES);
+
+export const COURSE_LEVELS = [
+  "Intro",
+  "Next Step",
+  "Advanced",
+  "Drill Class",
+  "Mock Test",
+] as const;
+export type CourseLevel = (typeof COURSE_LEVELS)[number];
+export const courseLevelEnum = pgEnum("course_level", COURSE_LEVELS);
+
+export const MEET_STATUSES = ["scheduled", "completed", "rescheduled"] as const;
+export type MeetStatus = (typeof MEET_STATUSES)[number];
+export const meetStatusEnum = pgEnum("meet_status", MEET_STATUSES);

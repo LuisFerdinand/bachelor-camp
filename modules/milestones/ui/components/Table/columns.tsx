@@ -17,6 +17,12 @@ import { InferSelectModel } from "drizzle-orm";
 import { milestones } from "@/db/schema";
 import { MilestoneActionProvider } from "../MilestoneContext";
 import MilestoneActions from "./milestone-actions";
+import { OrderBadge } from "@/components/table/OrderBadge";
+
+import CreatedAtDisplay from "@/components/table/CreatedAtDisplay";
+import LastUpdatedDisplay from "@/components/table/LastUpdatedDisplay";
+import { YearTableCell } from "@/components/table/YearDisplay";
+import { BooleanStatusBadge } from "@/components/table/StatusBadge";
 // import MilestoneActions from "./milestone-actions";
 
 export type Milestone = InferSelectModel<typeof milestones>;
@@ -26,6 +32,24 @@ export function getMilestoneColumns(): ColumnDef<Milestone>[] {
   const pathname = usePathname();
 
   const columns: ColumnDef<Milestone>[] = [
+    {
+      accessorKey: "order",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Order
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => (
+        <OrderBadge
+          order={row.original.order}
+          showBadgeStyle={true}
+        ></OrderBadge>
+      ),
+    },
     {
       accessorKey: "title",
       header: ({ column }: { column: Column<Milestone, unknown> }) => (
@@ -67,7 +91,7 @@ export function getMilestoneColumns(): ColumnDef<Milestone>[] {
         </Button>
       ),
       cell: ({ row }) => {
-        return <span className="font-medium">{row.original.year}</span>;
+        return <YearTableCell row={row}></YearTableCell>;
       },
     },
     {
@@ -84,45 +108,15 @@ export function getMilestoneColumns(): ColumnDef<Milestone>[] {
       cell: ({ row }) => {
         const { isActive } = row.original;
         return (
-          <span
-            className={cn(
-              "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium",
-              isActive === "true"
-                ? "bg-green-100 text-green-700"
-                : "bg-red-100 text-red-700"
-            )}
-          >
-            <span
-              className={cn(
-                "w-2 h-2 rounded-full",
-                isActive === "true" ? "bg-green-500" : "bg-red-500"
-              )}
-            />
-            <p className="leading-none">
-              {isActive === "true" ? "Active" : "Inactive"}
-            </p>
-          </span>
+          <BooleanStatusBadge
+            status={isActive!}
+            type="active"
+            showIcon
+          ></BooleanStatusBadge>
         );
       },
     },
 
-    {
-      accessorKey: "order",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Order
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-      cell: ({ row }) => (
-        <span className="text-sm text-muted-foreground items-center flex justify-center">
-          {row.original.order > 0 ? formatOrdinal(row.original.order) : "-"}
-        </span>
-      ),
-    },
     {
       accessorKey: "createdAt",
       header: ({ column }) => (
@@ -136,11 +130,7 @@ export function getMilestoneColumns(): ColumnDef<Milestone>[] {
       ),
       cell: ({ row }) => {
         const date = new Date(row.original.createdAt!);
-        return (
-          <div className="text-xs text-muted-foreground">
-            {date.toLocaleString()}
-          </div>
-        );
+        return <CreatedAtDisplay value={date}></CreatedAtDisplay>;
       },
     },
     {
@@ -156,11 +146,7 @@ export function getMilestoneColumns(): ColumnDef<Milestone>[] {
       ),
       cell: ({ row }) => {
         const date = new Date(row.original.updatedAt!);
-        return (
-          <div className="text-xs text-muted-foreground">
-            {date.toLocaleString()}
-          </div>
-        );
+        return <LastUpdatedDisplay value={date}></LastUpdatedDisplay>;
       },
     },
     {
@@ -170,12 +156,7 @@ export function getMilestoneColumns(): ColumnDef<Milestone>[] {
         return (
           <>
             <MilestoneActionProvider>
-              <MilestoneActions
-                id={id}
-                isActive={isActive!}
-                order={order}
-                year={year}
-              >
+              <MilestoneActions id={id} isActive={isActive!} order={order}>
                 <Button
                   variant="ghost"
                   className="size-8 p-0 hover:bg-neutral-300 hover:text-primary"

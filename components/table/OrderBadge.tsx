@@ -26,29 +26,31 @@ export function OrderBadge({
           className
         )}
       >
-        —
+        -
       </span>
     );
   }
 
   if (showBadgeStyle) {
     return (
-      <span
-        className={cn(
-          "inline-flex items-center justify-center rounded-md bg-slate-100 text-slate-700 border border-slate-200 font-mono font-medium min-w-[2.5rem] h-6",
-          sizeClasses[size],
-          className
-        )}
-      >
-        {formatOrdinal(order)}
-      </span>
+      <div className="flex justify-center">
+        <span
+          className={cn(
+            "inline-flex items-center justify-center rounded-full bg-slate-100 text-slate-700 border border-slate-300  font-medium px-2 h-6",
+            sizeClasses[size],
+            className
+          )}
+        >
+          {formatOrdinal(order)}
+        </span>
+      </div>
     );
   }
 
   return (
     <span
       className={cn(
-        "text-muted-foreground  font-medium flex items-center justify-center",
+        "text-muted-foreground font-medium flex items-center justify-center",
         sizeClasses[size],
         className
       )}

@@ -5,7 +5,9 @@ import {
   principles,
   principleUpdateSchema,
 } from "@/db/schema/marketing/principles";
+import { seedPrinciples } from "@/db/seeds/principles.seed";
 import { requireRole } from "@/lib/access";
+import { generateUniqueSlug } from "@/server/utils/generateUniqueSlug";
 
 import {
   baseProcedure,
@@ -67,6 +69,7 @@ export const principlesRouter = createTRPCRouter({
         .insert(principles)
         .values({
           title: input.title,
+          slug: await generateUniqueSlug(input.title, principles),
           subtitle: input.subtitle,
           iconUrl: input.iconUrl,
           isActive: "false",
@@ -110,8 +113,11 @@ export const principlesRouter = createTRPCRouter({
         updatedAt: new Date(),
       };
 
-      if (rest.title) {
-        updateData.title = rest.title;
+      if (rest.title !== undefined) {
+        if (rest.title !== existing.title) {
+          updateData.title = rest.title;
+          updateData.slug = await generateUniqueSlug(rest.title, principles);
+        }
       }
       if (rest.subtitle) updateData.subtitle = rest.subtitle;
       if (rest.iconUrl) updateData.iconUrl = rest.iconUrl;

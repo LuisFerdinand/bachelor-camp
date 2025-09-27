@@ -6,6 +6,7 @@ import {
   highlightUpdateSchema,
 } from "@/db/schema/marketing/highlights";
 import { requireRole } from "@/lib/access";
+import { generateUniqueSlug } from "@/server/utils/generateUniqueSlug";
 import {
   baseProcedure,
   createTRPCRouter,
@@ -60,12 +61,11 @@ export const highlightsRouter = createTRPCRouter({
       const { id: userId } = ctx.user;
       await requireRole(userId, ["super_admin", "admin"]);
 
-      // const slug = await generateUniqueSlug(input.title, highlights);
-
       const [highlight] = await db
         .insert(highlights)
         .values({
           title: input.title,
+          slug: await generateUniqueSlug(input.title, highlights),
           subtitle: input.subtitle,
           iconUrl: input.iconUrl,
           features: input.features ?? [],
@@ -110,8 +110,11 @@ export const highlightsRouter = createTRPCRouter({
         updatedAt: new Date(),
       };
 
-      if (rest.title) {
-        updateData.title = rest.title;
+      if (rest.title !== undefined) {
+        if (rest.title !== existing.title) {
+          updateData.title = rest.title;
+          updateData.slug = await generateUniqueSlug(rest.title, highlights);
+        }
       }
       if (rest.subtitle) updateData.subtitle = rest.subtitle;
       if (rest.iconUrl) updateData.iconUrl = rest.iconUrl;

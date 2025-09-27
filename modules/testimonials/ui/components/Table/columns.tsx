@@ -6,17 +6,62 @@ import {
   StarIcon,
   UsersIcon,
   MoreVertical,
+  Home,
+  Tent,
+  BookOpen,
+  FileText,
+  Info,
+  Rss,
+  Mail,
+  Icon,
 } from "lucide-react";
 
 import { ProductImage } from "@/components/ProductImage";
-import { cn } from "@/lib/utils";
+import { cn, stringToColor } from "@/lib/utils";
 import { TestimonialWithCategories } from "@/db/schema";
 import TestimonialActions from "./testimonial-actions";
 import { TestimonialActionProvider } from "../TestimonialContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { OrderBadge } from "@/components/table/OrderBadge";
+import CreatedAtDisplay from "@/components/table/CreatedAtDisplay";
+import LastUpdatedDisplay from "@/components/table/LastUpdatedDisplay";
+import { FeaturedBadge } from "@/components/table/FeaturedBadge";
+import { BooleanStatusBadge } from "@/components/table/StatusBadge";
+import { CategoryBadgeList } from "@/components/table/CategoryBadge";
+
+const typeIcons: Record<string, React.ElementType> = {
+  Home: Home,
+  Camp: Tent,
+  Programs: BookOpen,
+  Tests: FileText,
+  About: Info,
+  Blog: Rss,
+  Contact: Mail,
+};
 
 export function getTestimonialColumns(): ColumnDef<TestimonialWithCategories>[] {
   const columns: ColumnDef<TestimonialWithCategories>[] = [
+    {
+      accessorKey: "order",
+      header: ({ column }) => (
+        <div className="flex justify-center">
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            className=""
+          >
+            Order
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
+      ),
+      cell: ({ row }) => (
+        <OrderBadge
+          order={row.original.order!}
+          showBadgeStyle={true}
+        ></OrderBadge>
+      ),
+    },
     {
       accessorKey: "name",
       header: ({
@@ -99,20 +144,11 @@ export function getTestimonialColumns(): ColumnDef<TestimonialWithCategories>[] 
       cell: ({ row }) => {
         const { categories } = row.original;
 
-        if (!categories?.length)
-          return <span className="text-xs text-muted-foreground">None</span>;
-
         return (
-          <div className="flex flex-wrap gap-1">
-            {categories.map((c) => (
-              <span
-                key={c.id}
-                className="px-2 py-0.5 text-xs rounded-full bg-accent text-accent-foreground truncate"
-              >
-                {c.name}
-              </span>
-            ))}
-          </div>
+          <CategoryBadgeList
+            categories={categories}
+            size="sm"
+          ></CategoryBadgeList>
         );
       },
     },
@@ -147,16 +183,10 @@ export function getTestimonialColumns(): ColumnDef<TestimonialWithCategories>[] 
       cell: ({ row }) => {
         const { isFeatured } = row.original;
         return (
-          <span
-            className={cn(
-              "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium",
-              isFeatured === "true"
-                ? "bg-blue-100 text-blue-700"
-                : "bg-gray-100 text-gray-500"
-            )}
-          >
-            {isFeatured === "true" ? "Featured" : "Not Featured"}
-          </span>
+          <FeaturedBadge
+            isFeatured={isFeatured}
+            showIcon={true}
+          ></FeaturedBadge>
         );
       },
     },
@@ -168,16 +198,11 @@ export function getTestimonialColumns(): ColumnDef<TestimonialWithCategories>[] 
       cell: ({ row }) => {
         const { isShown } = row.original;
         return (
-          <span
-            className={cn(
-              "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium",
-              isShown === "true"
-                ? "bg-green-100 text-green-700"
-                : "bg-red-100 text-red-700"
-            )}
-          >
-            {isShown === "true" ? "Shown" : "Hidden"}
-          </span>
+          <BooleanStatusBadge
+            status={isShown!}
+            type="visibility"
+            showIcon
+          ></BooleanStatusBadge>
         );
       },
     },
@@ -196,11 +221,7 @@ export function getTestimonialColumns(): ColumnDef<TestimonialWithCategories>[] 
       ),
       cell: ({ row }) => {
         const { createdAt } = row.original;
-        return (
-          <span className="text-xs text-muted-foreground">
-            {new Date(createdAt!).toLocaleDateString()}
-          </span>
-        );
+        return <CreatedAtDisplay value={createdAt!}></CreatedAtDisplay>;
       },
     },
 
@@ -218,11 +239,7 @@ export function getTestimonialColumns(): ColumnDef<TestimonialWithCategories>[] 
       ),
       cell: ({ row }) => {
         const { updatedAt } = row.original;
-        return (
-          <span className="text-xs text-muted-foreground">
-            {new Date(updatedAt!).toLocaleDateString()}
-          </span>
-        );
+        return <LastUpdatedDisplay value={updatedAt!}></LastUpdatedDisplay>;
       },
     },
 

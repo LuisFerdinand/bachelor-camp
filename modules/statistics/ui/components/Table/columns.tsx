@@ -8,9 +8,26 @@ import { Statistic } from "@/db/schema"; // <- your schema type
 import { StatisticActionProvider } from "../StatisticContext";
 import StatisticActions from "./statistic-actions";
 import { ReactSVG } from "react-svg";
+import { OrderBadge } from "@/components/table/OrderBadge";
+import CreatedAtDisplay from "@/components/table/CreatedAtDisplay";
+import LastUpdatedDisplay from "@/components/table/LastUpdatedDisplay";
+import { BooleanStatusBadge } from "@/components/table/StatusBadge";
 
 export function getStatisticColumns(): ColumnDef<Statistic>[] {
   const columns: ColumnDef<Statistic>[] = [
+    {
+      accessorKey: "order",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Order
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => <OrderBadge order={row.original.order}></OrderBadge>,
+    },
     {
       accessorKey: "label",
       header: ({ column }: { column: Column<Statistic, unknown> }) => (
@@ -29,7 +46,7 @@ export function getStatisticColumns(): ColumnDef<Statistic>[] {
             {iconUrl ? (
               <div
                 className="flex items-center justify-center w-10 h-10 rounded-full shrink-0"
-                style={{ backgroundColor: stringToColor(label, true) }}
+                style={{ backgroundColor: stringToColor(label).text }}
               >
                 <ReactSVG
                   src={iconUrl}
@@ -75,42 +92,15 @@ export function getStatisticColumns(): ColumnDef<Statistic>[] {
       cell: ({ row }) => {
         const { isActive } = row.original;
         return (
-          <span
-            className={cn(
-              "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium",
-              isActive === "true"
-                ? "bg-green-100 text-green-700"
-                : "bg-red-100 text-red-700"
-            )}
-          >
-            <span
-              className={cn(
-                "w-2 h-2 rounded-full",
-                isActive === "true" ? "bg-green-500" : "bg-red-500"
-              )}
-            />
-            {isActive === "true" ? "Active" : "Inactive"}
-          </span>
+          <BooleanStatusBadge
+            status={isActive!}
+            type="active"
+            showIcon
+          ></BooleanStatusBadge>
         );
       },
     },
-    {
-      accessorKey: "order",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Order
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-      cell: ({ row }) => (
-        <span className="text-sm text-muted-foreground flex justify-center">
-          {row.original.order > 0 ? formatOrdinal(row.original.order) : "-"}
-        </span>
-      ),
-    },
+
     {
       accessorKey: "createdAt",
       header: ({ column }) => (
@@ -124,11 +114,7 @@ export function getStatisticColumns(): ColumnDef<Statistic>[] {
       ),
       cell: ({ row }) => {
         const date = new Date(row.original.createdAt!);
-        return (
-          <span className="text-xs text-muted-foreground">
-            {date.toLocaleDateString()}
-          </span>
-        );
+        return <CreatedAtDisplay value={date}></CreatedAtDisplay>;
       },
     },
     {
@@ -144,11 +130,7 @@ export function getStatisticColumns(): ColumnDef<Statistic>[] {
       ),
       cell: ({ row }) => {
         const date = new Date(row.original.updatedAt!);
-        return (
-          <span className="text-xs text-muted-foreground">
-            {date.toLocaleDateString()}
-          </span>
-        );
+        return <LastUpdatedDisplay value={date}></LastUpdatedDisplay>;
       },
     },
     {

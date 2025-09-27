@@ -10,8 +10,31 @@ import { HighlightActionProvider } from "../HighlightContext";
 import HighlightActions from "./highlight-actions";
 import { OrderBadge } from "@/components/table/OrderBadge";
 
+import { FeatureTableCell } from "@/components/table/FeatureList";
+import LastUpdatedDisplay from "@/components/table/LastUpdatedDisplay";
+import CreatedAtDisplay from "@/components/table/CreatedAtDisplay";
+import { BooleanStatusBadge } from "@/components/table/StatusBadge";
+
 export function getHighlightColumns(): ColumnDef<Highlight>[] {
   const columns: ColumnDef<Highlight>[] = [
+    {
+      accessorKey: "order",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Order
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => (
+        <OrderBadge
+          order={row.original.order}
+          showBadgeStyle={true}
+        ></OrderBadge>
+      ),
+    },
     {
       accessorKey: "title",
       header: ({ column }: { column: Column<Highlight, unknown> }) => (
@@ -33,7 +56,7 @@ export function getHighlightColumns(): ColumnDef<Highlight>[] {
               <div
                 className="flex items-center justify-center w-10 h-10 rounded-full shrink-0"
                 style={{
-                  backgroundColor: stringToColor(title, true).border,
+                  backgroundColor: stringToColor(title).text,
                 }}
               >
                 <ReactSVG
@@ -77,22 +100,11 @@ export function getHighlightColumns(): ColumnDef<Highlight>[] {
         const { isActive } = row.original;
 
         return (
-          <span
-            className={cn(
-              "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium",
-              isActive === "true"
-                ? "bg-green-100 text-green-700"
-                : "bg-red-100 text-red-700"
-            )}
-          >
-            <span
-              className={cn(
-                "w-2 h-2 rounded-full",
-                isActive === "true" ? "bg-green-500" : "bg-red-500"
-              )}
-            />
-            {isActive === "true" ? "Active" : "Inactive"}
-          </span>
+          <BooleanStatusBadge
+            status={isActive!}
+            type="active"
+            showIcon
+          ></BooleanStatusBadge>
         );
       },
     },
@@ -102,49 +114,10 @@ export function getHighlightColumns(): ColumnDef<Highlight>[] {
       cell: ({ row }) => {
         const features = row.original.features || [];
 
-        if (features.length === 0) {
-          return (
-            <span className="flex justify-center text-xs text-muted-foreground italic text-center">
-              No features
-            </span>
-          );
-        }
-
-        return (
-          <ul className="space-y-1 list-disc pl-4 text-xs">
-            {features.map((f, i) => (
-              <li key={i} className="truncate flex items-center gap-1">
-                {f.iconUrl ? (
-                  <img
-                    src={f.iconUrl}
-                    alt=""
-                    className="w-3 h-3 object-contain"
-                  />
-                ) : (
-                  <Circle className="w-3 h-3 text-muted-foreground" />
-                )}
-                <span className="leading-none">
-                  {f.text || "Untitled feature"}
-                </span>
-              </li>
-            ))}
-          </ul>
-        );
+        return <FeatureTableCell row={row}></FeatureTableCell>;
       },
     },
-    {
-      accessorKey: "order",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Order
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-      cell: ({ row }) => <OrderBadge order={row.original.order}></OrderBadge>,
-    },
+
     {
       accessorKey: "createdAt",
       header: ({ column }) => (
@@ -158,11 +131,7 @@ export function getHighlightColumns(): ColumnDef<Highlight>[] {
       ),
       cell: ({ row }) => {
         const date = new Date(row.original.createdAt!);
-        return (
-          <span className="text-xs text-muted-foreground">
-            {date.toLocaleDateString()}
-          </span>
-        );
+        return <CreatedAtDisplay value={date}></CreatedAtDisplay>;
       },
     },
     {
@@ -178,11 +147,7 @@ export function getHighlightColumns(): ColumnDef<Highlight>[] {
       ),
       cell: ({ row }) => {
         const date = new Date(row.original.updatedAt!);
-        return (
-          <span className="text-xs text-muted-foreground">
-            {date.toLocaleDateString()}
-          </span>
-        );
+        return <LastUpdatedDisplay value={date}></LastUpdatedDisplay>;
       },
     },
     {

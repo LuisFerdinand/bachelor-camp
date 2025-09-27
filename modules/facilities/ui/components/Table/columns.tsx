@@ -18,15 +18,34 @@ import LastUpdatedDisplay from "@/components/table/LastUpdatedDisplay";
 import { FeaturedBadge } from "@/components/table/FeaturedBadge";
 import { CategoryBadge } from "@/components/table/CategoryBadge";
 import { OrderBadge } from "@/components/table/OrderBadge";
-import { StatusBadge } from "@/components/table/StatusBadge";
 import { FacilityActionProvider } from "../FacilityContext";
 import FacilityActions from "./facility-actions";
+import { MultiStateStatusBadge } from "@/components/table/StatusBadge";
+import CreatedAtDisplay from "@/components/table/CreatedAtDisplay";
 // import FacilityActions from "./facility-actions";
 
 export type Facility = InferSelectModel<typeof facilities>;
 
 export function getFacilityColumns(): ColumnDef<Facility>[] {
   const columns: ColumnDef<Facility>[] = [
+    {
+      accessorKey: "order",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Order
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => (
+        <OrderBadge
+          order={row.original.order || 0}
+          showBadgeStyle={true}
+        ></OrderBadge>
+      ),
+    },
     {
       accessorKey: "name",
       header: ({ column }: { column: Column<Facility, unknown> }) => (
@@ -82,9 +101,9 @@ export function getFacilityColumns(): ColumnDef<Facility>[] {
         </Button>
       ),
       cell: ({ row }) => (
-        <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-neutral-100">
-          {capitalize(row.original.type)}
-        </span>
+        <CategoryBadge
+          category={{ name: capitalize(row.original.type) }}
+        ></CategoryBadge>
       ),
     },
     {
@@ -101,10 +120,10 @@ export function getFacilityColumns(): ColumnDef<Facility>[] {
       cell: ({ row }) => {
         const status = row.original.status;
         return (
-          <StatusBadge
+          <MultiStateStatusBadge
             status={row.original.status!}
             showIcon={true}
-          ></StatusBadge>
+          ></MultiStateStatusBadge>
         );
       },
     },
@@ -131,24 +150,12 @@ export function getFacilityColumns(): ColumnDef<Facility>[] {
       accessorKey: "category",
       header: () => <Button variant="ghost">Category</Button>,
       cell: ({ row }) => (
-        <CategoryBadge category={row.original.category!}></CategoryBadge>
+        <CategoryBadge
+          category={{ name: capitalize(row.original.category!) }}
+        ></CategoryBadge>
       ),
     },
-    {
-      accessorKey: "order",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Order
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-      cell: ({ row }) => (
-        <OrderBadge order={row.original.order || 0}></OrderBadge>
-      ),
-    },
+
     {
       accessorKey: "createdAt",
       header: ({ column }) => (
@@ -162,11 +169,7 @@ export function getFacilityColumns(): ColumnDef<Facility>[] {
       ),
       cell: ({ row }) => {
         const date = new Date(row.original.createdAt!);
-        return (
-          <div className="text-xs text-muted-foreground">
-            {date.toLocaleString()}
-          </div>
-        );
+        return <CreatedAtDisplay value={date}></CreatedAtDisplay>;
       },
     },
     {

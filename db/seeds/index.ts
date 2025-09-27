@@ -17,6 +17,8 @@ import { seedFaqs } from "./faqs.seed";
 import { seedSocialMedias } from "./socialMedias.seed";
 import { seedLocations } from "./locations.seed";
 import { seedFacilities } from "./facilities.seed";
+import { seedCourses } from "./courses.seed";
+import { seedBuildings } from "./buildings.seed";
 
 async function main() {
   // 1. Clear tables
@@ -80,6 +82,10 @@ async function main() {
   await seedLocations();
 
   await seedFacilities();
+
+  await seedBuildings();
+
+  await seedCourses();
 
   console.log("✅ Seeding complete!");
 }

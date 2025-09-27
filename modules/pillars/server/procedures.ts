@@ -2,6 +2,7 @@ import { db } from "@/db";
 import { pillarCreateSchema, pillars, pillarUpdateSchema } from "@/db/schema";
 import { booleanTypeEnum } from "@/db/schema/enums";
 import { requireRole } from "@/lib/access";
+import { generateUniqueSlug } from "@/server/utils/generateUniqueSlug";
 import {
   baseProcedure,
   createTRPCRouter,
@@ -132,6 +133,7 @@ export const pillarsRouter = createTRPCRouter({
         .insert(pillars)
         .values({
           title: input.title,
+          slug: await generateUniqueSlug(input.title, pillars),
           subtitle: input.subtitle,
           iconUrl: input.iconUrl,
           imageUrl: input.imageUrl,
@@ -181,7 +183,10 @@ export const pillarsRouter = createTRPCRouter({
       };
 
       if (rest.title !== undefined) {
-        updateData.title = rest.title;
+        if (rest.title !== existing.title) {
+          updateData.title = rest.title;
+          updateData.slug = await generateUniqueSlug(rest.title, pillars);
+        }
       }
       if (rest.subtitle !== undefined) {
         updateData.subtitle = rest.subtitle;

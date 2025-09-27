@@ -8,9 +8,30 @@ import { FaqWithCategories } from "@/db/schema";
 import { ReactSVG } from "react-svg";
 import { FAQActionProvider } from "../FAQContext";
 import FAQActions from "./faq-actions";
+import { OrderBadge } from "@/components/table/OrderBadge";
+
+import LastUpdatedDisplay from "@/components/table/LastUpdatedDisplay";
+import CreatedAtDisplay from "@/components/table/CreatedAtDisplay";
+import { CategoryBadge } from "@/components/table/CategoryBadge";
+import { BooleanStatusBadge } from "@/components/table/StatusBadge";
 
 export function getFaqColumns(): ColumnDef<FaqWithCategories>[] {
   const columns: ColumnDef<FaqWithCategories>[] = [
+    {
+      accessorKey: "order",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Order
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => (
+        <OrderBadge order={row.original.order} showBadgeStyle></OrderBadge>
+      ),
+    },
     {
       accessorKey: "question",
       header: ({ column }: { column: Column<FaqWithCategories, unknown> }) => (
@@ -29,7 +50,9 @@ export function getFaqColumns(): ColumnDef<FaqWithCategories>[] {
             {iconUrl ? (
               <div
                 className="flex items-center justify-center w-10 h-10 rounded-full shrink-0"
-                style={{ backgroundColor: stringToColor(question, true) }}
+                style={{
+                  backgroundColor: stringToColor(question).text,
+                }}
               >
                 <ReactSVG
                   src={iconUrl}
@@ -73,13 +96,7 @@ export function getFaqColumns(): ColumnDef<FaqWithCategories>[] {
         return categories.length > 0 ? (
           <div className="flex flex-wrap gap-1">
             {categories.map((c) => (
-              <span
-                key={c.id}
-                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700 line-clamp-1 truncate"
-              >
-                <Tag className="w-3 h-3" />
-                {c.name}
-              </span>
+              <CategoryBadge category={c.name}></CategoryBadge>
             ))}
           </div>
         ) : (
@@ -103,42 +120,15 @@ export function getFaqColumns(): ColumnDef<FaqWithCategories>[] {
       cell: ({ row }) => {
         const { isActive } = row.original;
         return (
-          <span
-            className={cn(
-              "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium",
-              isActive === "true"
-                ? "bg-green-100 text-green-700"
-                : "bg-red-100 text-red-700"
-            )}
-          >
-            <span
-              className={cn(
-                "w-2 h-2 rounded-full",
-                isActive === "true" ? "bg-green-500" : "bg-red-500"
-              )}
-            />
-            {isActive === "true" ? "Active" : "Inactive"}
-          </span>
+          <BooleanStatusBadge
+            status={isActive!}
+            type="active"
+            showIcon
+          ></BooleanStatusBadge>
         );
       },
     },
-    {
-      accessorKey: "order",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Order
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-      cell: ({ row }) => (
-        <span className="text-sm text-muted-foreground flex justify-center">
-          {row.original.order > 0 ? formatOrdinal(row.original.order) : "-"}
-        </span>
-      ),
-    },
+
     {
       accessorKey: "updatedAt",
       header: ({ column }) => (
@@ -152,11 +142,23 @@ export function getFaqColumns(): ColumnDef<FaqWithCategories>[] {
       ),
       cell: ({ row }) => {
         const date = new Date(row.original.updatedAt!);
-        return (
-          <span className="text-xs text-muted-foreground">
-            {date.toLocaleDateString()}
-          </span>
-        );
+        return <LastUpdatedDisplay value={date}></LastUpdatedDisplay>;
+      },
+    },
+    {
+      accessorKey: "createdAt",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Updated
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => {
+        const date = new Date(row.original.createdAt!);
+        return <CreatedAtDisplay value={date}></CreatedAtDisplay>;
       },
     },
     {

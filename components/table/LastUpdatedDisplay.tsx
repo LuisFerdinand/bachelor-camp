@@ -23,7 +23,7 @@ const LastUpdatedDisplay: FC<LastUpdatedDisplayProps> = ({ value }) => {
   }
 
   return (
-    <div className="flex flex-col text-xs">
+    <div className="flex flex-col text-xs justify-center items-center">
       <span className="font-medium">{date.toLocaleDateString()}</span>
       <span className="text-muted-foreground">
         {date.toLocaleTimeString([], {

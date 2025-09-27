@@ -6,6 +6,7 @@ import {
 } from "@/db/schema";
 import { booleanTypeEnum } from "@/db/schema/enums";
 import { requireRole } from "@/lib/access";
+import { generateUniqueSlug } from "@/server/utils/generateUniqueSlug";
 import {
   baseProcedure,
   createTRPCRouter,
@@ -90,6 +91,7 @@ export const locationsRouter = createTRPCRouter({
         .insert(locations)
         .values({
           name: input.name,
+          slug: await generateUniqueSlug(input.name, locations),
           address: input.address,
           email: input.email,
           lat: input.lat,
@@ -136,7 +138,10 @@ export const locationsRouter = createTRPCRouter({
       };
 
       if (rest.name !== undefined) {
-        updateData.name = rest.name;
+        if (rest.name !== existing.name) {
+          updateData.name = rest.name;
+          updateData.slug = await generateUniqueSlug(rest.name, locations);
+        }
       }
       if (rest.address !== undefined) {
         updateData.address = rest.address;

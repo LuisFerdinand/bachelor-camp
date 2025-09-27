@@ -8,6 +8,12 @@ import { SocialMedia } from "@/db/schema";
 import { socialIcons } from "@/public/icons/social-icons";
 import SocialMediaActions from "./social-media-actions";
 import { SocialMediaActionProvider } from "../SocialMediaContext";
+import { OrderBadge } from "@/components/table/OrderBadge";
+
+import { URLDisplay } from "@/components/table/URLDisplay";
+import LastUpdatedDisplay from "@/components/table/LastUpdatedDisplay";
+import CreatedAtDisplay from "@/components/table/CreatedAtDisplay";
+import { BooleanStatusBadge } from "@/components/table/StatusBadge";
 // import SocialMediaActions from "./social-media-actions";
 
 export const SOCIAL_PLATFORM_LABELS: Record<string, string> = {
@@ -28,6 +34,27 @@ export const SOCIAL_PLATFORM_LABELS: Record<string, string> = {
 
 export function getSocialMediaColumns(): ColumnDef<SocialMedia>[] {
   const columns: ColumnDef<SocialMedia>[] = [
+    {
+      accessorKey: "order",
+      header: ({ column }) => (
+        <div className="flex justify-center">
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            className=""
+          >
+            Order
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
+      ),
+      cell: ({ row }) => (
+        <OrderBadge
+          order={row.original.order}
+          showBadgeStyle={true}
+        ></OrderBadge>
+      ),
+    },
     {
       accessorKey: "platform",
       header: ({ column }: { column: Column<SocialMedia, unknown> }) => (
@@ -182,18 +209,14 @@ export function getSocialMediaColumns(): ColumnDef<SocialMedia>[] {
         </Button>
       ),
       cell: ({ row }) => {
-        const { url } = row.original;
-        return url ? (
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs text-blue-600 hover:underline truncate max-w-[220px]"
-          >
-            {url}
-          </a>
-        ) : (
-          <span className="text-xs text-muted-foreground italic">No URL</span>
+        return (
+          <URLDisplay
+            url={row.original.url}
+            variant="badge"
+            maxWidth={200}
+            showCopy={true}
+            onClick={(e) => e.stopPropagation()}
+          ></URLDisplay>
         );
       },
     },
@@ -212,67 +235,45 @@ export function getSocialMediaColumns(): ColumnDef<SocialMedia>[] {
         const { isActive } = row.original;
 
         return (
-          <span
-            className={cn(
-              "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium",
-              isActive === "true"
-                ? "bg-green-100 text-green-700"
-                : "bg-red-100 text-red-700"
-            )}
-          >
-            <span
-              className={cn(
-                "w-2 h-2 rounded-full",
-                isActive === "true" ? "bg-green-500" : "bg-red-500"
-              )}
-            />
-            {isActive === "true" ? "Active" : "Inactive"}
-          </span>
+          <BooleanStatusBadge
+            status={isActive!}
+            type="active"
+            showIcon
+          ></BooleanStatusBadge>
         );
       },
     },
-    {
-      accessorKey: "order",
-      header: ({ column }) => (
-        <div className="flex justify-center">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            className=""
-          >
-            Order
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
-      ),
-      cell: ({ row }) => (
-        <span className="text-sm text-muted-foreground items-center flex justify-center">
-          {row.original.order > 0 ? formatOrdinal(row.original.order) : "-"}
-        </span>
-      ),
-    },
+
     {
       accessorKey: "createdAt",
-      header: () => <Button variant="ghost">Created</Button>,
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Status
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
       cell: ({ row }) => {
         const date = new Date(row.original.createdAt!);
-        return (
-          <span className="text-xs text-muted-foreground">
-            {date.toLocaleDateString()}
-          </span>
-        );
+        return <CreatedAtDisplay value={date}></CreatedAtDisplay>;
       },
     },
     {
       accessorKey: "updatedAt",
-      header: () => <Button variant="ghost">Updated</Button>,
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Status
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
       cell: ({ row }) => {
         const date = new Date(row.original.updatedAt!);
-        return (
-          <span className="text-xs text-muted-foreground">
-            {date.toLocaleDateString()}
-          </span>
-        );
+        return <LastUpdatedDisplay value={date}></LastUpdatedDisplay>;
       },
     },
     {

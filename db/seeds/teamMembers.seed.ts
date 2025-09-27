@@ -13,6 +13,7 @@ export const seedTeamMembers = async () => {
     .values([
       {
         name: "Leadership",
+        slug: "leadership",
         description:
           "The leadership team is responsible for overseeing program strategy, management, and ensuring BachelorCamp runs smoothly.",
         order: 1,
@@ -20,6 +21,7 @@ export const seedTeamMembers = async () => {
       },
       {
         name: "Academic",
+        slug: "academic",
         description:
           "The academic team focuses on delivering high-quality learning experiences, mentoring, and curriculum development for BachelorCamp participants.",
         order: 2,
@@ -27,6 +29,7 @@ export const seedTeamMembers = async () => {
       },
       // {
       //   name: "Marketing",
+      //   slug: "marketing",
       //   description:
       //     "The marketing team handles outreach, branding, and communication to attract students and partners to BachelorCamp.",
       //   order: 0,
@@ -34,6 +37,7 @@ export const seedTeamMembers = async () => {
       // },
       // {
       //   name: "Student Affairs",
+      //   slug: "student-affairs",
       //   description:
       //     "The student affairs team supports participants’ well-being, organizes events, and ensures a positive campus experience.",
       //   order: 0,
@@ -41,6 +45,7 @@ export const seedTeamMembers = async () => {
       // },
       // {
       //   name: "Technology",
+      //   slug: "technology",
       //   description:
       //     "The technology team builds and maintains the digital platforms and tools that support BachelorCamp operations.",
       //   order: 0,
@@ -75,6 +80,7 @@ export const seedTeamMembers = async () => {
       // Leadership
       {
         name: "Dr. Sarah Johnson",
+        slug: "dr-sarah-johnson",
         title: "Director of Program",
         departmentId: leadershipId,
         bio: "Oversees overall program strategy and leadership initiatives at BachelorCamp.",
@@ -87,6 +93,7 @@ export const seedTeamMembers = async () => {
       },
       {
         name: "Michael Tan",
+        slug: "michael-tan",
         title: "Head of Operations",
         departmentId: leadershipId,
         bio: "Handles day-to-day operations, resource allocation, and team coordination.",
@@ -99,6 +106,7 @@ export const seedTeamMembers = async () => {
       },
       {
         name: "Dr. Priya Sharma",
+        slug: "dr-priya-sharma",
         title: "Deputy Director",
         departmentId: leadershipId,
         bio: "Supports program leadership and ensures smooth execution of academic and extracurricular activities.",
@@ -113,6 +121,7 @@ export const seedTeamMembers = async () => {
       // Academic
       {
         name: "Prof. Anita Dewi",
+        slug: "prof-anita-dewi",
         title: "Instructor – Grammar & Writing",
         departmentId: academicId,
         bio: "Expert in academic writing and grammar, helping students achieve high standards in English proficiency.",
@@ -125,6 +134,7 @@ export const seedTeamMembers = async () => {
       },
       {
         name: "James Wong",
+        slug: "james-wong",
         title: "Instructor – Speaking & Presentation",
         departmentId: academicId,
         bio: "Coaches students in public speaking, effective communication, and presentation skills.",
@@ -137,6 +147,7 @@ export const seedTeamMembers = async () => {
       },
       {
         name: "Emily Carter",
+        slug: "emily-carter",
         title: "Curriculum Designer",
         departmentId: academicId,
         bio: "Designs innovative curricula and learning materials to enhance the BachelorCamp experience.",
