@@ -13,12 +13,12 @@ export const seedFacilities = async () => {
 
   type FacilityInsert = typeof facilities.$inferInsert;
 
-  const campFacilities: FacilityInsert[] = [
+  const buildingFacilities: FacilityInsert[] = [
     {
       id: uuidv4(),
       name: "Luxury Dormitories",
       slug: "luxury-dormitories",
-      type: "camp",
+      type: "building",
       status: "active",
       description:
         "Air-conditioned dormitory rooms equipped with modern amenities for maximum comfort.",
@@ -34,10 +34,10 @@ export const seedFacilities = async () => {
       id: uuidv4(),
       name: "High-Speed Internet",
       slug: "high-speed-internet",
-      type: "camp",
+      type: "building",
       status: "active",
       description:
-        "24/7 WiFi access available across the entire campus for seamless connectivity.",
+        "24/7 WiFi access available across the entire buildingus for seamless connectivity.",
       iconUrl:
         "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXdpZmktaWNvbiBsdWNpZGUtd2lmaSI+PHBhdGggZD0iTTEyIDIwaC4wMSIvPjxwYXRoIGQ9Ik0yIDguODJhMTUgMTUgMCAwIDEgMjAgMCIvPjxwYXRoIGQ9Ik01IDEyLjg1OWExMCAxMCAwIDAgMSAxNCAwIi8+PHBhdGggZD0iTTguNSAxNi40MjlhNSA1IDAgMCAxIDcgMCIvPjwvc3ZnPg==",
       imageUrl:
@@ -50,7 +50,7 @@ export const seedFacilities = async () => {
       id: uuidv4(),
       name: "International Cuisine",
       slug: "international-cuisine",
-      type: "camp",
+      type: "building",
       status: "active",
       description:
         "Diverse dining options with international and healthy meal plans.",
@@ -66,7 +66,7 @@ export const seedFacilities = async () => {
       id: uuidv4(),
       name: "Fitness Center",
       slug: "fitness-center",
-      type: "camp",
+      type: "building",
       status: "active",
       description:
         "Modern gym facilities and sports areas to support a healthy lifestyle.",
@@ -82,7 +82,7 @@ export const seedFacilities = async () => {
       id: uuidv4(),
       name: "Study Lounges",
       slug: "study-lounges",
-      type: "camp",
+      type: "building",
       status: "active",
       description:
         "Comfortable lounges designed for group study and collaborative learning.",
@@ -98,7 +98,7 @@ export const seedFacilities = async () => {
       id: uuidv4(),
       name: "Cultural Center",
       slug: "cultural-center",
-      type: "camp",
+      type: "building",
       status: "active",
       description:
         "Dedicated spaces for cultural exchange and international community activities.",
@@ -114,7 +114,7 @@ export const seedFacilities = async () => {
       id: uuidv4(),
       name: "Library",
       slug: "library",
-      type: "camp",
+      type: "building",
       status: "active",
       category: "study",
       description:
@@ -128,7 +128,7 @@ export const seedFacilities = async () => {
       id: uuidv4(),
       name: "Outdoor Sports Fields",
       slug: "outdoor-sports-fields",
-      type: "camp",
+      type: "building",
       status: "active",
       category: "sports",
       description:
@@ -142,7 +142,7 @@ export const seedFacilities = async () => {
       id: uuidv4(),
       name: "Medical Center",
       slug: "medical-center",
-      type: "camp",
+      type: "building",
       status: "active",
       category: "health",
       description: "On-site clinic and health services for students.",
@@ -155,7 +155,7 @@ export const seedFacilities = async () => {
       id: uuidv4(),
       name: "Event Hall",
       slug: "event-hall",
-      type: "camp",
+      type: "building",
       status: "active",
       category: "entertainment",
       description:
@@ -292,7 +292,7 @@ export const seedFacilities = async () => {
     },
   ];
 
-  await db.insert(facilities).values(campFacilities);
+  await db.insert(facilities).values(buildingFacilities);
 
   console.log("✅ Facilities seeded successfully!");
 };

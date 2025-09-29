@@ -7,6 +7,7 @@ import {
   teamMemberUpdateSchema,
 } from "@/db/schema/marketing/teamMembers";
 import { requireRole } from "@/lib/access";
+import { generateUniqueSlug } from "@/server/utils/generateUniqueSlug";
 import {
   baseProcedure,
   createTRPCRouter,
@@ -184,6 +185,7 @@ export const teamMembersRouter = createTRPCRouter({
         .insert(teamMembers)
         .values({
           name: input.name,
+          slug: await generateUniqueSlug(input.name, teamMembers),
           title: input.title,
           departmentId: input.departmentId,
           avatarUrl: input.avatarUrl,
@@ -234,7 +236,12 @@ export const teamMembersRouter = createTRPCRouter({
         updatedAt: new Date(),
       };
 
-      if (rest.name !== undefined) updateData.name = rest.name;
+      if (rest.name !== undefined) {
+        if (rest.name !== existing.name) {
+          updateData.name = rest.name;
+          updateData.slug = await generateUniqueSlug(rest.name, teamMembers);
+        }
+      }
       if (rest.title !== undefined) updateData.title = rest.title;
       if (rest.avatarUrl !== undefined)
         updateData.avatarUrl =

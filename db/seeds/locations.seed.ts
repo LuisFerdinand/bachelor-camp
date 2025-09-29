@@ -25,6 +25,7 @@ export const seedLocations = async () => {
     {
       id: uuidv4(),
       name: "BachelorCamp English Learning Center",
+      slug: "bachelorcamp-english-learning-center",
       address: "Jl. Veteran No. 15, Kediri City, East Java 64127",
       phone: "+62 354 123456",
       email: "kediri@bachelorcamp.com",
@@ -37,6 +38,7 @@ export const seedLocations = async () => {
     {
       id: uuidv4(),
       name: "BachelorCamp Jakarta Office",
+      slug: "bachelorcamp-jakarta-office",
       address:
         "Jl. Sudirman No.22, Tanah Abang, Jakarta Pusat, DKI Jakarta 10220, Indonesia",
       lat: "-6.2087634",
@@ -50,6 +52,7 @@ export const seedLocations = async () => {
     {
       id: uuidv4(),
       name: "BachelorCamp Surabaya Branch",
+      slug: "bachelorcamp-surabaya-branch",
       address:
         "Jl. Raya Darmo No.99, Wonokromo, Surabaya, Jawa Timur 60241, Indonesia",
       lat: "-7.2902931",
@@ -63,6 +66,7 @@ export const seedLocations = async () => {
     {
       id: uuidv4(),
       name: "BachelorCamp Bali Learning Center",
+      slug: "bachelorcamp-bali-learning-center",
       address: "Jl. Raya Ubud No.17, Ubud, Gianyar, Bali 80571, Indonesia",
       lat: "-8.506939",
       lng: "115.262478",

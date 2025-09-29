@@ -72,3 +72,9 @@ export const bannerStyles = {
     },
   },
 } as const;
+
+export const MAX_LEARNING_GOALS = 5;
+export const MAX_SYLLABUS = 10;
+export const MAX_TEACHING_METHODS = 5;
+export const MAX_RESOURCES = 5;
+export const MAX_TARGET_AUDIENCE = 5;

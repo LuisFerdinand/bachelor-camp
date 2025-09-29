@@ -9,6 +9,7 @@ import {
 import { booleanTypeEnum } from "@/db/schema/enums";
 import { requireRole } from "@/lib/access";
 import { FAQsSection } from "@/modules/dashboard/ui/sections/content/faqs/FAQsSection";
+import { generateUniqueSlug } from "@/server/utils/generateUniqueSlug";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { and, asc, desc, eq, gt, ilike, or, sql } from "drizzle-orm";
@@ -115,6 +116,7 @@ export const faqsRouter = createTRPCRouter({
         .insert(faqs)
         .values({
           question: input.question,
+          slug: await generateUniqueSlug(input.question, faqs),
           answer: input.answer,
           iconUrl: input.iconUrl,
         })
@@ -163,11 +165,14 @@ export const faqsRouter = createTRPCRouter({
         updatedAt: new Date(),
       };
 
-      if (rest.question) {
-        updateData.question = rest.question;
+      if (rest.question !== undefined) {
+        if (rest.question !== existing.question) {
+          updateData.question = rest.question;
+          updateData.slug = await generateUniqueSlug(rest.question, faqs);
+        }
       }
-      if (rest.answer) updateData.answer = rest.answer;
-      if (rest.iconUrl) updateData.iconUrl = rest.iconUrl;
+      if (rest.answer !== undefined) updateData.answer = rest.answer;
+      if (rest.iconUrl !== undefined) updateData.iconUrl = rest.iconUrl;
 
       let orderUpdate: number | undefined = undefined;
 

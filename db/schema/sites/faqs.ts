@@ -13,8 +13,8 @@ import z from "zod";
 export const faqs = pgTable("faqs", {
   id: uuid("id").defaultRandom().primaryKey(),
   question: varchar("question", { length: 255 }).notNull(),
+  slug: varchar("slug", { length: 255 }).notNull().unique(),
   answer: text("answer").notNull(),
-
   iconUrl: text("icon_url"),
   isActive: booleanTypeEnum("is_shown").default("false").notNull(),
   order: integer("order").default(0).notNull(),
@@ -25,7 +25,7 @@ export const faqs = pgTable("faqs", {
 export const faqCategories = pgTable("faq_categories", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: varchar("name", { length: 100 }).notNull(),
-  slug: varchar("slug", { length: 120 }).notNull(),
+  slug: varchar("slug", { length: 120 }).notNull().unique(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

@@ -6,6 +6,7 @@ import {
   statisticUpdateSchema,
 } from "@/db/schema/marketing/statistics";
 import { requireRole } from "@/lib/access";
+import { generateUniqueSlug } from "@/server/utils/generateUniqueSlug";
 import {
   baseProcedure,
   createTRPCRouter,
@@ -66,6 +67,7 @@ export const statisticsRouter = createTRPCRouter({
         .insert(statistics)
         .values({
           label: input.label,
+          slug: await generateUniqueSlug(input.label, statistics),
           value: input.value,
           description: input.description,
           iconUrl: input.iconUrl,
@@ -111,8 +113,11 @@ export const statisticsRouter = createTRPCRouter({
         updatedAt: new Date(),
       };
 
-      if (rest.label) {
-        updateData.label = rest.label;
+      if (rest.label !== undefined) {
+        if (rest.label !== existing.label) {
+          updateData.label = rest.label;
+          updateData.slug = await generateUniqueSlug(rest.label, statistics);
+        }
       }
       if (rest.value) updateData.value = rest.value;
       if (rest.description) updateData.description = rest.description;

@@ -132,7 +132,7 @@ export const facilitiesRouter = createTRPCRouter({
         .insert(facilities)
         .values({
           name: input.name,
-          slug: (await generateUniqueSlug(input.name, facilities)) || "",
+          slug: await generateUniqueSlug(input.name, facilities),
           type: input.type,
           status: input.status ?? "active",
           description: input.description,
@@ -173,8 +173,8 @@ export const facilitiesRouter = createTRPCRouter({
       };
 
       if (rest.name !== undefined) {
-        updateData.name = rest.name;
         if (rest.name !== existing.name) {
+          updateData.name = rest.name;
           updateData.slug = await generateUniqueSlug(rest.name, facilities);
         }
       }

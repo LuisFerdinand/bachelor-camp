@@ -15,6 +15,7 @@ export const seedAccreditations = async () => {
   const data: AccreditationInsert[] = [
     {
       title: "British Council Accredited",
+      slug: "british-council-accredited",
       description:
         "Recognized by the British Council for maintaining high standards in English language education.",
       isActive: "true",
@@ -22,6 +23,7 @@ export const seedAccreditations = async () => {
     },
     {
       title: "Cambridge Assessment English",
+      slug: "cambridge-assessment-english",
       description:
         "Authorized to prepare students for Cambridge English Qualifications, recognized worldwide.",
       isActive: "true",
@@ -29,6 +31,7 @@ export const seedAccreditations = async () => {
     },
     {
       title: "TOEFL Authorized Test Center",
+      slug: "toefl-authorized-test-center",
       description:
         "Accredited as an official center for the Test of English as a Foreign Language (TOEFL).",
       isActive: "true",
@@ -36,6 +39,7 @@ export const seedAccreditations = async () => {
     },
     {
       title: "IELTS Registration Partner",
+      slug: "ielts-registration-partner",
       description:
         "Official partner for IELTS test registration, supporting international study and migration needs.",
       isActive: "true",
@@ -43,6 +47,7 @@ export const seedAccreditations = async () => {
     },
     {
       title: "ISO 21001 Certified",
+      slug: "iso-21001-certified",
       description:
         "Certified under ISO 21001:2018 for Educational Organizations Management System.",
       isActive: "true",
@@ -50,12 +55,14 @@ export const seedAccreditations = async () => {
     },
     {
       title: "TESOL International Association",
+      slug: "tesol-international-association",
       description:
         "Member of TESOL International, ensuring professional standards in teaching English to speakers of other languages.",
       isActive: "true",
       order: 6,
     },
   ];
+
   // Insert sample accreditations
   await db.insert(accreditations).values(data);
 

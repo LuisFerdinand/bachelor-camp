@@ -19,7 +19,7 @@ export const facilities = pgTable("facilities", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: varchar("name", { length: 100 }).notNull(),
   slug: varchar("slug", { length: 120 }),
-  type: facilityTypeEnum("type").default("camp").notNull(), // "camp" | "roomType"
+  type: facilityTypeEnum("type").default("building").notNull(), // "building" | "roomType"
   status: facilityStatusEnum("status").default("active"), // active | inactive
   isFeatured: booleanTypeEnum("is_featured").default("false"),
   description: text("description"),

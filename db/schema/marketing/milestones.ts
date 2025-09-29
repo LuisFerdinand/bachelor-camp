@@ -13,7 +13,8 @@ import { booleanTypeEnum } from "../enums";
 export const milestones = pgTable("milestones", {
   id: uuid("id").defaultRandom().primaryKey(),
   year: integer("year").notNull(), // contoh: 2015, 2018
-  title: varchar("title", { length: 200 }).notNull(), // contoh: "Founded"
+  title: varchar("title", { length: 200 }).notNull(),
+  slug: varchar("slug", { length: 200 }).unique().notNull(),
   description: text("description"), // detail milestone
 
   imageUrl: text("image_url"),

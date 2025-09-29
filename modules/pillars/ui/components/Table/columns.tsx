@@ -19,6 +19,12 @@ import { PillarActionProvider } from "../PillarContext";
 import PillarActions from "./pillar-actions";
 import { OrderBadge } from "@/components/table/OrderBadge";
 
+import { FeatureList } from "@/components/table/FeatureList";
+import { CTAList } from "@/components/table/CTAList";
+import CreatedAtDisplay from "@/components/table/CreatedAtDisplay";
+import LastUpdatedDisplay from "@/components/table/LastUpdatedDisplay";
+import { BooleanStatusBadge } from "@/components/table/StatusBadge";
+
 export type Pillar = InferSelectModel<typeof pillars>;
 
 export function getPillarColumns(): ColumnDef<Pillar>[] {
@@ -26,6 +32,24 @@ export function getPillarColumns(): ColumnDef<Pillar>[] {
   const pathname = usePathname();
 
   const columns: ColumnDef<Pillar>[] = [
+    {
+      accessorKey: "order",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Order
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => (
+        <OrderBadge
+          order={row.original.order}
+          showBadgeStyle={true}
+        ></OrderBadge>
+      ),
+    },
     {
       accessorKey: "title",
       header: ({ column }: { column: Column<Pillar, unknown> }) => (
@@ -69,24 +93,11 @@ export function getPillarColumns(): ColumnDef<Pillar>[] {
       cell: ({ row }) => {
         const { isActive } = row.original;
         return (
-          <span
-            className={cn(
-              "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium",
-              isActive === "true"
-                ? "bg-green-100 text-green-700"
-                : "bg-red-100 text-red-700"
-            )}
-          >
-            <span
-              className={cn(
-                "w-2 h-2 rounded-full",
-                isActive === "true" ? "bg-green-500" : "bg-red-500"
-              )}
-            />
-            <p className="leading-none">
-              {isActive === "true" ? "Active" : "Inactive"}
-            </p>
-          </span>
+          <BooleanStatusBadge
+            status={isActive!}
+            type="active"
+            showIcon
+          ></BooleanStatusBadge>
         );
       },
     },
@@ -111,33 +122,8 @@ export function getPillarColumns(): ColumnDef<Pillar>[] {
       cell: ({ row }) => {
         const features = row.original.features || [];
 
-        if (features.length === 0) {
-          return (
-            <span className="flex justify-center text-xs text-muted-foreground italic text-center">
-              No features
-            </span>
-          );
-        }
-
         return (
-          <ul className="space-y-1 list-disc pl-4 text-xs">
-            {features.map((f, i) => (
-              <li key={i} className="truncate flex items-center gap-1">
-                {f.iconUrl ? (
-                  <img
-                    src={f.iconUrl}
-                    alt=""
-                    className="w-3 h-3 object-contain"
-                  />
-                ) : (
-                  <Circle className="w-3 h-3 text-muted-foreground" />
-                )}
-                <span className="leading-none">
-                  {f.text || "Untitled feature"}
-                </span>
-              </li>
-            ))}
-          </ul>
+          <FeatureList features={features} variant="compact"></FeatureList>
         );
       },
     },
@@ -146,40 +132,15 @@ export function getPillarColumns(): ColumnDef<Pillar>[] {
       header: () => <Button variant="ghost">CTA</Button>,
       cell: ({ row }) => {
         const { ctaText, ctaLink } = row.original;
-        if (!ctaText) return null;
+
         return (
-          <div className="flex flex-row">
-            <ul className="space-y-1 list-disc">
-              <li className="list-item text-xs">
-                <div className="flex items-center gap-1">
-                  <a
-                    href={ctaLink || "#"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-neutral-800 hover:underline flex items-center gap-1"
-                  >
-                    {ctaText}
-                  </a>
-                </div>
-              </li>
-            </ul>
-          </div>
+          <CTAList
+            ctas={[{ ctaText, ctaLink: ctaLink || "", isShown: true }]}
+          ></CTAList>
         );
       },
     },
-    {
-      accessorKey: "order",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Order
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-      cell: ({ row }) => <OrderBadge order={row.original.order}></OrderBadge>,
-    },
+
     {
       accessorKey: "createdAt",
       header: ({ column }) => (
@@ -193,11 +154,7 @@ export function getPillarColumns(): ColumnDef<Pillar>[] {
       ),
       cell: ({ row }) => {
         const date = new Date(row.original.createdAt!);
-        return (
-          <div className="text-xs text-muted-foreground">
-            {date.toLocaleString()}
-          </div>
-        );
+        return <CreatedAtDisplay value={date}></CreatedAtDisplay>;
       },
     },
     {
@@ -213,11 +170,7 @@ export function getPillarColumns(): ColumnDef<Pillar>[] {
       ),
       cell: ({ row }) => {
         const date = new Date(row.original.updatedAt!);
-        return (
-          <div className="text-xs text-muted-foreground">
-            {date.toLocaleString()}
-          </div>
-        );
+        return <LastUpdatedDisplay value={date}></LastUpdatedDisplay>;
       },
     },
     {

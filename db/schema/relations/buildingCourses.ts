@@ -1,11 +1,12 @@
 import { pgTable, timestamp, uuid } from "drizzle-orm/pg-core";
-import { camps } from "../camps";
-import { courses } from "../courses";
 
-export const campCourses = pgTable("camp_courses", {
+import { courses } from "../courses";
+import { buildings } from "../buildings";
+
+export const buildingCourses = pgTable("building_courses", {
   id: uuid("id").primaryKey(),
-  campId: uuid("camp_id")
-    .references(() => camps.id, { onDelete: "cascade" })
+  buildingId: uuid("building_id")
+    .references(() => buildings.id, { onDelete: "cascade" })
     .notNull(),
   courseId: uuid("course_id")
     .references(() => courses.id, { onDelete: "cascade" })

@@ -14,6 +14,7 @@ import z from "zod";
 export const pillars = pgTable("pillars", {
   id: uuid("id").defaultRandom().primaryKey(),
   title: varchar("title", { length: 100 }).notNull(),
+  slug: varchar("slug", { length: 100 }).notNull().unique(),
   subtitle: text("subtitle"),
   iconUrl: text("icon_url"),
   imageUrl: text("image_url"),

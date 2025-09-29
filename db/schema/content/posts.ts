@@ -73,6 +73,7 @@ export const userCollections = pgTable("user_collections", {
     .references(() => users.id, { onDelete: "cascade" })
     .notNull(),
   name: varchar("name", { length: 100 }).notNull(),
+  slug: varchar("slug", { length: 100 }).notNull().unique(),
   type: collectionTypeEnum("type").default("personal").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });

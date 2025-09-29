@@ -14,6 +14,7 @@ export const statistics = pgTable("statistics", {
   id: uuid("id").defaultRandom().primaryKey(),
   value: varchar("value", { length: 50 }).notNull(),
   label: varchar("label", { length: 100 }).notNull(),
+  slug: varchar("slug", { length: 100 }).unique().notNull(),
   description: text("description"),
   iconUrl: text("icon_url"),
   order: integer("order").default(0).notNull(),

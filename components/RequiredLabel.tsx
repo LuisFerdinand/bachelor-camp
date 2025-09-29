@@ -5,8 +5,8 @@ interface RequiredLabelProps {
 }
 
 export const RequiredLabel = ({ children }: RequiredLabelProps) => (
-  <div className="font-semibold">
+  <>
     {children}
     <span className="text-red-500">*</span>
-  </div>
+  </>
 );

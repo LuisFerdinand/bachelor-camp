@@ -14,7 +14,8 @@ import { relations } from "drizzle-orm";
 
 export const departments = pgTable("departments", {
   id: uuid("id").defaultRandom().primaryKey(),
-  name: varchar("name", { length: 100 }).notNull().unique(), // e.g., Leadership, Academic
+  name: varchar("name", { length: 100 }).notNull().unique(),
+  slug: varchar("slug", { length: 100 }).notNull().unique(),
   description: text("description"),
   order: integer("order").default(0).notNull(),
   isActive: booleanTypeEnum("is_active").default("false"),
@@ -27,6 +28,7 @@ export type Department = InferSelectModel<typeof departments>;
 export const teamMembers = pgTable("team_members", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: varchar("name", { length: 100 }).notNull(),
+  slug: varchar("slug", { length: 100 }).notNull().unique(),
   title: varchar("title", { length: 150 }).notNull(), // e.g., "Direktur Program"
   departmentId: uuid("department_id")
     .references(() => departments.id)
