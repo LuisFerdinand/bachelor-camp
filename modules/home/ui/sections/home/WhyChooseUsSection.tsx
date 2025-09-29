@@ -4,7 +4,7 @@ import Image from "next/image";
 import { CheckCircle } from "lucide-react";
 import { trpc } from "@/trpc/client";
 import { ReactSVG } from "react-svg";
-import { ICON_URL_FALLBACK } from "@/constants";
+import { ICON_URL_FALLBACK, ProfileBC } from "@/constants";
 
 const SkeletonCircle = ({ className }: { className?: string }) => (
   <div className={`bg-gray-200 rounded-full animate-pulse ${className}`} />
@@ -214,9 +214,8 @@ export function WhyChooseUsSection() {
                   </div>
 
                   <div className="flex items-center space-x-3 mb-3">
-                    <div className="w-8 h-8 rounded-full bg-brand-600 flex items-center justify-center">
-                      <span className="text-white text-sm font-bold">BC</span>
-                    </div>
+                    <Image 
+                      src={ProfileBC} alt={""} width={40} height={40}/>
                     <div>
                       <p className="font-semibold text-neutral-900 text-sm">
                         Bachelor Camp
