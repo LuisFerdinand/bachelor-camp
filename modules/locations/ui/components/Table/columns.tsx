@@ -28,7 +28,9 @@ import { cn } from "@/lib/utils";
 import { LocationActionProvider } from "../LocationContext";
 import LocationActions from "./location-actions";
 import LastUpdatedDisplay from "@/components/table/LastUpdatedDisplay";
-import { ActiveStatusBadge } from "@/components/table/ActiveStatusBadge";
+
+import CreatedAtDisplay from "@/components/table/CreatedAtDisplay";
+import { BooleanStatusBadge } from "@/components/table/StatusBadge";
 
 export type Location = InferSelectModel<typeof locations>;
 
@@ -287,9 +289,11 @@ export function getLocationColumns(): ColumnDef<Location>[] {
       ),
       cell: ({ row }) => {
         return (
-          <ActiveStatusBadge
-            isActive={row.original.isActive}
-          ></ActiveStatusBadge>
+          <BooleanStatusBadge
+            status={row.original.isActive}
+            type="active"
+            showIcon
+          ></BooleanStatusBadge>
         );
       },
     },
@@ -306,29 +310,8 @@ export function getLocationColumns(): ColumnDef<Location>[] {
         </Button>
       ),
       cell: ({ row }) => {
-        const date = new Date(row.original.createdAt!);
-        const isRecent = Date.now() - date.getTime() < 7 * 24 * 60 * 60 * 1000; // 7 days
-
         return (
-          <div className="flex flex-col text-xs">
-            <span className={cn("font-medium", isRecent && "text-green-600")}>
-              {date.toLocaleDateString()}
-            </span>
-            <span className="text-muted-foreground">
-              {date.toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-            </span>
-            {isRecent && (
-              <Badge
-                variant="outline"
-                className="w-fit mt-1 text-[10px] px-1 py-0"
-              >
-                New
-              </Badge>
-            )}
-          </div>
+          <CreatedAtDisplay value={row.original.createdAt}></CreatedAtDisplay>
         );
       },
     },

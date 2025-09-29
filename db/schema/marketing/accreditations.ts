@@ -7,11 +7,12 @@ import { InferSelectModel } from "drizzle-orm";
 export const accreditations = pgTable("accreditations", {
   id: uuid("id").defaultRandom().primaryKey(),
   title: varchar("title", { length: 150 }).notNull(),
+  slug: varchar("slug", { length: 150 }).unique().notNull(),
   description: text("description"),
   isActive: booleanTypeEnum("is_active").default("false"),
   order: integer("order").default(0).notNull(),
-  imageUrl: varchar("image_url", { length: 300 }), // logo/sertifikat
-  imageKey: varchar("image_key", { length: 300 }), // logo/sertifikat
+  imageUrl: varchar("image_url", { length: 300 }),
+  imageKey: varchar("image_key", { length: 300 }),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

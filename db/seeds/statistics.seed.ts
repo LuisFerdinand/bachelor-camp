@@ -15,6 +15,7 @@ export const seedStatistics = async () => {
     {
       value: "15,000+",
       label: "Students",
+      slug: "students",
       description: null,
       isActive: "true",
       order: 1,
@@ -24,6 +25,7 @@ export const seedStatistics = async () => {
     {
       value: "98%",
       label: "Satisfaction Rate",
+      slug: "satisfaction-rate",
       description: null,
       isActive: "true",
       order: 2,
@@ -33,6 +35,7 @@ export const seedStatistics = async () => {
     {
       value: "50+",
       label: "Expert Instructors",
+      slug: "expert-instructors",
       description: null,
       isActive: "true",
       order: 3,
@@ -42,6 +45,7 @@ export const seedStatistics = async () => {
     {
       value: "30+",
       label: "Nationalities",
+      slug: "nationalities",
       description: null,
       isActive: "true",
       order: 4,
@@ -51,6 +55,7 @@ export const seedStatistics = async () => {
     {
       value: "100+",
       label: "Courses Offered",
+      slug: "courses-offered",
       description: null,
       isActive: "false",
       order: 0,
@@ -60,6 +65,7 @@ export const seedStatistics = async () => {
     {
       value: "25+",
       label: "Years of Experience",
+      slug: "years-of-experience",
       description: null,
       isActive: "false",
       order: 0,
@@ -69,6 +75,7 @@ export const seedStatistics = async () => {
     {
       value: "200+",
       label: "Corporate Partners",
+      slug: "corporate-partners",
       description: null,
       isActive: "false",
       order: 0,
@@ -78,6 +85,7 @@ export const seedStatistics = async () => {
     {
       value: "10,000+",
       label: "Successful Graduates",
+      slug: "successful-graduates",
       description: null,
       isActive: "false",
       order: 0,
@@ -87,6 +95,7 @@ export const seedStatistics = async () => {
     {
       value: "20+",
       label: "Research Projects",
+      slug: "research-projects",
       description: null,
       isActive: "false",
       order: 0,
@@ -96,6 +105,7 @@ export const seedStatistics = async () => {
     {
       value: "95%",
       label: "Employment Rate",
+      slug: "employment-rate",
       description: null,
       isActive: "false",
       order: 0,

@@ -15,7 +15,8 @@ import { InferSelectModel } from "drizzle-orm";
 
 export const locations = pgTable("locations", {
   id: uuid("id").defaultRandom().primaryKey(),
-  name: varchar("name", { length: 150 }).notNull(), // e.g. "Main Branch", "Jakarta Office"
+  name: varchar("name", { length: 150 }).notNull(),
+  slug: varchar("slug", { length: 150 }).notNull().unique(),
   address: text("address").notNull(),
   lat: decimal("lat", { precision: 11, scale: 8 }).notNull(),
   lng: decimal("lng", { precision: 11, scale: 8 }).notNull(),
@@ -35,7 +36,7 @@ export const locations = pgTable("locations", {
     >()
     .notNull(),
 
-  isActive: booleanTypeEnum("is_primary").default("false").notNull(),
+  isActive: booleanTypeEnum("is_active").default("false").notNull(),
 
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),

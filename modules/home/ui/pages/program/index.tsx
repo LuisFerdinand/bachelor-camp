@@ -2,12 +2,12 @@
 
 import React from "react";
 
-import { CourseSlider } from "@/modules/home/ui/components/program/CourseSlider";
-import { SchedulePricing } from "@/modules/home/ui/components/program/SchedulePricing";
-import { PlacementTestForm } from "@/modules/home/ui/components/program/PlacementTestForm";
+import { CoursesByCategory } from "@/modules/home/ui/sections/program/AllProgramsSection"; // Update path as needed
 import { getAllCourses } from "@/app/util/bookingData";
 import { PROGRAM_BANNER_FALLBACK } from "@/constants";
 import { ProgramHeroSection } from "../../sections/program/ProgramHeroSection";
+import { SchedulePricing } from "../../sections/program/SchedulePricing";
+import { PlacementTestForm } from "../../sections/program/PlacementTestForm";
 
 // Define TypeScript interfaces for the CMS data
 interface CMSImage {
@@ -86,21 +86,25 @@ export default function ProgramPage({ cmsData }: ProgramPageProps) {
       <main className="flex-grow">
         <ProgramHeroSection></ProgramHeroSection>
 
-        {/* Programs Section with Slider */}
+        {/* Programs Section with Category-based Course Cards */}
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="text-center max-w-2xl mx-auto mb-16">
               <h2 className="text-display-sm md:text-display-md font-bold mb-4">
-                Our Special Programs
+                Our Special{" "}
+                <span className="text-brand-600 relative">
+                  Programs
+                  <div className="absolute -bottom-2 left-0 right-0 h-3 bg-brand-100 -rotate-1 rounded-full opacity-60"></div>
+                </span>
               </h2>
               <p className="text-lg text-neutral-600">
                 Choose from our specialized courses designed for specific
                 learning objectives.
               </p>
             </div>
-            {/* Course Slider */}
-            <div className="max-w-6xl mx-auto">
-              <CourseSlider courses={courses} />
+            {/* Courses by Category */}
+            <div className="max-w-7xl mx-auto">
+              <CoursesByCategory courses={courses} />
             </div>
           </div>
         </section>
@@ -110,7 +114,11 @@ export default function ProgramPage({ cmsData }: ProgramPageProps) {
           <div className="container mx-auto px-4">
             <div className="text-center max-w-2xl mx-auto mb-16">
               <h2 className="text-display-sm md:text-display-md font-bold mb-4">
-                Schedule & Pricing
+                Schedule &{" "}
+                <span className="text-accent-500 relative">
+                  Pricing
+                  <div className="absolute -bottom-2 left-0 right-0 h-3 bg-accent-100 rotate-1 rounded-full opacity-60"></div>
+                </span>
               </h2>
               <p className="text-lg text-neutral-600">
                 Flexible schedules and transparent pricing for all our programs.
@@ -128,7 +136,11 @@ export default function ProgramPage({ cmsData }: ProgramPageProps) {
           <div className="container mx-auto px-4">
             <div className="text-center max-w-2xl mx-auto mb-16">
               <h2 className="text-display-sm md:text-display-md font-bold mb-4">
-                Placement Test
+                Placement{" "}
+                <span className="text-electric-600 relative">
+                  Test
+                  <div className="absolute -bottom-2 left-0 right-0 h-3 bg-electric-100 -rotate-2 rounded-full opacity-60"></div>
+                </span>
               </h2>
               <p className="text-lg text-neutral-600">
                 Take our short placement test to determine your current English

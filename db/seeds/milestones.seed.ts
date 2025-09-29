@@ -17,6 +17,7 @@ export const seedMilestones = async () => {
       id: uuidv4(),
       year: 2010,
       title: "Founded",
+      slug: "founded",
       isActive: "true",
       description:
         "Our institution was established with the vision to provide accessible, high-quality English education for students of all backgrounds.",
@@ -26,6 +27,7 @@ export const seedMilestones = async () => {
       id: uuidv4(),
       year: 2012,
       title: "First 100 Graduates",
+      slug: "first-100-graduates",
       isActive: "true",
       description:
         "Celebrated our first 100 students successfully completing the English proficiency program, marking an important milestone in our journey.",
@@ -35,6 +37,7 @@ export const seedMilestones = async () => {
       id: uuidv4(),
       year: 2015,
       title: "First Campus in Jakarta",
+      slug: "first-campus-in-jakarta",
       isActive: "true",
       description:
         "Opened our first dedicated campus in Jakarta to provide a modern and inspiring learning environment.",
@@ -44,6 +47,7 @@ export const seedMilestones = async () => {
       id: uuidv4(),
       year: 2017,
       title: "Accreditation Achieved",
+      slug: "accreditation-achieved",
       isActive: "true",
       description:
         "Received international accreditation for maintaining high academic standards and innovative teaching methodologies.",
@@ -53,6 +57,7 @@ export const seedMilestones = async () => {
       id: uuidv4(),
       year: 2018,
       title: "International Expansion",
+      slug: "international-expansion",
       isActive: "true",
       description:
         "Started welcoming students from across Asia, creating a diverse and multicultural learning community.",
@@ -62,6 +67,7 @@ export const seedMilestones = async () => {
       id: uuidv4(),
       year: 2020,
       title: "Digital Transformation",
+      slug: "digital-transformation",
       isActive: "true",
       description:
         "Launched an online learning platform to ensure uninterrupted education and expand our reach globally.",
@@ -71,6 +77,7 @@ export const seedMilestones = async () => {
       id: uuidv4(),
       year: 2021,
       title: "Scholarship Program",
+      slug: "scholarship-program",
       isActive: "true",
       description:
         "Introduced scholarships to support underprivileged students in accessing world-class English education.",
@@ -80,6 +87,7 @@ export const seedMilestones = async () => {
       id: uuidv4(),
       year: 2023,
       title: "New Facilities Expansion",
+      slug: "new-facilities-expansion",
       isActive: "true",
       description:
         "Opened state-of-the-art classrooms, digital labs, and collaborative spaces to enhance the student experience.",
@@ -89,12 +97,14 @@ export const seedMilestones = async () => {
       id: uuidv4(),
       year: 2025,
       title: "Global Partnerships",
+      slug: "global-partnerships",
       isActive: "true",
       description:
         "Established collaborations with international universities and institutions to provide students with broader learning opportunities.",
       order: 9,
     },
   ];
+
   // Insert sample milestones
   await db.insert(milestones).values(data);
 

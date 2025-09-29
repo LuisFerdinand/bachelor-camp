@@ -86,7 +86,7 @@ export const FacilityFilters = () => {
             </div>
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Tyes</SelectItem>
+            <SelectItem value="all">All Types</SelectItem>
             <SelectSeparator />
             {typeOptions.map((opt) => (
               <SelectItem key={opt.value} value={opt.value}>

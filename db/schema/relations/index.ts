@@ -1,1 +1,1 @@
-export * from "./campCourses"
+export * from "./buildingCourses";

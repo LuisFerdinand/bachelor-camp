@@ -37,7 +37,7 @@ export const testimonials = pgTable("testimonials", {
 export const testimonialCategories = pgTable("testimonial_categories", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: varchar("name", { length: 100 }).notNull(),
-  slug: varchar("slug", { length: 120 }).notNull(),
+  slug: varchar("slug", { length: 120 }).notNull().unique(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

@@ -44,6 +44,7 @@ interface DataTableProps<TData, TValue> {
 
 const columnLabels: Record<string, string> = {
   name: "Name",
+  order: "Order",
   content: "Content",
   source: "Source",
   categories: "Categories",

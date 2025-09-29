@@ -36,6 +36,7 @@ export const seedFaqs = async () => {
     // GENERAL
     {
       question: "What programs does BachelorCamp offer?",
+      slug: "what-programs-does-bachelorcamp-offer",
       answer:
         "BachelorCamp offers comprehensive English language programs including General English, Business English, exam preparation (IELTS, TOEFL), and specialized courses for professionals.",
       iconUrl:
@@ -46,6 +47,7 @@ export const seedFaqs = async () => {
     },
     {
       question: "Where is BachelorCamp located?",
+      slug: "where-is-bachelorcamp-located",
       answer:
         "BachelorCamp is located at Jl. Veteran No. 15, Kediri City, East Java 64127. We're easily accessible by public transportation and have parking available for students.",
       iconUrl:
@@ -56,6 +58,7 @@ export const seedFaqs = async () => {
     },
     {
       question: "What are the operating hours of BachelorCamp?",
+      slug: "what-are-the-operating-hours-of-bachelorcamp",
       answer:
         "We're open Monday to Friday from 8:00 AM to 8:00 PM, Saturdays from 9:00 AM to 5:00 PM, and closed on Sundays. Our administrative office is available during these hours for inquiries.",
       iconUrl:
@@ -68,6 +71,7 @@ export const seedFaqs = async () => {
     // ENROLLMENT
     {
       question: "How do I enroll at BachelorCamp?",
+      slug: "how-do-i-enroll-at-bachelorcamp",
       answer:
         "You can enroll by filling out our online application form, visiting our campus in Kediri, or contacting our admissions team directly. We'll guide you through the placement test and help you choose the right program.",
       iconUrl:
@@ -78,6 +82,7 @@ export const seedFaqs = async () => {
     },
     {
       question: "Do I need to take a placement test?",
+      slug: "do-i-need-to-take-a-placement-test",
       answer:
         "Yes, new students are usually required to take a placement test so we can match you with the course that best suits your current level.",
       iconUrl:
@@ -90,6 +95,7 @@ export const seedFaqs = async () => {
     // COURSES
     {
       question: "Does BachelorCamp offer online courses?",
+      slug: "does-bachelorcamp-offer-online-courses",
       answer:
         "Yes, we offer both in-person and online courses. Our online programs are delivered through our interactive learning platform, with live sessions and self-paced study materials.",
       iconUrl:
@@ -100,6 +106,7 @@ export const seedFaqs = async () => {
     },
     {
       question: "What if my course requires accommodation?",
+      slug: "what-if-my-course-requires-accommodation",
       answer:
         "If your selected course requires in-person attendance, the system will automatically check if you already have valid accommodation for the course dates. If not, you will need to reserve accommodation before completing enrollment.",
       iconUrl:
@@ -112,6 +119,7 @@ export const seedFaqs = async () => {
     // ACCOMMODATION
     {
       question: "What types of accommodation are available?",
+      slug: "what-types-of-accommodation-are-available",
       answer:
         "We provide several room types, including single rooms, shared rooms, and premium options. Each room includes basic amenities such as Wi-Fi, study desk, and housekeeping.",
       iconUrl:
@@ -122,6 +130,7 @@ export const seedFaqs = async () => {
     },
     {
       question: "How do I reserve accommodation?",
+      slug: "how-do-i-reserve-accommodation",
       answer:
         "You can browse available rooms, select your preferred type, and submit a reservation request with your intended dates. An admin will review and confirm your reservation before payment.",
       iconUrl:
@@ -132,6 +141,7 @@ export const seedFaqs = async () => {
     },
     {
       question: "Can I stay without joining a course?",
+      slug: "can-i-stay-without-joining-a-course",
       answer:
         "Yes, you can rent a room even if you are not enrolled in a course. Accommodation is open to both students and non-students, subject to availability.",
       iconUrl:
@@ -144,6 +154,7 @@ export const seedFaqs = async () => {
     // BUNDLES
     {
       question: "What are bundles at BachelorCamp?",
+      slug: "what-are-bundles-at-bachelorcamp",
       answer:
         "Bundles combine course registration and accommodation rental into one package at a discounted rate. They provide convenience and savings for students who plan to study and stay with us.",
       iconUrl:
@@ -154,6 +165,7 @@ export const seedFaqs = async () => {
     },
     {
       question: "What if my bundle choice is unavailable?",
+      slug: "what-if-my-bundle-choice-is-unavailable",
       answer:
         "If your selected bundle is unavailable (e.g., room fully booked), the system will suggest alternatives such as a different room, course date, or converting the bundle into separate course + accommodation items while retaining eligible discounts.",
       iconUrl:
@@ -166,6 +178,7 @@ export const seedFaqs = async () => {
     // PAYMENTS
     {
       question: "How can I pay for my course or accommodation?",
+      slug: "how-can-i-pay-for-my-course-or-accommodation",
       answer:
         "We accept various payment methods, including bank transfer, credit/debit card, and online payment gateways. Payment details will be provided once your reservation or registration is confirmed.",
       iconUrl:
@@ -176,6 +189,7 @@ export const seedFaqs = async () => {
     },
     {
       question: "Are there discounts for long-term stays?",
+      slug: "are-there-discounts-for-long-term-stays",
       answer:
         "Yes, we offer special rates for monthly or long-term rentals. Shorter stays are calculated on a daily rate, but admin may approve custom discounts for mid-range durations (e.g., 20 days).",
       iconUrl:
@@ -193,6 +207,7 @@ export const seedFaqs = async () => {
       .values({
         id: uuidv4(),
         question: t.question,
+        slug: t.slug,
         answer: t.answer,
         iconUrl: t.iconUrl,
         isActive: t.isActive as BooleanType,

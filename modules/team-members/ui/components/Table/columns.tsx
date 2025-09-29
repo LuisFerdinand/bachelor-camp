@@ -12,6 +12,9 @@ import {
   Phone,
   Facebook,
   Instagram,
+  Users,
+  Lightbulb,
+  Info,
 } from "lucide-react";
 
 import { usePathname, useRouter } from "next/navigation";
@@ -21,6 +24,11 @@ import { TeamMember } from "@/db/schema/marketing/teamMembers";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { TeamMemberActionProvider } from "../TeamMemberContext";
 import TeamMemberActions from "./team-member-actions";
+import { BooleanStatusBadge } from "@/components/table/StatusBadge";
+import { CategoryBadge } from "@/components/table/CategoryBadge";
+import { OrderBadge } from "@/components/table/OrderBadge";
+import LastUpdatedDisplay from "@/components/table/LastUpdatedDisplay";
+import CreatedAtDisplay from "@/components/table/CreatedAtDisplay";
 
 const socialIcons: Record<string, React.ElementType> = {
   email: Mail,
@@ -39,6 +47,24 @@ export function getTeamMemberColumns(): ColumnDef<
   const pathname = usePathname();
 
   const columns: ColumnDef<TeamMember & { departmentName?: string }>[] = [
+    {
+      accessorKey: "order",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Order
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => (
+        <OrderBadge
+          order={row.original.order}
+          showBadgeStyle={true}
+        ></OrderBadge>
+      ),
+    },
     {
       accessorKey: "name",
       header: ({ column }: { column: Column<TeamMember, unknown> }) => (
@@ -104,15 +130,7 @@ export function getTeamMemberColumns(): ColumnDef<
       cell: ({ row }) => {
         const { departmentName } = row.original;
         return (
-          <span
-            className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium truncate"
-            style={{
-              backgroundColor: stringToColor(departmentName || "Other"),
-              color: "black",
-            }}
-          >
-            {departmentName || "N/A"}
-          </span>
+          <CategoryBadge category={{ name: departmentName! }}></CategoryBadge>
         );
       },
     },
@@ -157,44 +175,15 @@ export function getTeamMemberColumns(): ColumnDef<
         const { isActive } = row.original;
 
         return (
-          <div className="flex items-center justify-center">
-            <span
-              className={cn(
-                "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium",
-                isActive === "true"
-                  ? "bg-green-100 text-green-700"
-                  : "bg-red-100 text-red-700"
-              )}
-            >
-              <span
-                className={cn(
-                  "w-2 h-2 rounded-full",
-                  isActive === "true" ? "bg-green-500" : "bg-red-500"
-                )}
-              />
-              {isActive === "true" ? "Active" : "Inactive"}
-            </span>
-          </div>
+          <BooleanStatusBadge
+            status={isActive!}
+            type="active"
+            showIcon
+          ></BooleanStatusBadge>
         );
       },
     },
-    {
-      accessorKey: "order",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Order
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-      cell: ({ row }) => (
-        <span className="text-sm text-muted-foreground items-center flex justify-center">
-          {row.original.order > 0 ? formatOrdinal(row.original.order) : "-"}
-        </span>
-      ),
-    },
+
     {
       accessorKey: "createdAt",
       header: ({ column }: { column: Column<TeamMember, unknown> }) => (
@@ -208,10 +197,8 @@ export function getTeamMemberColumns(): ColumnDef<
       ),
       cell: ({ row }) => {
         const date = new Date(row.original.createdAt!);
-        const formatted = date.toLocaleDateString();
-        return (
-          <span className="text-xs text-muted-foreground">{formatted}</span>
-        );
+
+        return <CreatedAtDisplay value={date}></CreatedAtDisplay>;
       },
     },
     {
@@ -227,10 +214,7 @@ export function getTeamMemberColumns(): ColumnDef<
       ),
       cell: ({ row }) => {
         const date = new Date(row.original.updatedAt!);
-        const formatted = date.toLocaleDateString();
-        return (
-          <span className="text-xs text-muted-foreground">{formatted}</span>
-        );
+        return <LastUpdatedDisplay value={date}></LastUpdatedDisplay>;
       },
     },
     {

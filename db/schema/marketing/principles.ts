@@ -14,6 +14,7 @@ import z from "zod";
 export const principles = pgTable("principles", {
   id: uuid("id").defaultRandom().primaryKey(),
   title: varchar("title", { length: 100 }).notNull(),
+  slug: varchar("slug", { length: 100 }).unique().notNull(),
   subtitle: text("subtitle"),
   iconUrl: text("icon_url"),
   order: integer("order").default(0).notNull(),

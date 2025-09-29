@@ -22,6 +22,7 @@ export interface Course {
     year: number;
     available: boolean;
   }[];
+  isPopular: boolean;
 }
 
 export enum BookingType {
@@ -65,6 +66,7 @@ export const courses: Course[] = [
     level: "INTRO",
     duration: "3 Bulan",
     totalMeetings: 60,
+    isPopular: true,
     description:
       "Dirancang khusus untuk pemula yang baru mengenal IELTS atau memiliki skor di bawah Band 4.5.",
     goals: [
@@ -113,6 +115,7 @@ export const courses: Course[] = [
     level: "NEXT STEP",
     duration: "3 Bulan",
     totalMeetings: 60,
+    isPopular: false,
     description:
       "Program lanjutan bagi peserta yang sudah memiliki dasar IELTS atau skor sekitar Band 4.5–5.0.",
     goals: [
@@ -164,6 +167,7 @@ export const courses: Course[] = [
     level: "DRILL CLASS",
     duration: "2 Minggu",
     totalMeetings: 10,
+    isPopular: false,
     description:
       "Kelas singkat yang dirancang untuk melatih intensif kemampuan menghadapi soal IELTS.",
     goals: [
@@ -211,6 +215,8 @@ export const courses: Course[] = [
     level: "MOCK TEST",
     duration: "4 Subtest + 1 Review",
     totalMeetings: 5,
+
+    isPopular: false,
     description: "Simulasi resmi IELTS yang dirancang menyerupai ujian asli.",
     goals: [
       "Mengetahui prediksi skor IELTS realistik",
@@ -259,6 +265,7 @@ export const courses: Course[] = [
     level: "INTRO",
     duration: "2 Minggu",
     totalMeetings: 10,
+    isPopular: true,
     description:
       "Program pengantar bagi peserta yang baru pertama kali mengenal TOEFL.",
     goals: [
@@ -308,6 +315,7 @@ export const courses: Course[] = [
     level: "ADVANCED",
     duration: "1 Bulan",
     totalMeetings: 20,
+    isPopular: false,
     description:
       "Ditujukan bagi peserta yang sudah memiliki pemahaman dasar TOEFL dan ingin mencapai skor tinggi.",
     goals: [
@@ -359,6 +367,7 @@ export const courses: Course[] = [
     level: "ADVANCED",
     duration: "1 Bulan",
     totalMeetings: 20,
+    isPopular: true,
     description:
       "Dirancang untuk meningkatkan kemampuan bahasa Inggris pasif yang dibutuhkan di dunia kerja internasional.",
     goals: [
@@ -407,6 +416,7 @@ export const courses: Course[] = [
     level: "ADVANCED",
     duration: "1 Bulan",
     totalMeetings: 20,
+    isPopular: false,
     description:
       "Membantu peserta meningkatkan kemampuan komunikasi aktif dalam konteks profesional.",
     goals: [
@@ -455,6 +465,7 @@ export const courses: Course[] = [
     level: "INTRO",
     duration: "1 Bulan",
     totalMeetings: 20,
+    isPopular: true,
     description:
       "Program dasar yang membantu peserta menguasai bunyi huruf, kata, dan intonasi sederhana dalam bahasa Inggris.",
     goals: [
@@ -502,6 +513,7 @@ export const courses: Course[] = [
     level: "NEXT STEP",
     duration: "1 Bulan",
     totalMeetings: 20,
+    isPopular: false,
     description:
       "Program lanjutan untuk peserta yang sudah menguasai dasar dan ingin memperbaiki accent, intonasi, serta kelancaran berbicara.",
     goals: [
@@ -549,6 +561,7 @@ export const courses: Course[] = [
     level: "ADVANCED",
     duration: "1 Bulan",
     totalMeetings: 20,
+    isPopular: false,
     description:
       "Level tertinggi untuk menguasai accent reduction, ritme berbicara, dan fluency ala native speaker.",
     goals: [

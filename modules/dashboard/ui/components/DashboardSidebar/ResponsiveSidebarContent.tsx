@@ -71,7 +71,7 @@ const contentRoutes = [
   { label: "Milestones", url: "/content/milestones", icon: Flag },
   { label: "Pillars", url: "/content/pillars", icon: Landmark },
   { label: "Principles", url: "/content/principles", icon: Scale },
-  { label: "Social Medias", url: "/content/social-media", icon: Share2 },
+  { label: "Social Medias", url: "/content/social-medias", icon: Share2 },
   { label: "Statistics", url: "/content/statistics", icon: BarChart3 },
   { label: "Testimonials", url: "/content/testimonials", icon: Quote },
   { label: "Team Members", url: "/content/team-members", icon: Users },

@@ -17,6 +17,7 @@ export const seedPillars = async () => {
     {
       id: uuidv4(),
       title: "Camp Programs",
+      slug: "camp-programs",
       subtitle:
         "Immersive learning environments with comfortable accommodations and structured daily activities.",
       iconUrl:
@@ -49,6 +50,7 @@ export const seedPillars = async () => {
     {
       id: uuidv4(),
       title: "Specialized Courses",
+      slug: "specialized-courses",
       subtitle:
         "Targeted programs for specific English needs including IELTS prep and business English.",
       iconUrl:
@@ -81,6 +83,7 @@ export const seedPillars = async () => {
     {
       id: uuidv4(),
       title: "Testing & Assessment",
+      slug: "testing-assessment",
       subtitle:
         "Comprehensive evaluation systems to track progress and certify language proficiency.",
       iconUrl:
@@ -113,6 +116,7 @@ export const seedPillars = async () => {
     {
       id: uuidv4(),
       title: "Online Learning",
+      slug: "online-learning",
       subtitle:
         "Flexible digital resources and live virtual classes for remote learners worldwide.",
       iconUrl:
@@ -145,6 +149,7 @@ export const seedPillars = async () => {
     {
       id: uuidv4(),
       title: "Cultural Exchange",
+      slug: "cultural-exchange",
       subtitle:
         "Opportunities to engage with local communities and practice English in real-life contexts.",
       iconUrl:
@@ -177,6 +182,7 @@ export const seedPillars = async () => {
     {
       id: uuidv4(),
       title: "Teacher Development",
+      slug: "teacher-development",
       subtitle:
         "Professional training and workshops for English educators to enhance teaching skills.",
       iconUrl:

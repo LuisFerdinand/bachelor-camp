@@ -7,6 +7,7 @@ import { auth } from "@clerk/nextjs/server";
 import { db } from "@/db";
 import {
   accreditations,
+  courses,
   facilities,
   highlights,
   milestones,
@@ -120,6 +121,12 @@ export const ourFileRouter = {
   facilityImageUploader: createImageUploader({
     table: facilities,
     idField: "facilityId",
+    keyColumn: "imageKey",
+    urlColumn: "imageUrl",
+  }),
+  courseImageUploader: createImageUploader({
+    table: courses,
+    idField: "courseId",
     keyColumn: "imageKey",
     urlColumn: "imageUrl",
   }),
