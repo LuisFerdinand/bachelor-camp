@@ -6,7 +6,11 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { Search, BookOpen, MessageSquare, TrendingUp } from "lucide-react";
 import { trpc } from "@/trpc/client";
-import { BLOG_IMAGE_FALLBACK, CAMP_DESKTOP_FALLBACK } from "@/constants";
+import {
+  BLOG_IMAGE_FALLBACK,
+  CAMP_DESKTOP_FALLBACK,
+  bannerStyles,
+} from "@/constants";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 
@@ -124,11 +128,7 @@ export function BlogHeroSection({
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             {show1 && (
               <Link href={banner.ctas![0].ctaLink!}>
-                <Button
-                  size="lg"
-                  className="bg-brand-500 hover:bg-brand-600 text-white shadow-brand px-8 py-3 text-base font-semibold"
-                >
-                  <BookOpen className="w-5 h-5 mr-2" />
+                <Button size="lg" className={bannerStyles.buttons.primary.base}>
                   {banner.ctas![0].ctaText}
                 </Button>
               </Link>
@@ -137,9 +137,9 @@ export function BlogHeroSection({
               <Link href={banner.ctas![1].ctaLink!}>
                 <Button
                   size="lg"
-                  className="bg-accent-500 hover:bg-accent-600 text-white shadow-accent px-8 py-3 text-base font-semibold"
+                  variant="outline"
+                  className={bannerStyles.buttons.outline.base}
                 >
-                  <MessageSquare className="w-5 h-5 mr-2" />
                   {banner.ctas![1].ctaText}
                 </Button>
               </Link>
@@ -148,11 +148,14 @@ export function BlogHeroSection({
               <Link href={banner.ctas![2].ctaLink!}>
                 <Button
                   size="lg"
-                  variant="outline"
-                  className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-brand-600 px-8 py-3 text-base font-semibold transition-all"
+                  className={`group ${bannerStyles.buttons.gradient.base}`}
                 >
-                  <TrendingUp className="w-5 h-5 mr-2" />
-                  {banner.ctas![2].ctaText}
+                  <span className={bannerStyles.buttons.gradient.inner}>
+                    {banner.ctas![2].ctaText}
+                  </span>
+                  <span
+                    className={bannerStyles.buttons.gradient.hoverOverlay}
+                  ></span>
                 </Button>
               </Link>
             )}
