@@ -14,7 +14,7 @@ import {
   MapPin,
 } from "lucide-react";
 import { trpc } from "@/trpc/client";
-import { CONTACT_BANNER_FALLBACK } from "@/constants";
+import { CONTACT_BANNER_FALLBACK, bannerStyles } from "@/constants";
 import Link from "next/link";
 
 interface ContactHeroSectionProps {
@@ -108,21 +108,19 @@ export function ContactHeroSection({ scrollToForm }: ContactHeroSectionProps) {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             {show1 && (
-              //   <Link href={banner.ctas![0].ctaLink!}>
-              <Button
-                size="lg"
-                onClick={scrollToForm}
-                className="bg-brand-500 hover:bg-brand-600"
-              >
-                <MessageSquare className="w-5 h-5 mr-2" />
-                {banner.ctas![0].ctaText}
-              </Button>
-              //   </Link>
+              <Link href={banner.ctas![0].ctaLink!}>
+                <Button size="lg" className={bannerStyles.buttons.primary.base}>
+                  {banner.ctas![0].ctaText}
+                </Button>
+              </Link>
             )}
             {show2 && (
               <Link href={banner.ctas![1].ctaLink!}>
-                <Button size="lg" className="bg-accent-500 hover:bg-accent-600">
-                  <Phone className="w-5 h-5 mr-2" />
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className={bannerStyles.buttons.outline.base}
+                >
                   {banner.ctas![1].ctaText}
                 </Button>
               </Link>
@@ -131,11 +129,14 @@ export function ContactHeroSection({ scrollToForm }: ContactHeroSectionProps) {
               <Link href={banner.ctas![2].ctaLink!}>
                 <Button
                   size="lg"
-                  variant="outline"
-                  className="bg-white/10 border-2 border-white text-white hover:bg-white hover:text-brand-600"
+                  className={`group ${bannerStyles.buttons.gradient.base}`}
                 >
-                  <MapPin className="w-5 h-5 mr-2" />
-                  {banner.ctas![2].ctaText}
+                  <span className={bannerStyles.buttons.gradient.inner}>
+                    {banner.ctas![2].ctaText}
+                  </span>
+                  <span
+                    className={bannerStyles.buttons.gradient.hoverOverlay}
+                  ></span>
                 </Button>
               </Link>
             )}
