@@ -239,7 +239,7 @@ interface TestimonialsSectionProps {
 export function TestimonialsSection({
   testimonials = [],
   isLoading,
-  youtubeUrl = "https://www.youtube.com/watch?v=uXvgHYMoBQo",
+  youtubeUrl = "https://youtu.be/QXVzmzhxWWc?si=7U4BAkna_XW5gCYF",
   videoTitle = "Student Success Stories",
 }: TestimonialsSectionProps) {
   const stats = React.useMemo(() => {
@@ -331,7 +331,7 @@ export function TestimonialsSection({
           </div>
 
           {/* Testimonials Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {isLoading ? (
               // Loading skeletons
               Array(6)
@@ -360,7 +360,7 @@ export function TestimonialsSection({
                 />
               ))
             )}
-          </div>
+          </div> */}
 
           {/* Loading more indicator */}
           {isLoading && (

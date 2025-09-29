@@ -42,7 +42,7 @@ export function SchedulePricing({
   const [activeCategory, setActiveCategory] = useState<string>(categories[0]);
 
   return (
-    <div className="w-full max-w-5xl mx-auto">
+    <div className="w-full mx-auto">
       {/* Category Navigation - same style as CoursesByCategory */}
       <CourseCategoryTabs
         categories={categories}

@@ -71,15 +71,15 @@ export function PlacementTestForm({ categories }: PlacementTestFormProps) {
   };
 
   return (
-    <Card>
-      <CardHeader>
+    <Card className="w-full max-w-none">
+      <CardHeader className="w-full">
         <CardTitle className="text-xl">Online Placement Test</CardTitle>
         <CardDescription>
           Fill out the form below and we&apos;ll recommend the right program for
           you
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="w-full">
         {formSubmitted ? (
           <Alert className="border-green-200 bg-green-50">
             <CheckCircle className="h-4 w-4 text-green-600" />
@@ -91,7 +91,7 @@ export function PlacementTestForm({ categories }: PlacementTestFormProps) {
             </AlertDescription>
           </Alert>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4 w-full">
             {formError && (
               <Alert className="border-red-200 bg-red-50">
                 <AlertCircle className="h-4 w-4 text-red-600" />
@@ -101,7 +101,7 @@ export function PlacementTestForm({ categories }: PlacementTestFormProps) {
                 </AlertDescription>
               </Alert>
             )}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
               <div>
                 <label
                   htmlFor="name"
@@ -136,7 +136,7 @@ export function PlacementTestForm({ categories }: PlacementTestFormProps) {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
               <div>
                 <label
                   htmlFor="phone"
@@ -176,7 +176,7 @@ export function PlacementTestForm({ categories }: PlacementTestFormProps) {
                 </select>
               </div>
             </div>
-            <div>
+            <div className="w-full">
               <label
                 htmlFor="programInterest"
                 className="block text-sm font-medium mb-1"
@@ -200,7 +200,7 @@ export function PlacementTestForm({ categories }: PlacementTestFormProps) {
                 <option value="not-sure">Not sure yet</option>
               </select>
             </div>
-            <div>
+            <div className="w-full">
               <label
                 htmlFor="message"
                 className="block text-sm font-medium mb-1"

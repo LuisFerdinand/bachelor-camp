@@ -49,14 +49,13 @@ export default function AboutUsPage({ cmsData }: AboutPageProps) {
       <main className="flex-grow">
         <AboutHeroSection></AboutHeroSection>
         <MainContentSection companyInfo={cmsData?.companyInfo} />
-        <MainContentSection2 companyInfo={cmsData?.companyInfo} />
+        {/* <MainContentSection2 companyInfo={cmsData?.companyInfo} /> */}
         <VisionMissionSection data={cmsData?.visionMission} />
-        <AccreditationsSection2></AccreditationsSection2>
-        <AccreditationsSection />
         <TestimonialsSection
           testimonials={testimonials!}
           isLoading={isLoadingTestimonials}
         />
+        <AccreditationsSection2></AccreditationsSection2>
         <MilestonesSection />
         <TeamSection />
       </main>
