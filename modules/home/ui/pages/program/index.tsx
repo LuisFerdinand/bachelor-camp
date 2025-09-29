@@ -117,7 +117,7 @@ export default function ProgramPage({ cmsData }: ProgramPageProps) {
                 Schedule &{" "}
                 <span className="text-accent-500 relative">
                   Pricing
-                  <div className="absolute -bottom-2 left-0 right-0 h-3 bg-accent-100 -rotate-1 rounded-full opacity-60"></div>
+                  <div className="absolute -bottom-2 left-0 right-0 h-3 bg-accent-100 rotate-1 rounded-full opacity-60"></div>
                 </span>
               </h2>
               <p className="text-lg text-neutral-600">
@@ -137,9 +137,9 @@ export default function ProgramPage({ cmsData }: ProgramPageProps) {
             <div className="text-center max-w-2xl mx-auto mb-16">
               <h2 className="text-display-sm md:text-display-md font-bold mb-4">
                 Placement{" "}
-                <span className="text-electriv-600 relative">
+                <span className="text-electric-600 relative">
                   Test
-                  <div className="absolute -bottom-2 left-0 right-0 h-3 bg-electriv-100 -rotate-1 rounded-full opacity-60"></div>
+                  <div className="absolute -bottom-2 left-0 right-0 h-3 bg-electric-100 -rotate-2 rounded-full opacity-60"></div>
                 </span>
               </h2>
               <p className="text-lg text-neutral-600">
