@@ -15,12 +15,14 @@ import { socialMediasRouter } from "@/modules/social-medias/server/procedures";
 import { locationsRouter } from "@/modules/locations/server/procedures";
 import { coursesRouter } from "@/modules/courses/server/procedures";
 import { buildingsRouter } from "@/modules/buildings/server/procedures";
+import { courseBatchesRouter } from "@/modules/course-batches/server/procedures";
 
 export const appRouter = createTRPCRouter({
   accreditations: accreditationsRouter,
   banners: bannersRouter,
   buildings: buildingsRouter,
   courses: coursesRouter,
+  courseBatches: courseBatchesRouter,
   facilities: facilitiesRouter,
   faqs: faqsRouter,
   highlights: highlightsRouter,

@@ -9,6 +9,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { booleanTypeEnum } from "../enums";
 import { locations } from "../sites";
+import { InferSelectModel } from "drizzle-orm";
 
 export const buildings = pgTable("buildings", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -41,6 +42,8 @@ export const buildings = pgTable("buildings", {
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
+
+export type Building = InferSelectModel<typeof buildings>;
 
 export const buildingGallery = pgTable("building_gallery", {
   id: uuid("id").defaultRandom().primaryKey(),

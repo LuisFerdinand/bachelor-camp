@@ -33,7 +33,6 @@ import {
 import { ChevronDown, Eraser, Loader, Search } from "lucide-react";
 
 import { useCourseFilters } from "@/modules/courses/hooks/use-course-filters";
-import { Course } from "./columns";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

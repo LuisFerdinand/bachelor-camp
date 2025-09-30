@@ -3,6 +3,24 @@ import { clsx, type ClassValue } from "clsx";
 import { eq } from "drizzle-orm";
 import { twMerge } from "tailwind-merge";
 import { addDays, addWeeks, addMonths } from "date-fns";
+import {
+  ArrowUpDown,
+  MoreVertical,
+  StarIcon,
+  FileCheckIcon,
+  Clock,
+  Users,
+  DollarSign,
+  Target,
+  BookOpen,
+  Briefcase,
+  MessageCircle,
+  Sprout,
+  Zap,
+  Rocket,
+  Trophy,
+  FileCheck,
+} from "lucide-react";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -287,3 +305,112 @@ export function calculateEndDate(startDate: Date, duration: string): Date {
       return addWeeks(startDate, 2); // fallback
   }
 }
+
+export const getCourseCategoryConfig = (category: string) => {
+  switch (category) {
+    case "IELTS":
+      return {
+        color: "bg-blue-50 text-blue-700 border-blue-200",
+        darkColor:
+          "dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-700",
+        icon: Target,
+        iconColor: "text-blue-600",
+      };
+    case "TOEFL":
+      return {
+        color: "bg-emerald-50 text-emerald-700 border-emerald-200",
+        darkColor:
+          "dark:bg-emerald-900/20 dark:text-emerald-300 dark:border-emerald-700",
+        icon: BookOpen,
+        iconColor: "text-emerald-600",
+      };
+    case "TOEIC":
+      return {
+        color: "bg-violet-50 text-violet-700 border-violet-200",
+        darkColor:
+          "dark:bg-violet-900/20 dark:text-violet-300 dark:border-violet-700",
+        icon: Briefcase,
+        iconColor: "text-violet-600",
+      };
+    case "Pronounciation":
+      return {
+        color: "bg-rose-50 text-rose-700 border-rose-200",
+        darkColor:
+          "dark:bg-rose-900/20 dark:text-rose-300 dark:border-rose-700",
+        icon: MessageCircle,
+        iconColor: "text-rose-600",
+      };
+    default:
+      return {
+        color: "bg-gray-50 text-gray-700 border-gray-200",
+        darkColor:
+          "dark:bg-gray-900/20 dark:text-gray-300 dark:border-gray-700",
+        icon: BookOpen,
+        iconColor: "text-gray-600",
+      };
+  }
+};
+
+export const getCourseLevelConfig = (level: string) => {
+  switch (level.toLowerCase()) {
+    case "intro":
+      return {
+        color: "bg-green-50 text-green-700 border-green-200",
+        darkColor:
+          "dark:bg-green-900/20 dark:text-green-300 dark:border-green-700",
+        icon: Sprout,
+        iconColor: "text-green-600",
+        priority: 1,
+        description: "Beginner friendly",
+      };
+    case "drill class":
+      return {
+        color: "bg-amber-50 text-amber-700 border-amber-200",
+        darkColor:
+          "dark:bg-amber-900/20 dark:text-amber-300 dark:border-amber-700",
+        icon: Zap,
+        iconColor: "text-amber-600",
+        priority: 2,
+        description: "Intensive practice",
+      };
+    case "next step":
+      return {
+        color: "bg-orange-50 text-orange-700 border-orange-200",
+        darkColor:
+          "dark:bg-orange-900/20 dark:text-orange-300 dark:border-orange-700",
+        icon: Rocket,
+        iconColor: "text-orange-600",
+        priority: 3,
+        description: "Level progression",
+      };
+    case "advanced":
+      return {
+        color: "bg-red-50 text-red-700 border-red-200",
+        darkColor: "dark:bg-red-900/20 dark:text-red-300 dark:border-red-700",
+        icon: Trophy,
+        iconColor: "text-red-600",
+        priority: 4,
+        description: "Expert level",
+      };
+    case "mock test":
+      return {
+        color: "bg-purple-50 text-purple-700 border-purple-200",
+        darkColor:
+          "dark:bg-purple-900/20 dark:text-purple-300 dark:border-purple-700",
+        icon: FileCheck,
+        iconColor: "text-purple-600",
+        priority: 5,
+        description: "Test simulation",
+      };
+    default:
+      return {
+        color: "bg-gray-50 text-gray-700 border-gray-200",
+        darkColor:
+          "dark:bg-gray-900/20 dark:text-gray-300 dark:border-gray-700",
+        icon: BookOpen,
+        iconColor: "text-gray-600",
+        priority: 0,
+        description: "Standard",
+      };
+  }
+};

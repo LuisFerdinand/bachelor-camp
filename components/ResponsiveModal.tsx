@@ -73,8 +73,6 @@ export const ResponsiveModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      {/* <DialogContent className="w-full max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl max-h-[90vh] overflow-y-auto scrollbar-custom bg-muted"> */}
-      {/* <DialogContent className="w-full max-h-[90vh] overflow-y-auto scrollbar-custom bg-muted"> */}
       <DialogContent
         className={cn(
           "w-full max-h-[90vh] overflow-y-auto scrollbar-custom bg-muted",

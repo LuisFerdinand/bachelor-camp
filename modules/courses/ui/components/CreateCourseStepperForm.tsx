@@ -546,7 +546,7 @@ interface StepperProgressProps {
   onStepClick: (stepNumber: number) => void;
 }
 
-interface StepperCourseFormProps {
+interface CreateCourseStepperFormProps {
   onCancel?: () => void;
   onSuccess?: (courseId: string) => void;
   open: boolean;
@@ -562,7 +562,9 @@ export function BasicInfoStep({ form, isSubmitting }: StepProps) {
     { title: watchedTitle || "" },
     {
       enabled: false,
-      staleTime: 1000 * 60 * 5, // 5 minutes cache
+      staleTime: 1000 * 60 * 5,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
     }
   );
 
@@ -576,18 +578,34 @@ export function BasicInfoStep({ form, isSubmitting }: StepProps) {
       try {
         const res = await getUniqueSlugQuery.refetch();
         if (res.data) {
-          setValue("slug", res.data, { shouldValidate: false }); // Don't trigger validation immediately
+          setValue("slug", res.data, { shouldValidate: false });
         }
       } catch (err) {
         console.error("Failed to get unique slug", err);
       }
     }, 500),
-    [setValue, getUniqueSlugQuery]
+    [setValue]
   );
 
   useEffect(() => {
-    updateSlug(watchedTitle || "");
-  }, [watchedTitle, updateSlug]);
+    if (!watchedTitle?.trim()) {
+      setValue("slug", "", { shouldValidate: false });
+      return;
+    }
+
+    const timeoutId = setTimeout(async () => {
+      try {
+        const res = await getUniqueSlugQuery.refetch();
+        if (res.data) {
+          setValue("slug", res.data, { shouldValidate: false });
+        }
+      } catch (err) {
+        console.error("Failed to get unique slug", err);
+      }
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [watchedTitle, setValue]);
 
   return (
     <div className="space-y-4">
@@ -1640,11 +1658,11 @@ function TeachingMethodsStep({ form, isSubmitting }: StepProps) {
   );
 }
 
-export const StepperCourseForm = ({
+export const CreateCourseStepperForm = ({
   onCancel,
   onSuccess,
   open,
-}: StepperCourseFormProps) => {
+}: CreateCourseStepperFormProps) => {
   const utils = trpc.useUtils();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -1695,8 +1713,7 @@ export const StepperCourseForm = ({
     {
       id: 2,
       title: "Buildings",
-      description:
-        "Location Select buildings where this course will be offered",
+      description: "Select buildings where this course will be offered",
       icon: Building2,
       component: BuildingsStep,
     },
