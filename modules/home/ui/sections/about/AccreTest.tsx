@@ -327,12 +327,12 @@ export function AccreditationsSection2() {
 
       <div className="container mx-auto px-4 relative">
         <div className="text-center max-w-4xl mx-auto mb-20">
-          <Badge className="mb-6 bg-gradient-to-r from-blue-500/10 to-purple-500/10 text-brand-800 border border-blue-200/50 backdrop-blur-sm px-6 py-2 text-sm font-medium">
+          <Badge className="mb-4 bg-brand-100 text-brand-800 border-0">
             <Award className="w-4 h-4 mr-2" />
-            Accreditations & Partnerships
+            Student Success Stories
           </Badge>
 
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-slate-900 via-blue-800 to-purple-800 bg-clip-text text-transparent leading-tight">
+          <h2 className="text-display-sm md:text-display-md font-bold mb-4">
             Recognized Excellence
           </h2>
 
@@ -367,7 +367,9 @@ export function AccreditationsSection2() {
                   style={{
                     background: colors.gradient,
                     borderTop: `4px solid ${colors.accent}`,
-                    animation: `fadeInUp 0.8s ease-out forwards ${index * 150}ms both`,
+                    animation: `fadeInUp 0.8s ease-out forwards ${
+                      index * 150
+                    }ms both`,
                   }}
                 >
                   <CardContent className="p-8 text-center relative">

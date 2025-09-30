@@ -129,7 +129,9 @@ const TeamMemberCard: React.FC<{
     >
       {/* Department badge */}
       <div
-        className={`absolute top-4 right-4 bg-gradient-to-r ${getDepartmentColor(department)} text-white px-3 py-1 rounded-full text-xs font-medium flex items-center space-x-1 z-10`}
+        className={`absolute top-4 right-4 bg-gradient-to-r ${getDepartmentColor(
+          department
+        )} text-white px-3 py-1 rounded-full text-xs font-medium flex items-center space-x-1 z-10`}
       >
         {getDepartmentIcon(department)}
         <span className="capitalize">{department}</span>
@@ -137,7 +139,9 @@ const TeamMemberCard: React.FC<{
 
       {/* Decorative background element */}
       <div
-        className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${getDepartmentColor(department)} opacity-5 rounded-bl-full transition-all duration-500 group-hover:opacity-10 group-hover:w-40 group-hover:h-40`}
+        className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${getDepartmentColor(
+          department
+        )} opacity-5 rounded-bl-full transition-all duration-500 group-hover:opacity-10 group-hover:w-40 group-hover:h-40`}
       />
 
       <CardContent className="p-8 text-center relative z-10">
@@ -320,11 +324,11 @@ export function TeamSection({
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center max-w-4xl mx-auto mb-16">
-          <Badge className="mb-6 bg-gradient-to-r from-brand-100 to-accent-100 text-brand-800 border-0 px-6 py-3">
+          <Badge className="mb-4 bg-electric-100 text-electric-800 border-0">
             <Users className="w-4 h-4 mr-2" />
             Our Professional Team
           </Badge>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900 leading-tight">
+          <h2 className="text-display-sm md:text-display-md font-bold mb-4">
             {title}
           </h2>
           <p className="text-xl text-gray-600 leading-relaxed mb-8">
@@ -361,7 +365,10 @@ export function TeamSection({
                 <div className="text-center mb-12">
                   <div className="flex items-center justify-center mb-6">
                     <div
-                      className={`w-12 h-12 bg-gradient-to-r ${departmentConfig[department]?.color || "from-gray-500 to-gray-600"} text-white rounded-xl flex items-center justify-center mr-4 shadow-lg`}
+                      className={`w-12 h-12 bg-gradient-to-r ${
+                        departmentConfig[department]?.color ||
+                        "from-gray-500 to-gray-600"
+                      } text-white rounded-xl flex items-center justify-center mr-4 shadow-lg`}
                     >
                       {departmentConfig[department]?.icon || (
                         <Briefcase className="w-5 h-5" />
@@ -389,10 +396,10 @@ export function TeamSection({
                     members.length === 1
                       ? "grid-cols-1 max-w-sm mx-auto"
                       : members.length === 2
-                        ? "grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto"
-                        : members.length === 3
-                          ? "grid-cols-1 md:grid-cols-3 max-w-5xl mx-auto"
-                          : "grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
+                      ? "grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto"
+                      : members.length === 3
+                      ? "grid-cols-1 md:grid-cols-3 max-w-5xl mx-auto"
+                      : "grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
                   }`}
                 >
                   {members.map((member, index) => (

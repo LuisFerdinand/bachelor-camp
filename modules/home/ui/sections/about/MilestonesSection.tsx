@@ -18,7 +18,7 @@ export function MilestonesSection() {
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <Badge className="mb-4 bg-success-100 text-success-800 border-0">
+          <Badge className="mb-4 bg-accent-100 text-accent-800 border-0">
             <History className="w-4 h-4 mr-2" />
             Our Journey
           </Badge>
@@ -37,13 +37,17 @@ export function MilestonesSection() {
             {milestones?.map((milestone, index) => (
               <div
                 key={milestone.year}
-                className={`relative mb-12 ${index % 2 === 0 ? "text-right" : "text-left"}`}
+                className={`relative mb-12 ${
+                  index % 2 === 0 ? "text-right" : "text-left"
+                }`}
               >
                 <div
                   className={`absolute left-1/2 transform -translate-x-1/2 w-6 h-6 rounded-full bg-gradient-to-r from-brand-500 to-accent-500 border-4 border-white z-10`}
                 ></div>
                 <div
-                  className={`w-5/12 ${index % 2 === 0 ? "ml-auto" : "mr-auto"}`}
+                  className={`w-5/12 ${
+                    index % 2 === 0 ? "ml-auto" : "mr-auto"
+                  }`}
                 >
                   <Card className="border-0 shadow-md hover:shadow-lg transition-all duration-300">
                     <CardContent className="p-6">
