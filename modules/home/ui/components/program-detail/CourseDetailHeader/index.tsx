@@ -81,15 +81,17 @@ export function CourseDetailHeader({ course }: CourseDetailHeaderProps) {
             <Button
               asChild
               size="lg"
-              className="bg-white text-brand-600 hover:bg-neutral-100"
+              className="text-white bg-brand-600 hover:bg-brand-500 shadow-xl font-semibold px-8 py-4 text-base border-none"
             >
-              <Link href={`/booking?course=${course.slug}`}>Book Now</Link>
+              <Link href={`/program-booking?course=${course.slug}`}>
+                Book Now
+              </Link>
             </Button>
             <Button
               asChild
               size="lg"
               variant="outline"
-              className="border-white text-white hover:bg-white hover:text-brand-600"
+              className="border-2 border-accent-500 text-accent-500 bg-white/10 hover:bg-white/10 backdrop-blur-sm hover:text-accent-600 hover:border-accent-600 font-semibold px-8 py-4 text-base transition-all"
             >
               <Link href="/special-program">
                 <BookOpen className="w-5 h-5 mr-2" />

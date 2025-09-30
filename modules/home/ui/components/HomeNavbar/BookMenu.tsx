@@ -49,7 +49,7 @@ export default function BookMenu({
         <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 z-60">
           <div className="py-2">
             <Link
-              href="/booking"
+              href="/program-booking"
               className="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-brand-600 transition-colors duration-200"
               onClick={closeMenus}
             >
