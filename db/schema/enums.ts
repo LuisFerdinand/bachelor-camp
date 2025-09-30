@@ -171,3 +171,19 @@ export const courseLevelEnum = pgEnum("course_level", COURSE_LEVELS);
 export const MEET_STATUSES = ["scheduled", "completed", "rescheduled"] as const;
 export type MeetStatus = (typeof MEET_STATUSES)[number];
 export const meetStatusEnum = pgEnum("meet_status", MEET_STATUSES);
+
+export const COURSE_BATCH_STATUSES = [
+  "upcoming",
+  "ongoing",
+  "completed",
+  "cancelled",
+] as const;
+export type CourseBatchStatus = (typeof COURSE_BATCH_STATUSES)[number];
+export const courseBatchStatusEnum = pgEnum(
+  " course_batch_status",
+  COURSE_BATCH_STATUSES
+);
+
+export const DELIVERY_MODES = ["offline", "online", "hybrid"] as const;
+export type DeliveryMode = (typeof DELIVERY_MODES)[number];
+export const deliveryModeEnum = pgEnum(" delivery_mode", DELIVERY_MODES);

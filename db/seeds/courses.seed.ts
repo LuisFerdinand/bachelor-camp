@@ -10,8 +10,98 @@ import {
   buildingCourses,
 } from "../schema";
 import { asc, eq, sql } from "drizzle-orm";
-import { addDays, isBefore } from "date-fns";
+import { addDays, format, isWeekend, startOfDay } from "date-fns";
 import { ICON_URL_FALLBACK } from "@/constants";
+import { DayOfWeek } from "../schema/enums";
+
+type CourseInsert = typeof courses.$inferInsert;
+type CourseBatchInsert = typeof courseBatches.$inferInsert;
+type BatchWeeklyScheduleInsert = typeof batchWeeklySchedule.$inferInsert;
+type BatchSessionInsert = typeof batchSessions.$inferInsert;
+
+async function generateBatchSessions(
+  courseBatchId: string,
+  startDate: Date,
+  totalSessions: number,
+  weeklySchedule: any[]
+): Promise<BatchSessionInsert[]> {
+  const dayMap: Record<string, number> = {
+    sunday: 0,
+    monday: 1,
+    tuesday: 2,
+    wednesday: 3,
+    thursday: 4,
+    friday: 5,
+    saturday: 6,
+  };
+
+  const sessions: BatchSessionInsert[] = [];
+  let currentDate = startOfDay(startDate);
+  let sessionsCreated = 0;
+
+  // Safety limit to prevent infinite loops
+  const maxIterations = totalSessions * 10;
+  let iterations = 0;
+
+  while (sessionsCreated < totalSessions && iterations < maxIterations) {
+    iterations++;
+
+    const dayOfWeek = Object.keys(dayMap).find(
+      (day) => dayMap[day] === currentDate.getDay()
+    );
+
+    if (dayOfWeek) {
+      const scheduleForDay = weeklySchedule.find(
+        (s) => s.dayOfWeek === dayOfWeek && s.isClosed === "false"
+      );
+
+      if (scheduleForDay) {
+        const [startHour, startMinute] = scheduleForDay.startTime
+          .split(":")
+          .map(Number);
+        const [endHour, endMinute] = scheduleForDay.endTime
+          .split(":")
+          .map(Number);
+
+        const sessionStartDateTime = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          currentDate.getDate(),
+          startHour,
+          startMinute
+        );
+
+        const sessionEndDateTime = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          currentDate.getDate(),
+          endHour,
+          endMinute
+        );
+
+        sessions.push({
+          courseBatchId,
+          date: format(currentDate, "yyyy-MM-dd"),
+          startDateTime: sessionStartDateTime,
+          endDateTime: sessionEndDateTime,
+          status: "scheduled" as const,
+        });
+
+        sessionsCreated++;
+      }
+    }
+
+    currentDate = addDays(currentDate, 1);
+  }
+
+  if (sessionsCreated < totalSessions) {
+    console.warn(
+      `⚠️  Warning: Only generated ${sessionsCreated}/${totalSessions} sessions. Check schedule configuration.`
+    );
+  }
+
+  return sessions;
+}
 
 export const seedCourses = async () => {
   console.log("🌱 Seeding courses...");
@@ -20,12 +110,8 @@ export const seedCourses = async () => {
   await db.delete(batchSessions);
   await db.delete(batchWeeklySchedule);
   await db.delete(courseBatches);
+  await db.delete(buildingCourses);
   await db.delete(courses);
-
-  type CourseInsert = typeof courses.$inferInsert;
-  type CourseScheduleInsert = typeof courseBatches.$inferInsert;
-  type CourseDailyScheduleInsert = typeof batchWeeklySchedule.$inferInsert;
-  type CourseMeetInsert = typeof batchSessions.$inferInsert;
 
   const courseData: CourseInsert[] = [
     {
@@ -597,22 +683,30 @@ export const seedCourses = async () => {
     },
   ];
 
-  const building = await db
+  const buildingList = await db
     .select()
     .from(buildings)
     .orderBy(asc(buildings.order));
 
-  const insertedCourse = await db
+  if (buildingList.length === 0) {
+    console.log("⚠️  No buildings found. Please seed buildings first.");
+    return;
+  }
+
+  const insertedCourses = await db
     .insert(courses)
     .values(courseData)
     .returning();
 
-  for (const course of insertedCourse) {
+  console.log(`📚 Inserted ${insertedCourses.length} courses`);
+
+  for (const course of insertedCourses) {
     // Randomly decide how many buildings this course will be linked to (1 to all buildings)
-    const numberOfBuildings = Math.floor(Math.random() * building.length) + 1;
+    const numberOfBuildings =
+      Math.floor(Math.random() * buildingList.length) + 1;
 
     // Shuffle the buildings array and take the first `numberOfBuildings` items
-    const shuffledBuildings = building.sort(() => 0.5 - Math.random());
+    const shuffledBuildings = [...buildingList].sort(() => 0.5 - Math.random());
     const selectedBuildings = shuffledBuildings.slice(0, numberOfBuildings);
 
     // Create a link for each selected building
@@ -625,131 +719,132 @@ export const seedCourses = async () => {
     }
   }
 
-  const startDate = new Date("2025-10-01");
-
-  const [insertedSchedule] = await db
-    .insert(courseBatches)
-    .values({
-      courseId: insertedCourse[0].id,
-      startDate: startDate.toISOString().split("T")[0],
-      capacity: 20,
-      price: insertedCourse[0].price ?? 0,
-    })
-    .returning();
-
-  const dailyPatterns: CourseDailyScheduleInsert[] = [
+  const schedulePatterns = [
     {
-      courseBatchId: insertedSchedule.id,
-      dayOfWeek: "monday",
-      startTime: "10:00",
-      endTime: "12:00",
+      name: "Weekday Intensive",
+      pattern: [
+        { day: "monday" as DayOfWeek, start: "10:00", end: "12:00" },
+        { day: "tuesday" as DayOfWeek, start: "10:00", end: "12:00" },
+        { day: "wednesday" as DayOfWeek, start: "10:00", end: "12:00" },
+        { day: "thursday" as DayOfWeek, start: "10:00", end: "12:00" },
+        { day: "friday" as DayOfWeek, start: "10:00", end: "12:00" },
+      ],
     },
     {
-      courseBatchId: insertedSchedule.id,
-      dayOfWeek: "tuesday",
-      startTime: "10:00",
-      endTime: "12:00",
+      name: "Evening Classes",
+      pattern: [
+        { day: "monday" as DayOfWeek, start: "18:00", end: "20:00" },
+        { day: "tuesday" as DayOfWeek, start: "18:00", end: "20:00" },
+        { day: "wednesday" as DayOfWeek, start: "18:00", end: "20:00" },
+        { day: "thursday" as DayOfWeek, start: "18:00", end: "20:00" },
+        { day: "friday" as DayOfWeek, start: "18:00", end: "20:00" },
+      ],
     },
     {
-      courseBatchId: insertedSchedule.id,
-      dayOfWeek: "thursday",
-      startTime: "10:00",
-      endTime: "12:00",
-    },
-    {
-      courseBatchId: insertedSchedule.id,
-      dayOfWeek: "wednesday",
-      startTime: "10:00",
-      endTime: "12:00",
-    },
-    {
-      courseBatchId: insertedSchedule.id,
-      dayOfWeek: "friday",
-      startTime: "10:00",
-      endTime: "12:00",
-    },
-    {
-      courseBatchId: insertedSchedule.id,
-      dayOfWeek: "saturday",
-      isClosed: "true",
-      startTime: "00:00",
-      endTime: "00:00",
-    },
-    {
-      courseBatchId: insertedSchedule.id,
-      dayOfWeek: "sunday",
-      isClosed: "true",
-      startTime: "00:00",
-      endTime: "00:00",
+      name: "Week Intensive",
+      pattern: [
+        { day: "monday" as DayOfWeek, start: "09:00", end: "10:00" },
+        { day: "tuesday" as DayOfWeek, start: "09:00", end: "10:00" },
+        { day: "wednesday" as DayOfWeek, start: "09:00", end: "10:00" },
+        { day: "thursday" as DayOfWeek, start: "09:00", end: "10:00" },
+        { day: "friday" as DayOfWeek, start: "09:00", end: "10:00" },
+        { day: "saturday" as DayOfWeek, start: "09:00", end: "15:00" },
+      ],
     },
   ];
+  for (let i = 0; i < insertedCourses.length; i++) {
+    const course = insertedCourses[i];
+    const schedulePattern = schedulePatterns[i % schedulePatterns.length];
 
-  const insertedDaily = await db
-    .insert(batchWeeklySchedule)
-    .values(dailyPatterns)
-    .returning();
+    // Create multiple batches per course with different start dates
+    const numberOfBatches = Math.floor(Math.random() * 3) + 1; // 1-3 batches
 
-  const dayMap: Record<string, number> = {
-    sunday: 0,
-    monday: 1,
-    tuesday: 2,
-    wednesday: 3,
-    thursday: 4,
-    friday: 5,
-    saturday: 6,
-  };
+    for (let batchIndex = 0; batchIndex < numberOfBatches; batchIndex++) {
+      // Stagger start dates
+      const baseStartDate = new Date("2025-10-01");
+      const startDate = addDays(baseStartDate, batchIndex * 30); // Start batches 30 days apart
 
-  const meets: any[] = [];
-  let current = startDate;
+      const [insertedBatch] = await db
+        .insert(courseBatches)
+        .values({
+          courseId: course.id,
+          number: batchIndex + 1,
+          startDate: format(startDate, "yyyy-MM-dd"),
+          capacity: Math.floor(Math.random() * 20) + 15, // 15-35 capacity
+          price: course.price + batchIndex * 200000, // Slight price variation
+        })
+        .returning();
 
-  while (meets.length < insertedCourse[0].totalSessions) {
-    for (const daily of insertedDaily) {
-      if (daily.isClosed === "true") continue;
+      // Create weekly schedule with all 7 days
+      const allDays: DayOfWeek[] = [
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+        "sunday",
+      ];
+      const weeklyScheduleData: BatchWeeklyScheduleInsert[] = allDays.map(
+        (day) => {
+          const scheduledDay = schedulePattern.pattern.find(
+            (p) => p.day === day
+          );
 
-      if (current.getDay() === dayMap[daily.dayOfWeek]) {
-        const [sh, sm] = (daily.startTime as string).split(":").map(Number);
-        const [eh, em] = (daily.endTime as string).split(":").map(Number);
+          if (scheduledDay) {
+            return {
+              courseBatchId: insertedBatch.id,
+              dayOfWeek: day,
+              startTime: scheduledDay.start,
+              endTime: scheduledDay.end,
+              isClosed: "false",
+            };
+          } else {
+            return {
+              courseBatchId: insertedBatch.id,
+              dayOfWeek: day,
+              startTime: "00:00",
+              endTime: "00:00",
+              isClosed: "true",
+            };
+          }
+        }
+      );
 
-        const startDateTime = new Date(
-          current.getFullYear(),
-          current.getMonth(),
-          current.getDate(),
-          sh,
-          sm
-        );
-        const endDateTime = new Date(
-          current.getFullYear(),
-          current.getMonth(),
-          current.getDate(),
-          eh,
-          em
-        );
+      const insertedWeeklySchedule = await db
+        .insert(batchWeeklySchedule)
+        .values(weeklyScheduleData)
+        .returning();
 
-        meets.push({
-          courseBatchId: insertedSchedule.id,
-          date: current,
-          startDateTime,
-          endDateTime,
-          status: "scheduled",
-        });
+      // Generate sessions based on weekly schedule
+      const sessions = await generateBatchSessions(
+        insertedBatch.id,
+        startDate,
+        course.totalSessions,
+        insertedWeeklySchedule
+      );
 
-        // Stop immediately if totalSessions reached
-        if (meets.length === insertedCourse[0].totalSessions) break;
+      await db.insert(batchSessions).values(sessions);
+
+      // Update batch end date based on last session
+      if (sessions.length > 0) {
+        const lastSessionDate = sessions[sessions.length - 1].date;
+        await db
+          .update(courseBatches)
+          .set({
+            endDate:
+              typeof lastSessionDate === "string"
+                ? lastSessionDate
+                : format(lastSessionDate, "yyyy-MM-dd"),
+          })
+          .where(eq(courseBatches.id, insertedBatch.id));
       }
-    }
 
-    current = addDays(current, 1);
+      console.log(
+        `✅ Created batch ${batchIndex + 1} for ${course.title}: ${sessions.length} sessions (${schedulePattern.name})`
+      );
+    }
   }
 
-  await db.insert(batchSessions).values(meets);
-
-  const lastSessionDate = meets[meets.length - 1].date;
-  await db
-    .update(courseBatches)
-    .set({ endDate: lastSessionDate.toISOString().split("T")[0] })
-    .where(eq(courseBatches.id, insertedSchedule.id));
-
-  console.log(
-    `✅ Seeded: ${insertedCourse[0].title} with ${meets.length} course sessions.`
-  );
+  console.log("🎉 Course seeding completed successfully!");
 };

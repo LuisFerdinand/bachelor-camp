@@ -4,7 +4,7 @@ import { courses } from "../courses";
 import { buildings } from "../buildings";
 
 export const buildingCourses = pgTable("building_courses", {
-  id: uuid("id").primaryKey(),
+  id: uuid("id").defaultRandom().primaryKey(),
   buildingId: uuid("building_id")
     .references(() => buildings.id, { onDelete: "cascade" })
     .notNull(),
