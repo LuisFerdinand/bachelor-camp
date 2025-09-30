@@ -118,7 +118,9 @@ export function CourseCard({ course }: CourseCardProps) {
                 : "bg-brand-600 hover:bg-brand-700"
             } text-white shadow-sm`}
           >
-            <Link href={`/booking?course=${course.slug}`}>Enroll Now</Link>
+            <Link href={`/program-booking?course=${course.slug}`}>
+              Enroll Now
+            </Link>
           </Button>
 
           <Button

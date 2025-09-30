@@ -24,7 +24,7 @@ export function BlogHeroSection({
   setSearchTerm,
 }: BlogHeroSectionProps) {
   const { data: banner, isLoading: isLoadingBanner } =
-    trpc.banners.getOne.useQuery({ type: "Camp" });
+    trpc.banners.getOne.useQuery({ type: "Blog" });
 
   if (isLoadingBanner) {
     return (

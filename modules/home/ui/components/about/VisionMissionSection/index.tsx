@@ -29,7 +29,7 @@ export function VisionMissionSection({ data }: VisionMissionSectionProps) {
       <div className="container mx-auto px-4">
         <div className="mx-auto">
           <div className="text-center mb-16">
-            <Badge className="mb-4 bg-brand-100 text-brand-800 border-0">
+            <Badge className="mb-4 bg-accent-100 text-accent-800 border-0">
               <Target className="w-4 h-4 mr-2" />
               Vision & Mission
             </Badge>

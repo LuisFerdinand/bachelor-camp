@@ -146,7 +146,9 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
           </div>
 
           <div
-            className={`px-3 py-1 rounded-full text-xs font-medium border ${getTestimonialSourceBadgeColor(testimonial.source)} flex items-center space-x-1`}
+            className={`px-3 py-1 rounded-full text-xs font-medium border ${getTestimonialSourceBadgeColor(
+              testimonial.source
+            )} flex items-center space-x-1`}
           >
             <span>{getTestimonialSourceIcon(testimonial.source)}</span>
             <span>
@@ -267,15 +269,12 @@ export function TestimonialsSection({
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <Badge className="mb-6 bg-gradient-to-r from-brand-100 to-accent-100 text-brand-800 border-0 px-4 py-2">
-            <Star className="w-4 h-4 mr-2 text-yellow-500" />
+          <Badge className="mb-4 bg-electric-100 text-electric-800 border-0">
+            <Star className="w-4 h-4 mr-2" />
             Student Success Stories
           </Badge>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
-            Hear From Our
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-accent-600">
-              Amazing Students
-            </span>
+          <h2 className="text-display-sm md:text-display-md font-bold mb-4">
+            Hear From Our Amazing Students
           </h2>
           <p className="text-xl text-gray-600 leading-relaxed">
             Watch testimonials from students who have transformed their English

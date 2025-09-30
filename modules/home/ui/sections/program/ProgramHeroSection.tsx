@@ -6,12 +6,12 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { BookOpen, CheckCircle, MessageSquare } from "lucide-react";
 import { trpc } from "@/trpc/client";
-import { CAMP_DESKTOP_FALLBACK, bannerStyles } from "@/constants";
+import { PROGRAM_BANNER_FALLBACK, bannerStyles } from "@/constants";
 import Link from "next/link";
 
 export function ProgramHeroSection() {
   const { data: banner, isLoading: isLoadingBanner } =
-    trpc.banners.getOne.useQuery({ type: "Camp" });
+    trpc.banners.getOne.useQuery({ type: "Programs" });
 
   if (isLoadingBanner) {
     return (
@@ -74,7 +74,7 @@ export function ProgramHeroSection() {
         {/* Desktop Background */}
         <div className="block absolute inset-0">
           <Image
-            src={banner?.mediaUrl || CAMP_DESKTOP_FALLBACK}
+            src={banner?.mediaUrl || PROGRAM_BANNER_FALLBACK}
             alt={banner?.headline || "Program Banner"}
             fill
             className="object-cover"
