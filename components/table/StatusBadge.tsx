@@ -16,6 +16,9 @@ import {
   Star,
   Heart,
   Trash2,
+  UserPlus,
+  PlayCircle,
+  PauseCircle,
 } from "lucide-react";
 import { Badge } from "../ui/badge";
 
@@ -363,6 +366,45 @@ const multiStateConfigs: { [key: string]: StatusConfig } = {
       color: "bg-red-100 text-red-700 border-red-200",
       icon: AlertCircle,
       priority: 4,
+    },
+  },
+  // Lifecycle status (general use)
+  lifecycle: {
+    upcoming: {
+      label: "Upcoming",
+      color: "bg-blue-100 text-blue-700 border-blue-200",
+      icon: Clock,
+      priority: 1,
+    },
+    enrolling: {
+      label: "Enrolling",
+      color: "bg-yellow-100 text-yellow-700 border-yellow-200",
+      icon: UserPlus,
+      priority: 2,
+    },
+    ongoing: {
+      label: "Ongoing",
+      color: "bg-emerald-100 text-emerald-700 border-emerald-200",
+      icon: PlayCircle,
+      priority: 3,
+    },
+    paused: {
+      label: "Paused",
+      color: "bg-orange-100 text-orange-700 border-orange-200",
+      icon: PauseCircle,
+      priority: 4,
+    },
+    completed: {
+      label: "Completed",
+      color: "bg-gray-100 text-gray-700 border-gray-200",
+      icon: CheckCircle,
+      priority: 5,
+    },
+    cancelled: {
+      label: "Cancelled",
+      color: "bg-red-100 text-red-700 border-red-200",
+      icon: XCircle,
+      priority: 6,
     },
   },
 };

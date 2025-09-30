@@ -32,6 +32,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, Eraser, Loader, Search } from "lucide-react";
 
+import { CourseBatchWithDetails } from "@/db/schema";
+import { useCourseBatchFilters } from "@/modules/course-batches/hooks/use-course-batch-filters";
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -39,14 +42,16 @@ interface DataTableProps<TData, TValue> {
 }
 
 const columnLabels: Record<string, string> = {
-  name: "Facility",
-  type: "Type",
+  id: "Batch ID",
+  "course.title": "Course",
   status: "Status",
-  isFeatured: "Featured",
-  category: "Category",
-  order: "Order",
-  createdAt: "Created At",
+  startDate: "Duration",
+  deliveryMode: "Schedule",
+  enrolledCount: "Enrollment",
+  completedSessions: "Progress",
+  price: "Price",
   updatedAt: "Last Updated",
+  createdAt: "Created At",
 };
 
 export function DataTable<TData, TValue>({
@@ -59,8 +64,8 @@ export function DataTable<TData, TValue>({
     []
   );
 
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [tempQuery, setTempQuery] = React.useState("");
+  const [{ searchQuery }, setFilters] = useCourseBatchFilters();
+  const [tempQuery, setTempQuery] = React.useState(searchQuery ?? "");
 
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({
@@ -96,7 +101,7 @@ export function DataTable<TData, TValue>({
           <div className="flex items-center gap-2 w-full max-w-md">
             <Input
               type="search"
-              placeholder="Search facilities..."
+              placeholder="Search courseBatchs..."
               className="h-8 flex-1 text-sm"
               value={tempQuery}
               onChange={(e) => setTempQuery(e.target.value)}
@@ -106,7 +111,7 @@ export function DataTable<TData, TValue>({
               variant="secondary"
               size="sm"
               className="size-8 px-2 hover:text-black hover:border-black"
-              onClick={() => setSearchQuery(tempQuery)}
+              onClick={() => setFilters({ searchQuery: tempQuery })}
               disabled={!tempQuery.trim()}
             >
               <Search className="h-4 w-4" />
@@ -119,7 +124,7 @@ export function DataTable<TData, TValue>({
                 className="h-8 px-2 text-white hover:text-red-600 bg-red-600 hover:bg-red-100"
                 onClick={() => {
                   setTempQuery("");
-                  setSearchQuery("");
+                  setFilters({ searchQuery: "" });
                 }}
               >
                 <Eraser className="w-4 h-4" />
@@ -188,6 +193,7 @@ export function DataTable<TData, TValue>({
               <TableBody>
                 {table.getRowModel().rows.length ? (
                   table.getRowModel().rows.map((row) => {
+                    const courseBatch = row.original as CourseBatchWithDetails;
                     return (
                       <TableRow
                         className="hover:bg-neutral-100 cursor-pointer transition "
@@ -213,7 +219,7 @@ export function DataTable<TData, TValue>({
                       <div className="w-full h-40 flex items-center justify-center">
                         <div className="text-muted-foreground text-center">
                           <p className="text-sm font-medium">
-                            No facilities found
+                            No courseBatchs found
                           </p>
                           <p className="text-xs">
                             Try adjusting your filters or keyword.

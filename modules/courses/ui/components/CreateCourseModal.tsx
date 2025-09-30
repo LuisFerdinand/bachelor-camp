@@ -4,7 +4,7 @@ import { ResponsiveModal } from "@/components/ResponsiveModal";
 
 import { useRouter } from "next/navigation";
 import { CreateCourseForm, EnhancedCourseForm } from "./CreateCourseForm";
-import { StepperCourseForm } from "./CreateCourseStepper";
+import { CreateCourseStepperForm } from "./CreateCourseStepperForm";
 
 interface CreateCourseModalProps {
   open: boolean;
@@ -28,13 +28,13 @@ export const CreateCourseModal = ({
             onOpenChange(false);
           }}
         /> */}
-        <StepperCourseForm
+        <CreateCourseStepperForm
           open={open}
           onCancel={() => onOpenChange(false)}
           onSuccess={(id) => {
             onOpenChange(false);
           }}
-        ></StepperCourseForm>
+        ></CreateCourseStepperForm>
       </ResponsiveModal>
     </>
   );

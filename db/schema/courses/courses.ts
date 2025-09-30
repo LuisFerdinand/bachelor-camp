@@ -19,6 +19,7 @@ import {
 import { InferSelectModel } from "drizzle-orm";
 import { unique } from "drizzle-orm/gel-core";
 import z from "zod";
+import { Building } from "../buildings";
 
 export const courses = pgTable("courses", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -41,6 +42,9 @@ export const courses = pgTable("courses", {
     jsonb("target_audience").$type<{ text: string; iconUrl?: string }[]>(),
 
   price: integer("price").notNull(), // in Rupiah
+  minPrice: integer("min_price"),
+  maxPrice: integer("max_price"),
+
   isActive: booleanTypeEnum("is_active").default("false"),
   isFeatured: booleanTypeEnum("is_featured").default("false"),
   order: integer("order").default(0),
@@ -50,6 +54,9 @@ export const courses = pgTable("courses", {
 });
 
 export type Course = InferSelectModel<typeof courses>;
+export type CourseWithDetails = Course & {
+  buildings: Building[];
+};
 
 export const courseCreateSchema = z.object({
   slug: z.string().min(1, "Course slug is required"),
@@ -140,7 +147,7 @@ export const courseCreateSchema = z.object({
   isFeatured: z.enum(booleanTypeEnum.enumValues).optional(),
 });
 // ---------- Update Schema ----------
-export const courseUpdateSchema = z.object({
+export const updateCourseSchema = z.object({
   slug: z.string().min(1, "Course slug cannot be empty").optional(),
   title: z.string().min(1, "Course title cannot be empty").optional(),
   category: z.enum(COURSE_CATEGORIES).optional(),
@@ -152,79 +159,89 @@ export const courseUpdateSchema = z.object({
     .optional(),
   description: z.string().optional(),
 
-  // For updates, allow empty arrays but validate non-empty items
   learningGoals: z
     .array(
       z.object({
-        text: z.string().min(1, "Learning goal text is required"),
+        text: z
+          .string()
+          .min(1, "Learning goal text cannot be empty")
+          .refine(
+            (text) => text.trim().length > 0,
+            "Learning goal cannot be just whitespace"
+          ),
         iconUrl: z.string().optional(),
       })
     )
-    .optional()
-    .refine(
-      (goals) => !goals || goals.every((goal) => goal.text.trim().length > 0),
-      "All learning goals must have text"
-    ),
+    .min(1, "At least one learning goal is required")
+    .optional(),
 
   syllabus: z
     .array(
       z.object({
-        text: z.string().min(1, "Syllabus text is required"),
+        text: z
+          .string()
+          .min(1, "Syllabus text cannot be empty")
+          .refine(
+            (text) => text.trim().length > 0,
+            "Syllabus item cannot be just whitespace"
+          ),
         iconUrl: z.string().optional(),
       })
     )
-    .optional()
-    .refine(
-      (items) => !items || items.every((item) => item.text.trim().length > 0),
-      "All syllabus items must have text"
-    ),
+    .min(1, "At least one syllabus item is required")
+    .optional(),
 
   teachingMethods: z
     .array(
       z.object({
-        text: z.string().min(1, "Teaching method text is required"),
+        text: z
+          .string()
+          .min(1, "Teaching method text cannot be empty")
+          .refine(
+            (text) => text.trim().length > 0,
+            "Teaching method cannot be just whitespace"
+          ),
         iconUrl: z.string().optional(),
       })
     )
-    .optional()
-    .refine(
-      (methods) =>
-        !methods || methods.every((method) => method.text.trim().length > 0),
-      "All teaching methods must have text"
-    ),
+    .min(1, "At least one teaching method is required")
+    .optional(),
 
   resources: z
     .array(
       z.object({
-        text: z.string().min(1, "Resource text is required"),
+        text: z
+          .string()
+          .min(1, "Resource text cannot be empty")
+          .refine(
+            (text) => text.trim().length > 0,
+            "Resource cannot be just whitespace"
+          ),
         iconUrl: z.string().optional(),
       })
     )
-    .optional()
-    .refine(
-      (resources) =>
-        !resources ||
-        resources.every((resource) => resource.text.trim().length > 0),
-      "All resources must have text"
-    ),
+    .min(1, "At least one resource is required")
+    .optional(),
 
   targetAudience: z
     .array(
       z.object({
-        text: z.string().min(1, "Target audience text is required"),
+        text: z
+          .string()
+          .min(1, "Target audience text cannot be empty")
+          .refine(
+            (text) => text.trim().length > 0,
+            "Target audience cannot be just whitespace"
+          ),
         iconUrl: z.string().optional(),
       })
     )
-    .optional()
-    .refine(
-      (audiences) =>
-        !audiences ||
-        audiences.every((audience) => audience.text.trim().length > 0),
-      "All target audience items must have text"
-    ),
-
+    .min(1, "At least one target audience is required")
+    .optional(),
   price: z.number().min(0, "Course price must be 0 or greater").optional(),
   buildingIds: z.array(z.string().uuid()).optional(),
+  imageUrl: z.string().optional(),
+  imageKey: z.string().optional(),
   isActive: z.enum(booleanTypeEnum.enumValues).optional(),
   isFeatured: z.enum(booleanTypeEnum.enumValues).optional(),
   order: z.number().optional(),

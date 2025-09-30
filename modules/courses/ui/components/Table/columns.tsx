@@ -17,12 +17,18 @@ import {
   Rocket,
   Trophy,
   FileCheck,
+  Building2,
 } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { InferSelectModel } from "drizzle-orm";
-import { courses } from "@/db/schema";
+import { courses, CourseWithDetails } from "@/db/schema";
 import { CourseActionProvider } from "../CourseContext";
-import { formatOrdinal } from "@/lib/utils";
+import {
+  formatOrdinal,
+  getCourseCategoryConfig,
+  getCourseLevelConfig,
+  stringToColor,
+} from "@/lib/utils";
 import { OrderBadge } from "@/components/table/OrderBadge";
 import { CategoryBadge } from "@/components/table/CategoryBadge";
 import { BooleanStatusBadge } from "@/components/table/StatusBadge";
@@ -30,18 +36,17 @@ import { FeatureList, FeatureTableCell } from "@/components/table/FeatureList";
 import { Badge } from "@/components/ui/badge";
 import { ProductImage } from "@/components/ProductImage";
 import LastUpdatedDisplay from "@/components/table/LastUpdatedDisplay";
+import CourseActions from "./course-actions";
 // import CourseActions from "./course-actions";
 
-export type Course = InferSelectModel<typeof courses>;
-
-export function getCourseColumns(): ColumnDef<Course>[] {
+export function getCourseColumns(): ColumnDef<CourseWithDetails>[] {
   const router = useRouter();
   const pathname = usePathname();
 
-  const columns: ColumnDef<Course>[] = [
+  const columns: ColumnDef<CourseWithDetails>[] = [
     {
       accessorKey: "order",
-      header: ({ column }: { column: Column<Course, unknown> }) => (
+      header: ({ column }: { column: Column<CourseWithDetails, unknown> }) => (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
@@ -50,7 +55,7 @@ export function getCourseColumns(): ColumnDef<Course>[] {
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
-      cell: ({ row }: { row: Row<Course> }) => {
+      cell: ({ row }: { row: Row<CourseWithDetails> }) => {
         const { order } = row.original;
         return <OrderBadge order={order!} showBadgeStyle={true}></OrderBadge>;
       },
@@ -59,7 +64,7 @@ export function getCourseColumns(): ColumnDef<Course>[] {
     // Course title and description
     {
       accessorKey: "title",
-      header: ({ column }: { column: Column<Course, unknown> }) => (
+      header: ({ column }: { column: Column<CourseWithDetails, unknown> }) => (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
@@ -68,18 +73,9 @@ export function getCourseColumns(): ColumnDef<Course>[] {
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
-      cell: ({ row }: { row: Row<Course> }) => {
+      cell: ({ row }: { row: Row<CourseWithDetails> }) => {
         const { title, description, slug, imageUrl } = row.original;
         return (
-          // <div className="flex flex-col overflow-hidden gap-1 max-w-[320px]">
-          //   <div className="flex items-center gap-2">
-          //     <span className="text-sm line-clamp-1 font-medium">{title}</span>
-          //   </div>
-          //   <span className="text-xs text-muted-foreground line-clamp-2">
-          //     {description || "No description"}
-          //   </span>
-          // </div>
-
           <>
             <div className="flex items-start gap-4 max-w-full">
               <div className="relative w-20 shrink-0">
@@ -115,118 +111,8 @@ export function getCourseColumns(): ColumnDef<Course>[] {
       cell: ({ row }) => {
         const { category, level } = row.original;
 
-        const getCategoryConfig = (category: string) => {
-          switch (category) {
-            case "IELTS":
-              return {
-                color: "bg-blue-50 text-blue-700 border-blue-200",
-                darkColor:
-                  "dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-700",
-                icon: Target,
-                iconColor: "text-blue-600",
-              };
-            case "TOEFL":
-              return {
-                color: "bg-emerald-50 text-emerald-700 border-emerald-200",
-                darkColor:
-                  "dark:bg-emerald-900/20 dark:text-emerald-300 dark:border-emerald-700",
-                icon: BookOpen,
-                iconColor: "text-emerald-600",
-              };
-            case "TOEIC":
-              return {
-                color: "bg-violet-50 text-violet-700 border-violet-200",
-                darkColor:
-                  "dark:bg-violet-900/20 dark:text-violet-300 dark:border-violet-700",
-                icon: Briefcase,
-                iconColor: "text-violet-600",
-              };
-            case "Pronounciation":
-              return {
-                color: "bg-rose-50 text-rose-700 border-rose-200",
-                darkColor:
-                  "dark:bg-rose-900/20 dark:text-rose-300 dark:border-rose-700",
-                icon: MessageCircle,
-                iconColor: "text-rose-600",
-              };
-            default:
-              return {
-                color: "bg-gray-50 text-gray-700 border-gray-200",
-                darkColor:
-                  "dark:bg-gray-900/20 dark:text-gray-300 dark:border-gray-700",
-                icon: BookOpen,
-                iconColor: "text-gray-600",
-              };
-          }
-        };
-
-        const getLevelConfig = (level: string) => {
-          switch (level.toLowerCase()) {
-            case "intro":
-              return {
-                color: "bg-green-50 text-green-700 border-green-200",
-                darkColor:
-                  "dark:bg-green-900/20 dark:text-green-300 dark:border-green-700",
-                icon: Sprout,
-                iconColor: "text-green-600",
-                priority: 1,
-                description: "Beginner friendly",
-              };
-            case "drill class":
-              return {
-                color: "bg-amber-50 text-amber-700 border-amber-200",
-                darkColor:
-                  "dark:bg-amber-900/20 dark:text-amber-300 dark:border-amber-700",
-                icon: Zap,
-                iconColor: "text-amber-600",
-                priority: 2,
-                description: "Intensive practice",
-              };
-            case "next step":
-              return {
-                color: "bg-orange-50 text-orange-700 border-orange-200",
-                darkColor:
-                  "dark:bg-orange-900/20 dark:text-orange-300 dark:border-orange-700",
-                icon: Rocket,
-                iconColor: "text-orange-600",
-                priority: 3,
-                description: "Level progression",
-              };
-            case "advanced":
-              return {
-                color: "bg-red-50 text-red-700 border-red-200",
-                darkColor:
-                  "dark:bg-red-900/20 dark:text-red-300 dark:border-red-700",
-                icon: Trophy,
-                iconColor: "text-red-600",
-                priority: 4,
-                description: "Expert level",
-              };
-            case "mock test":
-              return {
-                color: "bg-purple-50 text-purple-700 border-purple-200",
-                darkColor:
-                  "dark:bg-purple-900/20 dark:text-purple-300 dark:border-purple-700",
-                icon: FileCheck,
-                iconColor: "text-purple-600",
-                priority: 5,
-                description: "Test simulation",
-              };
-            default:
-              return {
-                color: "bg-gray-50 text-gray-700 border-gray-200",
-                darkColor:
-                  "dark:bg-gray-900/20 dark:text-gray-300 dark:border-gray-700",
-                icon: BookOpen,
-                iconColor: "text-gray-600",
-                priority: 0,
-                description: "Standard",
-              };
-          }
-        };
-
         const CategoryBadge = ({ category }: { category: string }) => {
-          const config = getCategoryConfig(category);
+          const config = getCourseCategoryConfig(category);
           const IconComponent = config.icon;
 
           return (
@@ -255,7 +141,7 @@ export function getCourseColumns(): ColumnDef<Course>[] {
         };
 
         const LevelBadge = ({ level }: { level: string }) => {
-          const config = getLevelConfig(level);
+          const config = getCourseLevelConfig(level);
           const IconComponent = config.icon;
 
           return (
@@ -583,6 +469,83 @@ export function getCourseColumns(): ColumnDef<Course>[] {
     },
 
     {
+      accessorKey: "buildings",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Buildings
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }: { row: any }) => {
+        const buildings = row.original.buildings || [];
+
+        if (buildings.length === 0) {
+          return (
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+              <Building2 className="w-3.5 h-3.5" />
+              <span>No buildings</span>
+            </div>
+          );
+        }
+
+        return (
+          <div className="flex flex-col gap-1 py-1 max-w-[250px]">
+            {buildings.slice(0, 2).map((building: any, index: number) => (
+              <div
+                key={building.id}
+                className="flex items-center gap-2 p-2 bg-gray-50 rounded-md border border-gray-200 hover:bg-gray-100 transition-colors shadow-md"
+              >
+                <Building2 className="w-3.5 h-3.5 text-gray-500 flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-medium truncate">
+                      {building.name}
+                    </span>
+                    {building.badge && (
+                      <Badge
+                        className="text-[10px] px-1.5 py-0 h-4 flex-shrink-0"
+                        style={{
+                          backgroundColor: stringToColor(building.badge)
+                            .background,
+                          color: stringToColor(building.badge).text,
+                          border: `1px solid ${stringToColor(building.badge).border}`,
+                        }}
+                      >
+                        {building.badge}
+                      </Badge>
+                    )}
+                  </div>
+                  {building.description && (
+                    <p className="text-[10px] text-muted-foreground truncate">
+                      {building.description}
+                    </p>
+                  )}
+                </div>
+              </div>
+            ))}
+
+            {buildings.length > 2 && (
+              <div className="flex items-center gap-1 text-xs text-muted-foreground pl-2">
+                <span>
+                  +{buildings.length - 2} more building
+                  {buildings.length - 2 !== 1 ? "s" : ""}
+                </span>
+              </div>
+            )}
+          </div>
+        );
+      },
+      sortingFn: (rowA, rowB) => {
+        const buildingsA = rowA.original.buildings || [];
+        const buildingsB = rowB.original.buildings || [];
+        return buildingsA.length - buildingsB.length;
+      },
+    },
+
+    {
       accessorKey: "updatedAt",
       header: ({ column }) => (
         <Button
@@ -630,29 +593,26 @@ export function getCourseColumns(): ColumnDef<Course>[] {
         );
       },
     },
-
-    // Actions column (uncomment when ready)
-    // {
-    //   id: "actions",
-    //   header: () => <Button variant="ghost">Actions</Button>,
-    //   cell: ({ row }) => {
-    //     const { id, isActive } = row.original;
-    //     return (
-    //       <CourseActionProvider>
-    //         <CourseActions id={id} isActive={isActive}>
-    //           <Button
-    //             variant="ghost"
-    //             size="sm"
-    //             className="h-8 w-8 p-0 hover:bg-neutral-200"
-    //           >
-    //             <MoreVertical className="h-4 w-4" />
-    //             <span className="sr-only">Open menu</span>
-    //           </Button>
-    //         </CourseActions>
-    //       </CourseActionProvider>
-    //     );
-    //   },
-    // },
+    {
+      id: "actions",
+      cell: ({ row }) => {
+        const { id, isActive, order } = row.original;
+        return (
+          <>
+            <CourseActionProvider>
+              <CourseActions id={id} isActive={isActive!} order={order || 0}>
+                <Button
+                  variant="ghost"
+                  className="size-8 p-0 hover:bg-neutral-300 hover:text-primary"
+                >
+                  <MoreVertical className="size-4" />
+                </Button>
+              </CourseActions>
+            </CourseActionProvider>
+          </>
+        );
+      },
+    },
   ];
 
   return columns;

@@ -38,6 +38,8 @@ import {
   Lightbulb,
   Building2,
   BedDouble,
+  Monitor,
+  Shuffle,
 } from "lucide-react";
 
 // Extended icon mapping with more categories
@@ -107,6 +109,11 @@ const defaultTypeIcons: Record<string, LucideIcon> = {
   General: Tag,
   Other: Info,
   Default: Globe,
+
+  // Delivery Mode
+  Online: Monitor,
+  Offline: Building2,
+  Hybrid: Shuffle,
 };
 
 // Color generation function (you can replace with your existing one)
