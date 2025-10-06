@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import emailjs from "@emailjs/browser";
 import {
   Card,
   CardContent,
@@ -14,6 +15,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { CheckCircle, Send, MessageSquare } from "lucide-react";
 import { ContactFormData } from "./types";
+
+// EmailJS Configuration
+const EMAILJS_SERVICE_ID = "service_7ygykz8";
+const EMAILJS_TEMPLATE_ID = "template_knr0v3f";
+const EMAILJS_PUBLIC_KEY = "1Hzn3cIba12k3xxg_";
 
 interface ContactFormSectionProps {
   formData: ContactFormData;
@@ -200,3 +206,29 @@ export default function ContactFormSection({
     </section>
   );
 }
+
+// Export the EmailJS send function for use in parent component
+export const sendEmail = async (formData: ContactFormData) => {
+  try {
+    const templateParams = {
+      from_name: formData.name,
+      from_email: formData.email,
+      phone: formData.phone || "Not provided",
+      subject: formData.subject || "No subject",
+      message: formData.message,
+      to_name: "BachelorCamp Team", // Customize as needed
+    };
+
+    const response = await emailjs.send(
+      EMAILJS_SERVICE_ID,
+      EMAILJS_TEMPLATE_ID,
+      templateParams,
+      EMAILJS_PUBLIC_KEY
+    );
+
+    return { success: true, response };
+  } catch (error) {
+    console.error("EmailJS Error:", error);
+    return { success: false, error };
+  }
+};

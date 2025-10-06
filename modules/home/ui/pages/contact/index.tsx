@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import emailjs from "@emailjs/browser";
 import HeroSection from "./HeroSection";
 import InformationSection from "./InformationSection";
 import ContactFormSection from "./ContactFormSection";
@@ -24,16 +25,14 @@ export default function ContactPage({ cmsData }: ContactPageProps) {
     name: "BachelorCamp English Learning Center",
     address: "Jl. Veteran No. 15, Kediri City, East Java 64127",
     phone: "+62 354 123456",
-    email: "kediri@bachelorcamp.com",
+    email: "ferdinandluis@gmail.com",
     hours: `
       <strong>Monday - Friday:</strong> 08:00 - 20:00<br>
       <strong>Saturday:</strong> 09:00 - 17:00<br>
       <strong>Sunday:</strong> Closed
     `,
-    // Add coordinates for precise mapping (replace with your exact coordinates)
-    latitude: -6.164132732158701, // Your Jakarta coordinates from the component
-    longitude: 106.7764701133734, // Your Jakarta coordinates from the component
-    // Remove mapEmbedUrl since we're using the JavaScript API now
+    latitude: -6.164132732158701,
+    longitude: 106.7764701133734,
   };
 
   // FAQ items
@@ -84,25 +83,124 @@ export default function ContactPage({ cmsData }: ContactPageProps) {
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    if (formError) setFormError(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate required fields
     if (!formData.name || !formData.email || !formData.message) {
       setFormError(true);
       return;
     }
+
     setIsSubmitting(true);
     setFormError(false);
-    console.log("Contact form submitted:", formData);
-    setTimeout(() => {
+
+    try {
+      // Get EmailJS credentials from environment variables
+      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
+      // Debug logging
+      console.log("EmailJS Configuration Check:");
+      console.log("Service ID exists:", !!serviceId);
+      console.log("Template ID exists:", !!templateId);
+      console.log("Public Key exists:", !!publicKey);
+
+      // Check if credentials are configured
+      if (!serviceId || !templateId || !publicKey) {
+        console.error("Missing EmailJS credentials:");
+        console.error("Service ID:", serviceId ? "Set" : "MISSING");
+        console.error("Template ID:", templateId ? "Set" : "MISSING");
+        console.error("Public Key:", publicKey ? "Set" : "MISSING");
+        throw new Error(
+          "Email service not configured. Please check your .env.local file."
+        );
+      }
+
+      // Initialize EmailJS with public key
+      emailjs.init(publicKey);
+
+      // Get current timestamp
+      const now = new Date();
+      const formattedTime = now.toLocaleString("en-US", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
+      // Prepare template parameters
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        phone: formData.phone || "Not provided",
+        subject: formData.subject || "General Inquiry",
+        message: formData.message,
+        to_name: "BachelorCamp Team",
+        time: formattedTime,
+      };
+
+      console.log("Sending email with parameters:", {
+        ...templateParams,
+        message: templateParams.message.substring(0, 50) + "...",
+      });
+
+      // Send email via EmailJS
+      const response = await emailjs.send(
+        serviceId,
+        templateId,
+        templateParams
+      );
+
+      console.log("Email sent successfully:", response.status, response.text);
+
       setFormSubmitted(true);
-      setIsSubmitting(false);
       setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
-    }, 1000);
+    } catch (error: any) {
+      console.error("EmailJS Error Details:");
+      console.error("Error:", error);
+      console.error("Error message:", error?.message);
+      console.error("Error text:", error?.text);
+      console.error("Error status:", error?.status);
+
+      setFormError(true);
+
+      // More specific error messages
+      let errorMessage = "Failed to send message. ";
+
+      if (error?.status === 400) {
+        errorMessage +=
+          "Invalid configuration. Please check your EmailJS settings.";
+      } else if (error?.status === 401 || error?.status === 403) {
+        errorMessage +=
+          "Authentication failed. Please verify your EmailJS Public Key.";
+      } else if (error?.status === 404) {
+        errorMessage += "Service or Template not found. Please check your IDs.";
+      } else if (!navigator.onLine) {
+        errorMessage += "No internet connection.";
+      } else if (error?.message?.includes("not configured")) {
+        errorMessage += error.message;
+      } else {
+        errorMessage +=
+          "Please try again or contact us directly at kediri@bachelorcamp.com";
+      }
+
+      alert(errorMessage);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const resetForm = () => setFormSubmitted(false);
+  const resetForm = () => {
+    setFormSubmitted(false);
+    setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+  };
 
   const scrollToForm = () => {
     const formElement = document.getElementById("contact-form");
