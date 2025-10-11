@@ -5,17 +5,15 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
 import DesktopNav from "./DesktopNav";
-import BookMenu from "./BookMenu";
+import { UnifiedMenu } from "./UnifiedMenu"; 
+import { MobileUnifiedMenu } from "./MobileUnifiedMenu"; 
 
 import Image from "next/image";
-import { UserMenu } from "@/modules/auth/ui/components/UserMenu";
 import { LOGO_PRIMARY_FALLBACK, LOGO_SECONDARY_FALLBACK } from "@/constants";
 
 export const HomeNavbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isBookMenuOpen, setIsBookMenuOpen] = useState(false);
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // Desktop menu
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // Mobile menu
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
   const { isSignedIn } = useAuth();
@@ -36,6 +34,24 @@ export const HomeNavbar = () => {
     };
   }, []);
 
+  // Close mobile menu when screen size changes to desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) { // lg breakpoint is 1024px
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    
+    // Check on mount
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/camp", label: "Camp" },
@@ -47,20 +63,10 @@ export const HomeNavbar = () => {
 
   const closeMenus = () => {
     setIsMenuOpen(false);
-    setIsBookMenuOpen(false);
-  };
-  const toogleBookMenu = () => {
-    setIsMenuOpen(false);
-    setIsUserMenuOpen(false);
-    setIsBookMenuOpen(!isBookMenuOpen);
-  };
-  const toggleUserMenu = () => {
-    setIsMenuOpen(false);
-    setIsBookMenuOpen(false);
-    setIsUserMenuOpen(!isUserMenuOpen);
+    setIsMobileMenuOpen(false);
   };
 
-  const shouldUseSolidStyling = isScrolled || isMenuOpen;
+  const shouldUseSolidStyling = isScrolled || isMobileMenuOpen; // Only mobile menu affects background
 
   return (
     <header
@@ -110,33 +116,34 @@ export const HomeNavbar = () => {
             shouldUseSolidStyling={shouldUseSolidStyling}
           />
 
-          {/* Right Side */}
+          {/* Right Side - Desktop Menu & Mobile Toggle */}
           <div className="flex items-center space-x-4">
-            <BookMenu
-              isOpen={isBookMenuOpen}
-              toggle={toogleBookMenu}
+            {/* ✅ NEW: Unified Menu for Desktop */}
+            <UnifiedMenu
+              isOpen={isMenuOpen}
+              toggle={() => setIsMenuOpen(!isMenuOpen)}
               closeMenus={closeMenus}
               shouldUseSolidStyling={shouldUseSolidStyling}
               isSignedIn={isSignedIn || false}
             />
 
-            {/* Mobile Toggle */}
+            {/* Mobile Toggle Button (Hamburger) */}
             <button
               className={`lg:hidden p-2 rounded-lg transition-all duration-500 ease-in-out ${
                 shouldUseSolidStyling ? "text-gray-700" : "text-white"
               }`}
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className={`h-6 w-6 transition-transform duration-500 ease-in-out ${
-                  isMenuOpen ? "rotate-90" : ""
+                  isMobileMenuOpen ? "rotate-90" : ""
                 }`}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                {isMenuOpen ? (
+                {isMobileMenuOpen ? (
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -153,201 +160,18 @@ export const HomeNavbar = () => {
                 )}
               </svg>
             </button>
-
-            {/* Auth Button (Clerk UI) */}
-            <UserMenu
-              isOpen={isUserMenuOpen}
-              toggle={toggleUserMenu}
-              closeMenus={closeMenus}
-              shouldUseSolidStyling={shouldUseSolidStyling}
-              isSignedIn={isSignedIn || false}
-            />
           </div>
         </div>
       </div>
 
-      {/* Mobile Navigation */}
-      <div
-        className={`lg:hidden bg-white/95 backdrop-blur-md overflow-hidden transition-all duration-500 ease-in-out ${
-          isMenuOpen ? "max-h-screen py-4 opacity-100" : "max-h-0 opacity-0"
-        }`}
-      >
-        <div className="container mx-auto px-4">
-          <nav
-            className={`flex flex-col space-y-1 transition-all duration-500 ease-in-out delay-150 ${
-              isMenuOpen
-                ? "translate-y-0 opacity-100"
-                : "-translate-y-4 opacity-0"
-            }`}
-          >
-            {navLinks.map((link, index) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`px-4 py-3 rounded-lg transition-all duration-300 ease-in-out ${
-                  pathname === link.href
-                    ? "text-brand-600 bg-brand-50"
-                    : "text-gray-600 hover:text-brand-600 hover:bg-gray-50"
-                } ${
-                  isMenuOpen
-                    ? "translate-x-0 opacity-100"
-                    : "-translate-x-4 opacity-0"
-                }`}
-                style={{
-                  transitionDelay: isMenuOpen ? `${200 + index * 50}ms` : "0ms",
-                }}
-                onClick={closeMenus}
-              >
-                {link.label}
-              </Link>
-            ))}
-
-            {/* Mobile Book Section */}
-            <div
-              className={`border-t border-gray-200 mt-4 pt-4 transition-all duration-300 ease-in-out ${
-                isMenuOpen
-                  ? "translate-x-0 opacity-100"
-                  : "-translate-x-4 opacity-0"
-              }`}
-              style={{ transitionDelay: isMenuOpen ? "500ms" : "0ms" }}
-            >
-              <div className="space-y-1">
-                <Link
-                  href="/booking"
-                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${
-                    isMenuOpen
-                      ? "translate-x-0 opacity-100"
-                      : "-translate-x-4 opacity-0"
-                  }`}
-                  style={{ transitionDelay: isMenuOpen ? "550ms" : "0ms" }}
-                  onClick={closeMenus}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                    />
-                  </svg>
-                  <span>Book a Program</span>
-                </Link>
-                <Link
-                  href="/booking"
-                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${
-                    isMenuOpen
-                      ? "translate-x-0 opacity-100"
-                      : "-translate-x-4 opacity-0"
-                  }`}
-                  style={{ transitionDelay: isMenuOpen ? "600ms" : "0ms" }}
-                  onClick={closeMenus}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                    />
-                  </svg>
-                  <span>Book Accommodation</span>
-                </Link>
-                <div className="border-t border-gray-200 my-2"></div>
-                <Link
-                  href="/login"
-                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${
-                    isMenuOpen
-                      ? "translate-x-0 opacity-100"
-                      : "-translate-x-4 opacity-0"
-                  }`}
-                  style={{ transitionDelay: isMenuOpen ? "650ms" : "0ms" }}
-                  onClick={closeMenus}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
-                    />
-                  </svg>
-                  <span>Sign In</span>
-                </Link>
-                <Link
-                  href="/register"
-                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${
-                    isMenuOpen
-                      ? "translate-x-0 opacity-100"
-                      : "-translate-x-4 opacity-0"
-                  }`}
-                  style={{ transitionDelay: isMenuOpen ? "700ms" : "0ms" }}
-                  onClick={closeMenus}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
-                    />
-                  </svg>
-                  <span>Sign Up</span>
-                </Link>
-                <Link
-                  href="/profile"
-                  className={`flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-brand-600 hover:bg-gray-50 rounded-lg transition-all duration-300 ease-in-out ${
-                    isMenuOpen
-                      ? "translate-x-0 opacity-100"
-                      : "-translate-x-4 opacity-0"
-                  }`}
-                  style={{ transitionDelay: isMenuOpen ? "750ms" : "0ms" }}
-                  onClick={closeMenus}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  <span>My Profile</span>
-                </Link>
-              </div>
-            </div>
-          </nav>
-        </div>
-      </div>
+      {/* ✅ NEW: Mobile Navigation with Unified Menu */}
+      <MobileUnifiedMenu
+        isOpen={isMobileMenuOpen}
+        closeMenus={closeMenus}
+        navLinks={navLinks}
+        pathname={pathname}
+        isSignedIn={isSignedIn || false}
+      />
     </header>
   );
 };
