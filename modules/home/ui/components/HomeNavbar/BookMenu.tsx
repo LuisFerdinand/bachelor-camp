@@ -56,7 +56,7 @@ export default function BookMenu({
               Book a Program
             </Link>
             <Link
-              href="/booking"
+              href="/accommodation-booking"
               className="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-brand-600 transition-colors duration-200"
               onClick={closeMenus}
             >
