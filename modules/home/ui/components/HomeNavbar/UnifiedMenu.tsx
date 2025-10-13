@@ -54,7 +54,11 @@ export const UnifiedMenu = ({
             : "border-white/30 bg-white/20 backdrop-blur-sm"
         }`}
       >
-        <Menu className={`size-6 ${shouldUseSolidStyling ? "text-gray-700" : "text-white"}`} />
+        <Menu
+          className={`size-6 ${
+            shouldUseSolidStyling ? "text-gray-700" : "text-white"
+          }`}
+        />
         <div className="hidden md:block">
           <Image
             className="rounded-full"
@@ -78,7 +82,7 @@ export const UnifiedMenu = ({
                   activeTab === "book" ? "left-1" : "left-[calc(50%+3px)]"
                 }`}
               />
-              
+
               {/* Tab Buttons */}
               <button
                 onClick={() => handleTabSwitch("book")}
@@ -115,7 +119,7 @@ export const UnifiedMenu = ({
                   <span>Book a Program</span>
                 </Link>
                 <Link
-                  href="/booking"
+                  href="/accommodation-booking"
                   className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-brand-600 transition-colors duration-200"
                   onClick={closeMenus}
                 >
@@ -131,7 +135,9 @@ export const UnifiedMenu = ({
                 {isSignedIn ? (
                   <>
                     <div className="flex flex-col px-4 py-3 bg-gray-50">
-                      <span className="font-medium text-gray-900">{user?.fullName}</span>
+                      <span className="font-medium text-gray-900">
+                        {user?.fullName}
+                      </span>
                       <span className="text-xs text-gray-500">
                         {user?.primaryEmailAddress?.emailAddress}
                       </span>
