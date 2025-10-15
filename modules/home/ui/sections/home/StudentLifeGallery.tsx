@@ -168,7 +168,7 @@ export const StudentLifeGallery = () => {
                   </div>
 
                   {/* Call to Action */}
-                  <Link href="/camp">
+                  <Link href="/accommodation-booking">
                     <Button
                       size="lg"
                       className="bg-white text-brand-600 hover:bg-neutral-100 shadow-lg w-full md:w-auto px-8 py-3 text-lg"

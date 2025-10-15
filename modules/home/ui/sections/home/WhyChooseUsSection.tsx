@@ -175,7 +175,7 @@ export function WhyChooseUsSection() {
                           {feature.features.slice(0, 5).map((f, i) => (
                             <li
                               key={i}
-                              className="flex items-center text-xs text-neutral-500"
+                              className="hidden md:flex items-center text-xs text-neutral-500"
                             >
                               <CheckCircle className="w-3 h-3 text-brand-600 mr-1.5 flex-shrink-0" />
                               <p className="leading-none">{f.text}</p>
@@ -214,8 +214,7 @@ export function WhyChooseUsSection() {
                   </div>
 
                   <div className="flex items-center space-x-3 mb-3">
-                    <Image 
-                      src={ProfileBC} alt={""} width={40} height={40}/>
+                    <Image src={ProfileBC} alt={""} width={40} height={40} />
                     <div>
                       <p className="font-semibold text-neutral-900 text-sm">
                         Bachelor Camp
