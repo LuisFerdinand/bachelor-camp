@@ -170,7 +170,7 @@ export function CampusFacilitiesSection2() {
               <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-electric-500 to-electric-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </Card>
           ))}
-        </div>z
+        </div>
 
         {/* Empty State (if no facilities) */}
         {facilities && facilities.length === 0 && (
