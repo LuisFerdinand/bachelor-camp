@@ -8,13 +8,107 @@ import { trpc } from "@/trpc/client";
 import { bannerStyles } from "@/constants";
 import Link from "next/link";
 
+// Floating Logo Component
+const FloatingLogos = () => {
+  return (
+    <>
+      <div className="absolute bottom-8 right-8 hidden lg:flex space-x-6 pointer-events-none">
+        {/* First Logo - Larger */}
+        <div className="relative animate-float">
+          <div className="w-24 h-24 rounded-full flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
+            <Image
+              src="/logo.png"
+              alt="Logo"
+              width={80}
+              height={80}
+              className="object-contain"
+            />
+          </div>
+        </div>
+
+        {/* Second Logo - Medium */}
+        <div className="relative animate-float-delayed mt-8">
+          <div className="w-20 h-20 rounded-full flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
+            <Image
+              src="/logo.png"
+              alt="Logo"
+              width={50}
+              height={50}
+              className="object-contain"
+            />
+          </div>
+        </div>
+
+        {/* Third Logo - Smaller */}
+        <div className="relative animate-float-slow mt-4">
+          <div className="w-16 h-16 rounded-full flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
+            <Image
+              src="/logo.png"
+              alt="Logo"
+              width={30}
+              height={30}
+              className="object-contain"
+            />
+          </div>
+        </div>
+      </div>
+
+      <style jsx>{`
+        @keyframes float {
+          0%,
+          100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-20px);
+          }
+        }
+
+        @keyframes float-delayed {
+          0%,
+          100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-15px);
+          }
+        }
+
+        @keyframes float-slow {
+          0%,
+          100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-25px);
+          }
+        }
+
+        .animate-float {
+          animation: float 3s ease-in-out infinite;
+        }
+
+        .animate-float-delayed {
+          animation: float-delayed 4s ease-in-out infinite;
+          animation-delay: 0.5s;
+        }
+
+        .animate-float-slow {
+          animation: float-slow 5s ease-in-out infinite;
+          animation-delay: 1s;
+        }
+      `}</style>
+    </>
+  );
+};
+
 export default function HomeHeroSection() {
   const { data: banner, isLoading: isLoadingBanner } =
     trpc.banners.getOne.useQuery({ type: "Home" });
 
   if (isLoadingBanner) {
     return (
-      <section className="relative py-20 md:py-32 min-h-screen flex items-center bg-gradient-to-br from-gray-50 to-gray-100">
+      <section className="relative py-20 md:py-32 min-h-screen flex items-center bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
         <div className="container mx-auto px-4 w-full">
           <div className="max-w-3xl text-center md:text-left mx-auto md:mx-0">
             {/* Badge Skeleton */}
@@ -44,11 +138,10 @@ export default function HomeHeroSection() {
         </div>
 
         {/* Floating Images Skeleton */}
-        <div className="absolute bottom-8 right-8 hidden lg:block">
-          <div className="flex space-x-4">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 bg-[length:200%_100%] animate-pulse border-4 border-gray-300/30 shadow-lg"></div>
-            <div className="w-16 h-16 rounded-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 bg-[length:200%_100%] animate-pulse border-4 border-gray-300/30 shadow-lg mt-4"></div>
-          </div>
+        <div className="absolute bottom-8 right-8 hidden lg:flex space-x-6">
+          <div className="w-24 h-24 rounded-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 bg-[length:200%_100%] animate-pulse border-4 border-gray-300/30 shadow-lg"></div>
+          <div className="w-20 h-20 rounded-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 bg-[length:200%_100%] animate-pulse border-4 border-gray-300/30 shadow-lg mt-8"></div>
+          <div className="w-16 h-16 rounded-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 bg-[length:200%_100%] animate-pulse border-4 border-gray-300/30 shadow-lg mt-4"></div>
         </div>
 
         {/* Loading Indicator */}
@@ -68,7 +161,7 @@ export default function HomeHeroSection() {
 
   return (
     <section
-      className="relative py-20 md:py-32 min-h-screen flex items-center"
+      className="relative py-20 md:py-32 min-h-screen flex items-center overflow-hidden"
       style={{
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${banner?.mediaUrl})`,
         backgroundSize: "cover",
@@ -125,6 +218,9 @@ export default function HomeHeroSection() {
           </div>
         </div>
       </div>
+
+      {/* Floating Logos Component */}
+      <FloatingLogos />
     </section>
   );
 }

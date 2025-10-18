@@ -21,48 +21,57 @@ import { ReactSVG } from "react-svg";
 function getPillarStyles(index: number) {
   const styles = [
     {
-      bg: "bg-gradient-to-br from-brand-50 to-indigo-100",
-      iconBg: "bg-brand-100 border-brand-200",
-      text: "text-brand-600",
-      hover: "hover:text-brand-800 hover:bg-brand-50",
-      accent: "text-brand-500",
+      bg: "bg-brand-600",
+      iconBg: "bg-white/20 border-white/30",
+      text: "text-white",
+      hover: "hover:from-brand-700 hover:via-brand-600 hover:to-indigo-700",
+      accent: "text-white",
       // CTA Button styles
-      buttonBg: "bg-brand-600 hover:bg-brand-700",
-      buttonText: "text-white",
-      buttonShadow: "shadow-brand-200",
+      buttonBg: "bg-white",
+      buttonText: "text-brand-600",
+      buttonShadow: "shadow-black/20",
+      featureBg: "bg-white/10 border-white/20 hover:bg-white/15",
+      featureText: "text-white",
     },
     {
-      bg: "bg-gradient-to-br from-accent-50 to-pink-100",
-      iconBg: "bg-accent-100 border-accent-200",
-      text: "text-accent-600",
-      hover: "hover:text-accent-800 hover:bg-accent-50",
-      accent: "text-accent-500",
+      bg: "bg-accent-500",
+      iconBg: "bg-white/20 border-white/30",
+      text: "text-white",
+      hover: "hover:from-accent-700 hover:via-accent-600 hover:to-pink-700",
+      accent: "text-white",
       // CTA Button styles
-      buttonBg: "bg-accent-600 hover:bg-accent-700",
-      buttonText: "text-white",
-      buttonShadow: "shadow-accent-200",
+      buttonBg: "bg-white",
+      buttonText: "text-accent-600",
+      buttonShadow: "shadow-black/20",
+      featureBg: "bg-white/10 border-white/20 hover:bg-white/15",
+      featureText: "text-white",
     },
     {
-      bg: "bg-gradient-to-br from-electric-50 to-emerald-100",
-      iconBg: "bg-electric-100 border-electric-200",
-      text: "text-electric-600",
-      hover: "hover:text-electric-800 hover:bg-electric-50",
-      accent: "text-electric-500",
+      bg: "bg-electric-500",
+      iconBg: "bg-white/20 border-white/30",
+      text: "text-white",
+      hover:
+        "hover:from-electric-700 hover:via-electric-600 hover:to-emerald-700",
+      accent: "text-white",
       // CTA Button styles
-      buttonBg: "bg-electric-600 hover:bg-electric-700",
-      buttonText: "text-white",
-      buttonShadow: "shadow-electric-200",
+      buttonBg: "bg-white",
+      buttonText: "text-electric-600",
+      buttonShadow: "shadow-black/20",
+      featureBg: "bg-white/10 border-white/20 hover:bg-white/15",
+      featureText: "text-white",
     },
     {
-      bg: "bg-gradient-to-br from-orange-50 to-red-100",
-      iconBg: "bg-orange-100 border-orange-200",
-      text: "text-orange-600",
-      hover: "hover:text-orange-800 hover:bg-orange-50",
-      accent: "text-orange-500",
+      bg: "bg-gradient-to-br from-orange-600 via-orange-500 to-red-600",
+      iconBg: "bg-white/20 border-white/30",
+      text: "text-white",
+      hover: "hover:from-orange-700 hover:via-orange-600 hover:to-red-700",
+      accent: "text-white",
       // CTA Button styles
-      buttonBg: "bg-orange-600 hover:bg-orange-700",
-      buttonText: "text-white",
-      buttonShadow: "shadow-orange-200",
+      buttonBg: "bg-white",
+      buttonText: "text-orange-600",
+      buttonShadow: "shadow-black/20",
+      featureBg: "bg-white/10 border-white/20 hover:bg-white/15",
+      featureText: "text-white",
     },
   ];
   return styles[index % styles.length];
@@ -71,9 +80,11 @@ function getPillarStyles(index: number) {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const FeatureItem = ({ feature, style }: { feature: any; style: any }) => (
   <div
-    className={`flex items-center gap-3 rounded-lg border p-3 transition-colors duration-200 hover:bg-gray-50 ${style.iconBg} bg-white`}
+    className={`flex items-center gap-3 rounded-lg border p-3 transition-all duration-200 ${style.featureBg}`}
   >
-    <div className={`flex-shrink-0 p-2 rounded-full ${style.iconBg}`}>
+    <div
+      className={`flex-shrink-0 p-2 rounded-full ${style.iconBg} backdrop-blur-sm`}
+    >
       <ReactSVG
         src={feature.iconUrl || ICON_URL_FALLBACK}
         className={`${style.text}`}
@@ -83,7 +94,9 @@ const FeatureItem = ({ feature, style }: { feature: any; style: any }) => (
         }}
       />
     </div>
-    <span className="text-sm font-medium text-gray-700">{feature.text}</span>
+    <span className={`text-sm font-medium ${style.featureText}`}>
+      {feature.text}
+    </span>
   </div>
 );
 
@@ -96,10 +109,10 @@ export default function HomePillarsSection({ pillars, isLoading }: Props) {
   const safePillars = pillars ?? [];
 
   return (
-    <section className="py-16 bg-white">
-      <div className="container mx-auto px-4">
+    <section className="py-12 sm:py-16 bg-white">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 lg:mb-20">
           <h2 className="text-display-sm md:text-display-md font-bold mb-6 text-neutral-900 leading-tight">
             Our Learning{" "}
             <span className="text-accent-500 relative">
@@ -114,7 +127,7 @@ export default function HomePillarsSection({ pillars, isLoading }: Props) {
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {isLoading ? (
             // 🔹 Skeleton State
             Array.from({ length: 3 }).map((_, i) => (
@@ -137,7 +150,7 @@ export default function HomePillarsSection({ pillars, isLoading }: Props) {
             ))
           ) : safePillars.length === 0 ? (
             // 🔹 Empty State
-            <p className="text-center text-neutral-500 col-span-3">
+            <p className="text-center text-neutral-500 col-span-full">
               No pillars available at the moment.
             </p>
           ) : (
@@ -151,26 +164,36 @@ export default function HomePillarsSection({ pillars, isLoading }: Props) {
                 return (
                   <Card
                     key={pillar.id}
-                    className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
+                    className={`
+                      border-0 shadow-xl hover:shadow-2xl 
+                      transition-all duration-300 overflow-hidden 
+                      group ${style.bg} ${style.hover}
+                    `}
                   >
                     {/* Image + Icon */}
-                    <div className="relative h-48 overflow-hidden">
+                    <div className="relative h-40 sm:h-48 overflow-hidden">
                       <Image
                         src={pillar.imageUrl || PRODUCT_IMAGE_FALLBACK}
                         alt={pillar.title}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-110"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end">
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent flex items-end">
                         <div
-                          className={`w-20 h-20 rounded-full flex items-center justify-center m-4 shadow-lg transition-transform duration-300 group-hover:scale-110 ${style.iconBg}`}
+                          className={`
+                            w-16 h-16 sm:w-20 sm:h-20 
+                            rounded-full flex items-center justify-center 
+                            m-4 shadow-lg backdrop-blur-sm
+                            transition-transform duration-300 group-hover:scale-110 
+                            ${style.iconBg}
+                          `}
                         >
                           <ReactSVG
                             src={pillar.iconUrl || ICON_URL_FALLBACK}
                             className={`${style.text}`}
                             beforeInjection={(svg) => {
-                              svg.setAttribute("width", "40");
-                              svg.setAttribute("height", "40");
+                              svg.setAttribute("width", "32");
+                              svg.setAttribute("height", "32");
                               svg.style.display = "block";
                               svg.style.margin = "auto";
                             }}
@@ -180,20 +203,20 @@ export default function HomePillarsSection({ pillars, isLoading }: Props) {
                     </div>
 
                     {/* Title + Subtitle */}
-                    <CardHeader className="text-center pb-4 pt-6">
-                      <CardTitle className="text-xl font-bold text-gray-900 group-hover:text-gray-700 transition-colors">
+                    <CardHeader className="text-center pb-4 pt-6 px-4 sm:px-6">
+                      <CardTitle className="text-lg sm:text-xl font-bold text-white group-hover:scale-105 transition-transform">
                         {pillar.title}
                       </CardTitle>
-                      <CardDescription className="text-gray-600 mt-2">
+                      <CardDescription className="text-white/90 mt-2 text-sm sm:text-base">
                         {pillar.subtitle}
                       </CardDescription>
                     </CardHeader>
 
                     {/* Content Section */}
-                    <CardContent className="px-6 pb-6">
+                    <CardContent className="px-4 sm:px-6 pb-6">
                       {/* Features List */}
                       {pillar?.features && pillar.features.length > 0 && (
-                        <div className="space-y-3 mb-6">
+                        <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6">
                           {pillar.features.map((feature, i) => (
                             <FeatureItem
                               key={i}
@@ -212,17 +235,17 @@ export default function HomePillarsSection({ pillars, isLoading }: Props) {
                         >
                           <Button
                             className={`
-                              w-full font-semibold py-3 px-6 
+                              w-full font-semibold py-2.5 sm:py-3 px-4 sm:px-6 
                               transition-all duration-200 
                               ${style.buttonBg} ${style.buttonText}
-                              hover:shadow-lg hover:${style.buttonShadow}
                               active:scale-95 active:shadow-sm
-                              border-0 rounded-lg
-                              group-hover:scale-[1.02]
+                              border-0 rounded-lg hover:bg-white hover:text-${style.buttonText}
                             `}
                           >
                             <span className="flex items-center justify-center gap-2">
-                              <p className="leading-none">{pillar.ctaText}</p>
+                              <p className="leading-none text-sm sm:text-base">
+                                {pillar.ctaText}
+                              </p>
                               <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                             </span>
                           </Button>
