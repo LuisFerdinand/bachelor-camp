@@ -43,7 +43,7 @@ export const STUDENT_LIFE_FALLBACKS = {
 } as const;
 
 // Home why choose us profile
-export const ProfileBC = "/home/whyUs.png"
+export const ProfileBC = "/home/whyUs.png";
 
 // Test fallbacks
 export const TEST_IMAGE_FALLBACK = "/home/testi/testi.png";

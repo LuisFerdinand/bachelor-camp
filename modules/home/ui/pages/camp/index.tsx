@@ -2,12 +2,12 @@
 
 import React from "react";
 
-import { BuildingShowcase } from "@/modules/home/ui/components/camp/BuildingShowcase";
 import { BuildingCard } from "@/modules/home/ui/components/camp/BuildingCard";
-import { SeasonalCalendar } from "@/modules/home/ui/components/camp/SeasonalCalendar";
 import { getAllBuildings } from "@/app/util/buildingData";
 import { CAMP_DESKTOP_FALLBACK, CAMP_MOBILE_FALLBACK } from "@/constants";
 import { CampHeroSection } from "../../sections/camp/CampHeroSection";
+import { BuildingShowcase } from "../../sections/camp/BuildingShowcase";
+import { SeasonalCalendar } from "../../sections/camp/SeasonalCalender";
 
 // Define TypeScript interfaces for the CMS data
 interface CMSImage {
