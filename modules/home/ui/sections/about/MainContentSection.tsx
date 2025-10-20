@@ -37,12 +37,12 @@ export function MainContentSection({ companyInfo }: MainContentSectionProps) {
       <div className="container mx-auto px-4">
         {/* Unified Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <Badge className="mb-4 bg-brand-100 text-brand-800 border-0">
-            <BookOpen className="w-4 h-4 mr-2" />
-            About Our Institution
-          </Badge>
           <h2 className="text-display-sm md:text-display-md font-bold">
-            Empowering Students Through Excellence & Values
+            Empowering Students Through Excellence &{" "}
+            <span className="text-brand-600 relative">
+              value
+              <div className="absolute -bottom-3 left-0 right-0 h-3 bg-brand-100 -rotate-1 rounded-full opacity-70"></div>
+            </span>
           </h2>
         </div>
 

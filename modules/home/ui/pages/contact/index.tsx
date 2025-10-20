@@ -3,15 +3,15 @@
 import React from "react";
 import emailjs from "@emailjs/browser";
 import HeroSection from "./HeroSection";
-import InformationSection from "./InformationSection";
-import ContactFormSection from "./ContactFormSection";
-import FAQSection from "./FAQSection";
+import InformationSection from "../../sections/contact/InformationSection";
+import ContactFormSection from "../../sections/contact/ContactFormSection";
+import FAQSection from "../../sections/contact/FAQSection";
 import {
   ContactPageCMSData,
   BachelorCampInfo,
   FAQItem,
   ContactFormData,
-} from "./types";
+} from "../../sections/contact/types";
 import { CONTACT_BANNER_FALLBACK } from "@/constants";
 import { ContactHeroSection } from "../../sections/contact/ContactHeroSection";
 

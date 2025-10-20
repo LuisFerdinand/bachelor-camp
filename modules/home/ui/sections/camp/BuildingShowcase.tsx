@@ -44,7 +44,7 @@ export function BuildingShowcase({
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-display-sm md:text-display-md font-bold mb-6 text-neutral-900">
-            Modern Student{" "}
+            Modern Student <br />
             <span className="text-brand-600 relative">
               Accommodation
               <div className="absolute -bottom-3 left-0 right-0 h-3 bg-brand-100 -rotate-1 rounded-full opacity-70"></div>
