@@ -50,12 +50,12 @@ export default function ContactFormSection({
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto">
           <div className="text-center max-w-2xl mx-auto mb-12">
-            <Badge className="mb-4 bg-accent-100 text-accent-800">
-              <MessageSquare className="w-4 h-4 mr-2" />
-              Contact Us
-            </Badge>
             <h2 className="text-display-sm md:text-display-md font-bold mb-4">
-              Get In Touch
+              Get In{" "}
+              <span className="text-accent-500 relative">
+                Touch
+                <div className="absolute -bottom-2 left-0 right-0 h-3 bg-accent-100 rotate-1 rounded-full opacity-60"></div>
+              </span>
             </h2>
             <p className="text-lg text-neutral-600">
               Have questions about our programs? Fill out the form below and

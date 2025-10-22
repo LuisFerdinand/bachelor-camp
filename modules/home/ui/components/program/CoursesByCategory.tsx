@@ -98,7 +98,7 @@ export function CoursesByCategory({ courses }: CoursesByCategoryProps) {
       {filteredCourses.length > 0 ? (
         <div className="relative">
           {/* Carousel Container */}
-          <div className="overflow-hidden" ref={emblaRef}>
+          <div className="overflow-x-hidden" ref={emblaRef}>
             <div className="flex gap-4">
               {filteredCourses.map((course) => (
                 <div

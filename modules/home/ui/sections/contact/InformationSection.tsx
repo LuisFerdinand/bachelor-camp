@@ -26,7 +26,7 @@ export default function InformationSection({
       <div className="container mx-auto px-4">
         {/* Header Section */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <Badge className="mb-6 bg-brand-100 text-brand-800 px-4 py-2">
+          {/* <Badge className="mb-6 bg-brand-100 text-brand-800 px-4 py-2">
             <div className="relative w-4 h-4 mr-2">
               <Image
                 src="/images/bachelorcamp-icon.png"
@@ -36,9 +36,13 @@ export default function InformationSection({
               />
             </div>
             About BachelorCamp
-          </Badge>
+          </Badge> */}
           <h2 className="text-display-sm md:text-display-md font-bold mb-6 text-neutral-900">
-            Premier English Learning Center in Kediri
+            Premier English Learning Center in{" "}
+            <span className="text-brand-600 relative">
+              Kediri
+              <div className="absolute -bottom-3 left-0 right-0 h-3 bg-brand-100 -rotate-1 rounded-full opacity-70"></div>
+            </span>
           </h2>
           <p className="text-lg text-neutral-600 leading-relaxed">
             BachelorCamp is a leading English language institute dedicated to

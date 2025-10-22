@@ -269,12 +269,12 @@ export function TestimonialsSection({
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <Badge className="mb-4 bg-electric-100 text-electric-800 border-0">
-            <Star className="w-4 h-4 mr-2" />
-            Student Success Stories
-          </Badge>
           <h2 className="text-display-sm md:text-display-md font-bold mb-4">
-            Hear From Our Amazing Students
+            Hear From Our Amazing{" "}
+            <span className="text-electric-600 relative">
+              Students
+              <div className="absolute -bottom-2 left-0 right-0 h-3 bg-electric-100 -rotate-1 rounded-full opacity-60"></div>
+            </span>
           </h2>
           <p className="text-xl text-gray-600 leading-relaxed">
             Watch testimonials from students who have transformed their English

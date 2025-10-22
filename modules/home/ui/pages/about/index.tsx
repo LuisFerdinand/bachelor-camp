@@ -1,20 +1,18 @@
 "use client";
 import React from "react";
 
-import { VisionMissionSection } from "@/modules/home/ui/components/about/VisionMissionSection";
-
 import { Award, BookOpen, Globe, Users } from "lucide-react";
 
 import { ABOUT_BANNER_FALLBACK } from "@/constants";
 import { AboutHeroSection } from "../../sections/about/AboutHeroSection";
 import { MainContentSection } from "../../sections/about/MainContentSection";
 import { MainContentSection2 } from "../../sections/about/MainTest";
-import { AccreditationsSection } from "../../sections/about/AccreditationSection";
-import { AccreditationsSection2 } from "../../sections/about/AccreTest";
+import { AccreditationsSection2 } from "../../sections/about/AccreditationSection";
 import { MilestonesSection } from "../../sections/about/MilestonesSection";
 import { trpc } from "@/trpc/client";
 import { TestimonialsSection } from "../../sections/about/AboutTestimonialSection";
 import { TeamSection } from "../../sections/about/TeamSection";
+import { VisionMissionSection } from "../../sections/about/Vision&MissionSection";
 
 // Define TypeScript interfaces for the CMS data
 interface CMSImage {
@@ -56,8 +54,9 @@ export default function AboutUsPage({ cmsData }: AboutPageProps) {
           isLoading={isLoadingTestimonials}
         />
         <AccreditationsSection2></AccreditationsSection2>
-        <MilestonesSection />
-        <TeamSection />
+        {/* Currently disactivate */}
+        {/* <MilestonesSection /> */}
+        {/* <TeamSection /> */}
       </main>
     </div>
   );
