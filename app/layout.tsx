@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={inter.className} suppressHydrationWarning>
+        <body className={inter.className}>
           <TRPCProvider>
             <Toaster position="bottom-right"></Toaster>
             {children}
