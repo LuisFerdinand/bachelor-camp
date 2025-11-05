@@ -34,7 +34,7 @@ function getPillarStyles(index: number) {
       featureText: "text-white",
     },
     {
-      bg: "bg-accent-500",
+      bg: "bg-accent-600",
       iconBg: "bg-white/20 border-white/30",
       text: "text-white",
       hover: "hover:from-accent-700 hover:via-accent-600 hover:to-pink-700",
