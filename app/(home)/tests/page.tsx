@@ -3,15 +3,19 @@ import React, { Suspense } from "react";
 import { HydrateClient, trpc } from "@/trpc/server";
 import { ErrorBoundary } from "react-error-boundary";
 import { PageClient } from "./client";
+import { ComingSoon } from "./coming-soon";
 
 const Test = () => {
   void trpc.banners.getOne.prefetch({ type: "Home" });
   void trpc.posts.getCategories.prefetch();
+  
+  const showComingSoon = true;
+
   return (
     <HydrateClient>
       <Suspense fallback={<p>Loading...</p>}>
         <ErrorBoundary fallback={<p>Error loading banners</p>}>
-          <PageClient />
+          {showComingSoon ? <ComingSoon /> : <PageClient />}
         </ErrorBoundary>
       </Suspense>
     </HydrateClient>
