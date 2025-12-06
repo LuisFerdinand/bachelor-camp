@@ -1,0 +1,26 @@
+export const dynamic = "force-dynamic";
+import React, { Suspense } from "react";
+import { HydrateClient, trpc } from "@/trpc/server";
+import { ErrorBoundary } from "react-error-boundary";
+import { PageClient } from "./client";
+import { ComingSoon } from "./coming-soon";
+
+const Test = () => {
+  void trpc.banners.getOne.prefetch({ type: "Home" });
+  void trpc.posts.getCategories.prefetch();
+  
+  // Set this to true when you want to show the coming soon page
+  const showComingSoon = true;
+
+  return (
+    <HydrateClient>
+      <Suspense fallback={<p>Loading...</p>}>
+        <ErrorBoundary fallback={<p>Error loading banners</p>}>
+          {showComingSoon ? <ComingSoon /> : <PageClient />}
+        </ErrorBoundary>
+      </Suspense>
+    </HydrateClient>
+  );
+};
+
+export default Test;

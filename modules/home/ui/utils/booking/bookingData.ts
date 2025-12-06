@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Building } from "./buildingData";
 
 // Course interface based on your provided course list
