@@ -3,30 +3,29 @@
 import { ResponsiveModal } from "@/components/ResponsiveModal";
 
 import { useRouter } from "next/navigation";
+import { CreateCourseBatchStepperForm } from "./CreateCourseBatchStepperForm";
 
-import { CreateCourseStepperForm } from "./CreateCourseStepperForm";
-
-interface CreateCourseModalProps {
+interface CreateCourseBatchModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export const CreateCourseModal = ({
+export const CreateCourseBatchModal = ({
   open,
   onOpenChange,
-}: CreateCourseModalProps) => {
+}: CreateCourseBatchModalProps) => {
   const router = useRouter();
 
   return (
     <>
       <ResponsiveModal mode="double" open={open} onOpenChange={onOpenChange}>
-        <CreateCourseStepperForm
+        <CreateCourseBatchStepperForm
           open={open}
           onCancel={() => onOpenChange(false)}
           onSuccess={(id) => {
             onOpenChange(false);
           }}
-        ></CreateCourseStepperForm>
+        ></CreateCourseBatchStepperForm>
       </ResponsiveModal>
     </>
   );

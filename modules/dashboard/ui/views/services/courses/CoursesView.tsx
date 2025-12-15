@@ -8,10 +8,13 @@ import { PageHeader } from "@/components/PageHeader";
 import { CoursesSection } from "../../../sections/services/courses/CoursesSection";
 import { CreateCourseModal } from "@/modules/courses/ui/components/CreateCourseModal";
 import { useSearchParams } from "next/navigation";
+import { EnhancedCourseForm } from "@/modules/courses/ui/components/CreateCourseForm";
+import { CreateCourseBatchModal } from "@/modules/course-batches/ui/components/CreateCourseBatchModal";
 
 export const CoursesView = () => {
   const [createCourseModalOpen, setCreateCourseModalOpen] = useState(false);
-  const [createBatchModalOpen, setCreateBatchModalOpen] = useState(false);
+  const [createCourseBatchModalOpen, setCreateCourseBatchModalOpen] =
+    useState(false);
 
   const searchParams = useSearchParams();
   const view = searchParams.get("view") || "course";
@@ -34,7 +37,7 @@ export const CoursesView = () => {
           description: "View and manage all course batches.",
           breadcrumbLabel: "Course Batches",
           showCreateButton: true,
-          onCreateClick: () => setCreateBatchModalOpen(true),
+          onCreateClick: () => setCreateCourseBatchModalOpen(true),
         };
       case "session":
         return {
@@ -66,6 +69,10 @@ export const CoursesView = () => {
         open={createCourseModalOpen}
         onOpenChange={setCreateCourseModalOpen}
       />
+      <CreateCourseBatchModal
+        open={createCourseBatchModalOpen}
+        onOpenChange={setCreateCourseBatchModalOpen}
+      ></CreateCourseBatchModal>
       <PageHeader
         icon={viewConfig.icon}
         title={viewConfig.title}

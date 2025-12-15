@@ -1,16 +1,29 @@
 // DashboardSidebar.tsx
 "use client";
 
-import { Sidebar, SidebarContent } from "@/components/ui/sidebar";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+} from "@/components/ui/sidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
 import Image from "next/image";
 import Link from "next/link";
 import ResponsiveSidebarContent from "./ResponsiveSidebarContent";
-
-// import ResponsiveSidebarContent from "./ResponsiveSidebarContent";
+import { UserMenu } from "@/components/UserMenu";
+import { useAuth } from "@clerk/nextjs";
+import { useState } from "react";
+import { NavUser } from "./NavUser";
 
 export const DashboardSidebar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isSignedIn } = useAuth();
   const isMobile = useIsMobile();
+
+  const closeMenus = () => {
+    setIsMenuOpen(false);
+  };
+
   return (
     <>
       {!isMobile && (
@@ -25,6 +38,9 @@ export const DashboardSidebar = () => {
             </div>
             <ResponsiveSidebarContent />
           </SidebarContent>
+          <SidebarFooter>
+            <NavUser></NavUser>
+          </SidebarFooter>
         </Sidebar>
       )}
     </>

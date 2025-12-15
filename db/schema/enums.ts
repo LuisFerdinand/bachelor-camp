@@ -103,10 +103,11 @@ export const testimonialSourceEnum = pgEnum(
 export const ROLES = [
   "super_admin",
   "admin",
+  "room_master",
+  "teacher",
+  "accommodation_staff",
   "author",
   "student",
-  "staff",
-  "instructor",
 ] as const;
 export type Role = (typeof ROLES)[number];
 export const roleEnum = pgEnum("role", ROLES);

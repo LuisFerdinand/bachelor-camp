@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import DottedSeparator from "@/components/ui/Separator/DottedSeparator";
-// import { CompanyNavigation, StoreNavigation } from "./Navigation";
 import {
   Award,
   BarChart3,
@@ -104,7 +103,7 @@ export const usersRoutes = [
 ];
 
 export const systemRoutes = [
-  { label: "Settings", url: "/system/settings", icon: Settings },
+  // { label: "Settings", url: "/system/settings", icon: Settings },
   { label: "Logs", url: "/system/logs", icon: FileClock },
   { label: "Backups", url: "/system/backups", icon: DatabaseBackup },
 ];
@@ -190,7 +189,7 @@ const ResponsiveSidebarContent = () => {
             routes={contentRoutes}
             collapsed={state === "collapsed"}
           />
-          <GradientSeparator className="my-0.25 text-black"></GradientSeparator>
+          <GradientSeparator className="my-0.5 text-black"></GradientSeparator>
           <NavigationSection
             title="Services"
             sectionIcon={Tent}
@@ -198,7 +197,6 @@ const ResponsiveSidebarContent = () => {
             collapsed={state === "collapsed"}
           />
           <GradientSeparator className="my-0.25 text-black"></GradientSeparator>
-
           {(() => {
             const isActive = pathname === "/dashboard/users";
             return (
@@ -241,9 +239,7 @@ const ResponsiveSidebarContent = () => {
             routes={systemRoutes}
             collapsed={state === "collapsed"}
           />
-
           <DottedSeparator></DottedSeparator>
-
           {/* Exit Button */}
           {(() => {
             const isActive = pathname === "/";
@@ -367,11 +363,15 @@ const ResponsiveSidebarContent = () => {
           sectionIcon={House}
           routes={contentRoutes}
         />
+        <GradientSeparator className="my-0.25 text-black"></GradientSeparator>
+
         <NavigationSection
           title="Services Management"
           sectionIcon={Tent}
           routes={servicesRoutes}
         />
+        <GradientSeparator className="my-0.25 text-black"></GradientSeparator>
+
         {(() => {
           const isActive = pathname === "/dashboard/users";
           return (
@@ -403,11 +403,14 @@ const ResponsiveSidebarContent = () => {
           );
         })()}
 
+        <GradientSeparator className="my-0.25 text-black"></GradientSeparator>
+
         <NavigationSection
           title="Engagement Management"
           sectionIcon={HeartHandshake}
           routes={engagementRoutes}
         />
+        <GradientSeparator className="my-0.25 text-black"></GradientSeparator>
 
         <NavigationSection
           title="System Management"

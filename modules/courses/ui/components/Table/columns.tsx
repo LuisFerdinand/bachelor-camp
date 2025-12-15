@@ -40,9 +40,6 @@ import CourseActions from "./course-actions";
 // import CourseActions from "./course-actions";
 
 export function getCourseColumns(): ColumnDef<CourseWithDetails>[] {
-  const router = useRouter();
-  const pathname = usePathname();
-
   const columns: ColumnDef<CourseWithDetails>[] = [
     {
       accessorKey: "order",

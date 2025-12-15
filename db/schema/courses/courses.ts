@@ -238,7 +238,7 @@ export const updateCourseSchema = z.object({
     )
     .min(1, "At least one target audience is required")
     .optional(),
-  price: z.number().min(0, "Course price must be 0 or greater").optional(),
+  price: z.number().min(0, "Price must be 0 or greater").optional(),
   buildingIds: z.array(z.string().uuid()).optional(),
   imageUrl: z.string().optional(),
   imageKey: z.string().optional(),

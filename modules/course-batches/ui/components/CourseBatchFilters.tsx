@@ -42,6 +42,7 @@ import {
 } from "@/db/schema/enums";
 import { useCourseBatchFilters } from "../../hooks/use-course-batch-filters";
 import { Input } from "@/components/ui/input";
+import { DateRangePicker } from "@/components/Inputs/DateRangePicker";
 
 export const CourseBatchFilters = () => {
   const { data: courseList = [], isLoading: isLoaadingCourseList } =
@@ -232,31 +233,17 @@ export const CourseBatchFilters = () => {
             ))}
           </SelectContent>
         </Select>
-        <div className="flex items-center gap-2">
-          <Input
-            type="date"
-            placeholder="Start date from"
-            className="h-8 w-[140px] text-xs"
-            value={startDateFrom || ""}
-            onChange={(e) =>
-              setFilters({
-                startDateFrom: e.target.value || undefined,
-              })
-            }
-          />
-          <span className="text-xs text-muted-foreground">to</span>
-          <Input
-            type="date"
-            placeholder="Start date to"
-            className="h-8 w-[140px] text-xs"
-            value={startDateTo || ""}
-            onChange={(e) =>
-              setFilters({
-                startDateTo: e.target.value || undefined,
-              })
-            }
-          />
-        </div>
+        <DateRangePicker
+          startDate={startDateFrom || ""}
+          endDate={startDateTo || ""}
+          onDateChange={(start, end) => {
+            setFilters({
+              startDateFrom: start,
+              startDateTo: end,
+            });
+          }}
+          placeholder="Select date range"
+        ></DateRangePicker>
 
         {hasActiveFilters && (
           <div className="flex items-center gap-2 text-sm text-muted-foreground bg-gray-50 px-3 py-2 rounded-lg">

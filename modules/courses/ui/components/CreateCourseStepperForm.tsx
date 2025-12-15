@@ -2052,30 +2052,6 @@ export const CreateCourseStepperForm = ({
         <p className="text-lg text-gray-600">
           Follow the steps below to create your comprehensive course
         </p>
-
-        {/* <div className="mt-4 p-4 bg-gray-100 rounded-lg text-left text-sm">
-          <p>
-            <strong>Current Step:</strong> {currentStep}
-          </p>
-          <p>
-            <strong>Step 3 Valid:</strong>{" "}
-            {JSON.stringify(getStepValidation[3])}
-          </p>
-          <p>
-            <strong>Learning Goals:</strong>{" "}
-            {JSON.stringify(form.watch("learningGoals"))}
-          </p>
-          <p>
-            <strong>Completed Steps:</strong> {JSON.stringify(completedSteps)}
-          </p>
-          <p>
-            <strong>Visited Steps:</strong>{" "}
-            {JSON.stringify(Array.from(visitedSteps))}
-          </p>
-          <p>
-            <strong>Highest Reached:</strong> {highestReachedStep}
-          </p>
-        </div> */}
       </div>
 
       {/* Progress Stepper */}

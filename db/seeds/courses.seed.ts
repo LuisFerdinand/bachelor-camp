@@ -81,7 +81,6 @@ async function generateBatchSessions(
 
         sessions.push({
           courseBatchId,
-          date: format(currentDate, "yyyy-MM-dd"),
           startDateTime: sessionStartDateTime,
           endDateTime: sessionEndDateTime,
           status: "scheduled" as const,
@@ -828,14 +827,14 @@ export const seedCourses = async () => {
 
       // Update batch end date based on last session
       if (sessions.length > 0) {
-        const lastSessionDate = sessions[sessions.length - 1].date;
+        const lastSessionDate = sessions[sessions.length - 1].endDateTime;
         await db
           .update(courseBatches)
           .set({
             endDate:
               typeof lastSessionDate === "string"
                 ? lastSessionDate
-                : format(lastSessionDate, "yyyy-MM-dd"),
+                : format(lastSessionDate!, "yyyy-MM-dd"),
           })
           .where(eq(courseBatches.id, insertedBatch.id));
       }

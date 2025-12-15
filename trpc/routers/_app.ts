@@ -16,6 +16,7 @@ import { locationsRouter } from "@/modules/locations/server/procedures";
 import { coursesRouter } from "@/modules/courses/server/procedures";
 import { buildingsRouter } from "@/modules/buildings/server/procedures";
 import { courseBatchesRouter } from "@/modules/course-batches/server/procedures";
+import { usersRouter } from "@/modules/users/server/procedures";
 
 export const appRouter = createTRPCRouter({
   accreditations: accreditationsRouter,
@@ -35,6 +36,7 @@ export const appRouter = createTRPCRouter({
   statistics: statisticsRouter,
   teamMembers: teamMembersRouter,
   testimonials: testimonialsRouter,
+  users: usersRouter,
 });
 
 export type AppRouter = typeof appRouter;

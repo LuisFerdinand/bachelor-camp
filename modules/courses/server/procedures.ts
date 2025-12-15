@@ -110,7 +110,7 @@ export const coursesRouter = createTRPCRouter({
       }));
     }),
   create: protectedProcedure
-    .input(courseCreateSchema.extend({ slug: z.string() }))
+    .input(courseCreateSchema)
     .mutation(async ({ input, ctx }) => {
       const { id: userId } = ctx.user;
 

@@ -16,6 +16,7 @@ import {
   TrendingUp,
   Award,
   Image as ImageIcon,
+  MoreVertical,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -30,6 +31,8 @@ import {
 } from "@/components/ui/tooltip";
 import { getCourseCategoryConfig, getCourseLevelConfig } from "@/lib/utils";
 import CreatedAtDisplay from "@/components/table/CreatedAtDisplay";
+import { CourseBatchActionProvider } from "../CourseBatchContext";
+import CourseBatchActions from "./course-batch-actions";
 
 export function getCourseBatchColumns(): ColumnDef<CourseBatchWithDetails>[] {
   const columns: ColumnDef<CourseBatchWithDetails>[] = [
@@ -574,6 +577,26 @@ export function getCourseBatchColumns(): ColumnDef<CourseBatchWithDetails>[] {
       cell: ({ row }) => {
         const date = new Date(row.original.createdAt);
         return <CreatedAtDisplay value={date} />;
+      },
+    },
+    {
+      id: "actions",
+      cell: ({ row }) => {
+        const { id } = row.original;
+        return (
+          <>
+            <CourseBatchActionProvider>
+              <CourseBatchActions id={id}>
+                <Button
+                  variant="ghost"
+                  className="size-8 p-0 hover:bg-neutral-300 hover:text-primary"
+                >
+                  <MoreVertical className="size-4" />
+                </Button>
+              </CourseBatchActions>
+            </CourseBatchActionProvider>
+          </>
+        );
       },
     },
   ];

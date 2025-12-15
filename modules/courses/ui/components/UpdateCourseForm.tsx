@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -40,6 +40,7 @@ import {
 } from "@/components/ui/popover";
 import {
   AlertCircle,
+  AlertTriangle,
   Check,
   ChevronDown,
   ChevronsUpDown,
@@ -96,6 +97,48 @@ import {
   MAX_TEACHING_METHODS,
 } from "@/constants";
 import { Badge } from "@/components/ui/badge";
+import { ErrorBoundary } from "react-error-boundary";
+import { useCourseAction } from "./CourseContext";
+
+const NavigationWarningModal: React.FC<{
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  title: string;
+  message: string;
+}> = ({ isOpen, onClose, onConfirm, title, message }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+      <div className="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 overflow-hidden">
+        <div className="p-6 space-y-4">
+          <div className="flex flex-col items-center text-center">
+            <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mb-4">
+              <AlertTriangle className="w-6 h-6 text-amber-600" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+            <p className="text-sm text-gray-600 mt-2">{message}</p>
+          </div>
+          <div className="flex gap-3 pt-2">
+            <button
+              onClick={onClose}
+              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+            >
+              Stay Here
+            </button>
+            <button
+              onClick={onConfirm}
+              className="flex-1 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-medium transition-colors"
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 interface UpdateCourseFormProps {
   onCancel?: () => void;
@@ -104,15 +147,17 @@ interface UpdateCourseFormProps {
   courseId: string;
 }
 
-type Building = {
-  id: string;
-  name: string;
-  slug: string;
-  locationId: string;
-  description?: string;
+export const UpdateCourseForm = (props: UpdateCourseFormProps) => {
+  return (
+    <Suspense fallback={<>Load</>}>
+      <ErrorBoundary fallback={<p>Error</p>}>
+        <UpdateCourseFormSuspense {...props}></UpdateCourseFormSuspense>
+      </ErrorBoundary>
+    </Suspense>
+  );
 };
 
-export const UpdateCourseForm = ({
+const UpdateCourseFormSuspense = ({
   onCancel,
   onSuccess,
   open,
@@ -123,16 +168,16 @@ export const UpdateCourseForm = ({
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [isMutating, setIsMutating] = useState(false);
+  const { isMutating, setIsMutating } = useCourseAction();
 
   const [course] = trpc.courses.getOneProtected.useSuspenseQuery({
     courseId: courseId,
   });
 
-  const [buildingSearchOpen, setBuildingSearchOpen] = useState(false);
-
   // Fetch buildings
   const { data: buildingList = [] } = trpc.buildings.getMany.useQuery();
+
+  const [showNavigationWarning, setShowNavigationWarning] = useState(false);
 
   const form = useForm<z.infer<typeof updateCourseSchema>>({
     resolver: zodResolver(updateCourseSchema),
@@ -158,7 +203,6 @@ export const UpdateCourseForm = ({
   });
 
   const { control, setValue, watch, formState } = form;
-  const watchedBuildings = watch("buildingIds");
   const {
     fields: learningGoalFields,
     append: learningGoalAppend,
@@ -325,7 +369,16 @@ export const UpdateCourseForm = ({
   }, [watchedTitle, setValue, getUniqueSlugQuery]);
 
   return (
-    <div className="w-full">
+    <div className="p-2">
+      {/* <NavigationWarningModal
+        isOpen={showNavigationWarning}
+        onClose={() => setShowNavigationWarning(false)}
+        onConfirm={handleNavigationConfirm}
+        title="Unsaved Schedule Changes"
+        message="You have unsaved changes in the weekly schedule. If you navigate away, these changes will be lost. Continue anyway?"
+      /> */}
+
+      {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-t-xl p-6 shadow-lg">
         <div className="flex items-start justify-between">
           <div className="flex items-start gap-4">
@@ -343,19 +396,6 @@ export const UpdateCourseForm = ({
               {/* Course Info Pills */}
             </div>
           </div>
-
-          {onCancel && (
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              onClick={onCancel}
-              disabled={isMutating}
-              className="text-white hover:bg-white/10"
-            >
-              <XIcon className="w-5 h-5" />
-            </Button>
-          )}
         </div>
 
         {/* Status Indicators */}
@@ -364,7 +404,7 @@ export const UpdateCourseForm = ({
             <div
               className={cn(
                 "w-2 h-2 rounded-full",
-                isModified ? "bg-yellow-300 animate-pulse" : "bg-green-300"
+                isModified ? "bg-yellow-300 animate-pulse" : "bg-slate-300"
               )}
             />
             <span>{isModified ? "Unsaved changes" : "No changes"}</span>
@@ -386,15 +426,15 @@ export const UpdateCourseForm = ({
             <form onSubmit={form.handleSubmit(onSubmit)} className="mx-2 px-0">
               <Accordion
                 type="multiple"
-                defaultValue={["basic-info", "buildings"]}
-                className="w-full space-y-4"
+                defaultValue={["basic-info"]}
+                className="w-full space-y-3"
               >
                 {/* Basic Information */}
                 <AccordionItem
                   value="basic-info"
-                  className="border p-4 rounded-lg bg-white"
+                  className="border rounded-lg bg-white"
                 >
-                  <AccordionTrigger className="text-lg font-semibold ">
+                  <AccordionTrigger className="w-full p-4 flex items-center justify-between bg-gradient-to-r from-blue-50 to-white hover:from-blue-100 transition-colors text-lg font-semibold">
                     <div className="flex items-center gap-3">
                       <div className="p-2 bg-blue-100 rounded-lg">
                         <BookOpen className="w-5 h-5 text-blue-600" />
@@ -410,9 +450,7 @@ export const UpdateCourseForm = ({
                     </div>
                   </AccordionTrigger>
                   <AccordionContent className="">
-                    <GradientSeparator></GradientSeparator>
-
-                    <div className="p-4 space-y-4">
+                    <div className="space-y-4 p-4 border-t border-gray-100 bg-gradient-to-br from-gray-50 to-white">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
                         <FormField
                           control={form.control}
@@ -790,12 +828,12 @@ export const UpdateCourseForm = ({
                 {/* Building Assignment */}
                 <AccordionItem
                   value="buildings"
-                  className="border p-4 rounded-lg bg-white"
+                  className="border rounded-lg bg-white"
                 >
-                  <AccordionTrigger className="text-lg font-semibold">
+                  <AccordionTrigger className="w-full p-4 flex items-center justify-between bg-gradient-to-r from-amber-50 to-white hover:from-amber-100 transition-colors text-lg font-semibold">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 bg-blue-100 rounded-lg">
-                        <Building2 className="w-5 h-5 text-blue-600" />
+                      <div className="p-2 bg-amber-100 rounded-lg">
+                        <Building2 className="w-5 h-5 text-amber-600" />
                       </div>
                       <div className="text-left">
                         <p className="font-semibold text-gray-900">
@@ -808,8 +846,7 @@ export const UpdateCourseForm = ({
                     </div>
                   </AccordionTrigger>
                   <AccordionContent className="">
-                    <GradientSeparator></GradientSeparator>
-                    <div className="space-y-2 p-4">
+                    <div className="space-y-2 p-4 border-t border-gray-100 bg-gradient-to-br from-gray-50 to-white">
                       <div className="flex items-center justify-between">
                         <div className="">
                           <p className="font-semibold text-foreground">
@@ -869,12 +906,12 @@ export const UpdateCourseForm = ({
                 <AccordionItem
                   key={"learning-goals"}
                   value="learning-goals"
-                  className="border p-4 rounded-lg bg-white"
+                  className="border rounded-lg bg-white"
                 >
-                  <AccordionTrigger className="text-lg font-semibold">
+                  <AccordionTrigger className="w-full p-4 flex items-center justify-between bg-gradient-to-r from-red-50 to-white hover:from-red-100 transition-colors text-lg font-semibold">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 bg-blue-100 rounded-lg">
-                        <Target className="w-5 h-5 text-blue-600" />
+                      <div className="p-2 bg-red-100 rounded-lg">
+                        <Target className="w-5 h-5 text-red-600" />
                       </div>
                       <div className="text-left">
                         <p className="font-semibold text-gray-900">
@@ -887,9 +924,7 @@ export const UpdateCourseForm = ({
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
-                    <GradientSeparator></GradientSeparator>
-
-                    <div className="space-y-4 p-4">
+                    <div className="space-y-2 p-4 border-t border-gray-100 bg-gradient-to-br from-gray-50 to-white">
                       <div className="flex items-center justify-between">
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
@@ -1041,14 +1076,13 @@ export const UpdateCourseForm = ({
 
                 {/* Syllabus */}
                 <AccordionItem
-                  key="syllabus"
                   value="syllabus"
-                  className="border p-4 rounded-lg bg-white"
+                  className="border rounded-lg bg-white"
                 >
-                  <AccordionTrigger className="text-lg font-semibold">
+                  <AccordionTrigger className="w-full p-4 flex items-center justify-between bg-gradient-to-r from-green-50 to-white hover:from-green-100 transition-colors text-lg font-semibold">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 bg-blue-100 rounded-lg">
-                        <List className="w-5 h-5 text-blue-600" />
+                      <div className="p-2 bg-green-100 rounded-lg">
+                        <List className="w-5 h-5 text-green-600" />
                       </div>
                       <div className="text-left">
                         <p className="font-semibold text-gray-900">Syllabus</p>
@@ -1059,9 +1093,7 @@ export const UpdateCourseForm = ({
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
-                    <GradientSeparator></GradientSeparator>
-
-                    <div className="space-y-4 p-4">
+                    <div className="space-y-4 p-4 border-t border-gray-100 bg-gradient-to-br from-gray-50 to-white">
                       <div className="flex items-center justify-between">
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
@@ -1216,12 +1248,12 @@ export const UpdateCourseForm = ({
                 <AccordionItem
                   value="teaching-methods"
                   key={"teaching-methods"}
-                  className="border p-4 rounded-lg bg-white"
+                  className="border rounded-lg bg-white"
                 >
-                  <AccordionTrigger className="text-lg font-semibold">
+                  <AccordionTrigger className="w-full p-4 flex items-center justify-between bg-gradient-to-r from-pink-50 to-white hover:from-pink-100 transition-colors text-lg font-semibold">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 bg-blue-100 rounded-lg">
-                        <Lightbulb className="w-5 h-5 text-blue-600" />
+                      <div className="p-2 bg-pink-100 rounded-lg">
+                        <Lightbulb className="w-5 h-5 text-pink-600" />
                       </div>
                       <div className="text-left">
                         <p className="font-semibold text-gray-900">
@@ -1234,9 +1266,7 @@ export const UpdateCourseForm = ({
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
-                    <GradientSeparator></GradientSeparator>
-
-                    <div className="space-y-4 p-4">
+                    <div className="space-y-4 p-4 border-t border-gray-100">
                       <div className="flex items-center justify-between">
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
@@ -1391,12 +1421,13 @@ export const UpdateCourseForm = ({
                 <AccordionItem
                   value="resources"
                   key={"resources"}
-                  className="border p-4 rounded-lg bg-white"
+                  className="border rounded-lg bg-white"
                 >
-                  <AccordionTrigger className="text-lg font-semibold">
+                  {" "}
+                  <AccordionTrigger className="w-full p-4 flex items-center justify-between bg-gradient-to-r from-teal-50 to-white hover:from-teal-100 transition-colors text-lg font-semibold">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 bg-blue-100 rounded-lg">
-                        <FileText className="w-5 h-5 text-blue-600" />
+                      <div className="p-2 bg-teal-100 rounded-lg">
+                        <FileText className="w-5 h-5 text-teal-600" />
                       </div>
                       <div className="text-left">
                         <p className="font-semibold text-gray-900">Resources</p>
@@ -1408,9 +1439,7 @@ export const UpdateCourseForm = ({
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
-                    <GradientSeparator></GradientSeparator>
-
-                    <div className="space-y-4 p-4">
+                    <div className="space-y-4 p-4 border-t border-gray-100 bg-gradient-to-br from-gray-50 to-white">
                       <div className="flex items-center justify-between">
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
@@ -1566,12 +1595,12 @@ export const UpdateCourseForm = ({
                 <AccordionItem
                   value="target-audience"
                   key={"target-audience"}
-                  className="border p-4 rounded-lg bg-white"
+                  className="border rounded-lg bg-white"
                 >
-                  <AccordionTrigger className="text-lg font-semibold">
+                  <AccordionTrigger className="w-full p-4 flex items-center justify-between bg-gradient-to-r from-purple-50 to-white hover:from-purple-100 transition-colors text-lg font-semibold">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 bg-blue-100 rounded-lg">
-                        <Users className="w-5 h-5 text-blue-600" />
+                      <div className="p-2 bg-purple-100 rounded-lg">
+                        <Users className="w-5 h-5 text-purple-600" />
                       </div>
                       <div className="text-left">
                         <p className="font-semibold text-gray-900">
@@ -1584,9 +1613,7 @@ export const UpdateCourseForm = ({
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
-                    <GradientSeparator></GradientSeparator>
-
-                    <div className="space-y-4 p-4">
+                    <div className="space-y-4 p-4 border-t border-gray-100 bg-gradient-to-br from-gray-50 to-white">
                       <div className="flex items-center justify-between">
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
@@ -1739,9 +1766,9 @@ export const UpdateCourseForm = ({
                 <AccordionItem
                   value="course-image"
                   key={"course-image"}
-                  className="border p-4 rounded-lg bg-white"
+                  className="border  rounded-lg bg-white"
                 >
-                  <AccordionTrigger className="text-lg font-semibold">
+                  <AccordionTrigger className="w-full p-4 flex items-center justify-between bg-gradient-to-r from-green-50 to-white hover:from-green-100 transition-colors text-lg font-semibold">
                     <div className="flex items-center gap-3">
                       <div className="p-2 bg-blue-100 rounded-lg">
                         <ImageIcon className="w-5 h-5 text-blue-600" />
@@ -1968,7 +1995,6 @@ export const UpdateCourseForm = ({
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
-
               <div className="sticky bottom-0 bg-white border-t-2 border-gray-200 pt-6 pb-4 -mx-2 px-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3 text-sm text-gray-600">

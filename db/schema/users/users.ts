@@ -6,6 +6,7 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
+import { roleEnum } from "../enums";
 
 export const users = pgTable("users", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -15,6 +16,7 @@ export const users = pgTable("users", {
   avatarUrl: text("avatar_url"),
   email: varchar("email", { length: 150 }).unique(),
   phone: varchar("phone", { length: 20 }),
+  lastActiveRole: roleEnum("last_active_role"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

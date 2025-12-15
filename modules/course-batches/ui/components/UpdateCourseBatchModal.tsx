@@ -2,30 +2,30 @@
 
 import { ResponsiveModal } from "@/components/ResponsiveModal";
 import { useEffect } from "react";
-import { UpdateCourseForm } from "./UpdateCourseForm";
+import { UpdateCourseBatchForm } from "./UpdateCourseBatchForm";
 
-interface UpdateCourseModalProps {
+interface UpdateCourseBatchModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  courseId: string;
+  courseBatchId: string;
 }
 
-export const UpdateCourseModal = ({
+export const UpdateCourseBatchModal = ({
   open,
   onOpenChange,
-  courseId,
-}: UpdateCourseModalProps) => {
+  courseBatchId,
+}: UpdateCourseBatchModalProps) => {
   return (
     <>
       <div className="bg-black">
         <ResponsiveModal mode="double" open={open} onOpenChange={onOpenChange}>
-          <UpdateCourseForm
+          <UpdateCourseBatchForm
             open={open}
             onCancel={() => onOpenChange(false)}
             onSuccess={() => {
               onOpenChange(false);
             }}
-            courseId={courseId}
+            courseBatchId={courseBatchId}
           />
         </ResponsiveModal>
       </div>
