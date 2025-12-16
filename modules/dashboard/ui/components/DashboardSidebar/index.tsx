@@ -14,8 +14,29 @@ import { UserMenu } from "@/components/UserMenu";
 import { useAuth } from "@clerk/nextjs";
 import { useState } from "react";
 import { NavUser } from "./NavUser";
+import { Role } from "@/db/schema/enums";
 
-export const DashboardSidebar = () => {
+type RoleType = {
+  id: string;
+  name: Role;
+};
+
+type UserDashboardProps = {
+  id: string;
+  clerkId: string;
+  firstName: string | null;
+  lastName: string | null;
+  avatarUrl: string | null;
+  email: string | null;
+  phone: string | null;
+  lastActiveRole: string |  null,
+  roles: RoleType[];
+};
+interface DashboardSidebarProps {
+  user: UserDashboardProps;
+}
+
+export const DashboardSidebar = ({ user }: DashboardSidebarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isSignedIn } = useAuth();
   const isMobile = useIsMobile();
@@ -23,7 +44,6 @@ export const DashboardSidebar = () => {
   const closeMenus = () => {
     setIsMenuOpen(false);
   };
-
   return (
     <>
       {!isMobile && (
@@ -39,7 +59,7 @@ export const DashboardSidebar = () => {
             <ResponsiveSidebarContent />
           </SidebarContent>
           <SidebarFooter>
-            <NavUser></NavUser>
+            <NavUser clerkId={user.clerkId}></NavUser>
           </SidebarFooter>
         </Sidebar>
       )}

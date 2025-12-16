@@ -1,32 +1,30 @@
 import { ROLES } from "@/db/schema/enums";
+import UserDashboard from "@/modules/dashboard/ui/components/UserDashboard";
 import { trpc } from "@/trpc/server";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 export default async function Dashboard() {
   const { userId } = await auth();
-
   if (!userId) redirect("/sign-in");
 
   const user = await trpc.users.getUserWithRoles({ clerkId: userId });
 
-  if (!user) redirect("/complete-profile");
+  if (!user) redirect("/sign-in");
 
   const roles = user.roles.map((r) => r.name);
   const last = user.lastActiveRole;
 
-  // 1️⃣ Redirect to last active role if still valid
+  // 🟢 No roles → normal user dashboard
+  if (roles.length === 0) {
+    return <UserDashboard user={user} />;
+  }
+
+  // 1️⃣ Redirect to last active operational role
   if (last && roles.includes(last)) {
     redirect(`/dashboard/${last}`);
   }
 
-  // 2️⃣ Otherwise redirect to highest priority role
-  const highestRole = ROLES.find((role) => roles.includes(role));
-
-  if (highestRole) {
-    redirect(`/dashboard/${highestRole}`);
-  }
-
-  // 3️⃣ Safety fallback (should never happen)
-  redirect("/no-role");
+  // 3️⃣ Fallback: stay on user dashboard
+  return <UserDashboard user={user} />;
 }

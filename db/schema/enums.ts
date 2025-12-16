@@ -107,7 +107,6 @@ export const ROLES = [
   "teacher",
   "accommodation_staff",
   "author",
-  "student",
 ] as const;
 export type Role = (typeof ROLES)[number];
 export const roleEnum = pgEnum("role", ROLES);

@@ -1,6 +1,8 @@
 import { db } from "@/db";
 import { roles, userRoles, users } from "@/db/schema";
+import { roleEnum, ROLES } from "@/db/schema/enums";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
+import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
 import z from "zod";
 
@@ -34,7 +36,7 @@ export const usersRouter = createTRPCRouter({
         .leftJoin(roles, eq(userRoles.roleId, roles.id))
         .where(eq(users.clerkId, clerkId));
 
-      if (result.length === 0) return null;
+      if (result.length === 0) throw new TRPCError({ code: "UNAUTHORIZED" });
 
       const user = {
         id: result[0].id,
@@ -56,5 +58,17 @@ export const usersRouter = createTRPCRouter({
       };
 
       return user;
+    }),
+  setActiveRole: protectedProcedure
+    .input(
+  z.object({
+    role: z.enum(ROLES).nullable(),
+  })
+)
+    .mutation(async ({ ctx, input }) => {
+      await db
+        .update(users)
+        .set({ lastActiveRole: input.role })
+        .where(eq(users.clerkId, ctx.clerkUserId!));
     }),
 });
