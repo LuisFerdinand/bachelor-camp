@@ -1,15 +1,28 @@
 // db/seeds/pillars.seed.ts
 import { db } from "..";
-import { roles, userRoles, users } from "../schema";
+import { roles, userRoles, user as users } from "../schema";
+import { roleEnum } from "../schema/enums";
+import { eq, and } from "drizzle-orm";
 import { v4 as uuidv4 } from "uuid";
-import { BooleanType, PageType, roleEnum } from "../schema/enums";
-import { eq } from "drizzle-orm";
+
+/* -------------------------------------------------- */
+/* Role → User mapping (SAFE & EXPLICIT) */
+/* -------------------------------------------------- */
+
+type RoleName = (typeof roleEnum.enumValues)[number];
+
+const USER_ROLE_MAP: Record<string, RoleName[]> = {
+  "vincent373kon@gmail.com": ["super_admin", "admin"],
+  "ferdinandluis88@gmail.com": ["admin"],
+  "konvincent373@gmail.com": ["admin"],
+};
+
+/* -------------------------------------------------- */
+/* Seed Roles */
+/* -------------------------------------------------- */
 
 export const seedRoles = async () => {
-  console.log("🌱 Seeding Roles...");
-
-  // Optional: Clear existing data
-  await db.delete(roles);
+  console.log("🌱 Seeding roles...");
 
   const roleData = roleEnum.enumValues.map((name) => ({
     id: uuidv4(),
@@ -17,25 +30,28 @@ export const seedRoles = async () => {
     description: `${name} role`,
   }));
 
-  await db.insert(roles).values(roleData);
+  // Idempotent insert — no deletes, no duplicates
+  await db.insert(roles).values(roleData).onConflictDoNothing({
+    target: roles.name,
+  });
 
-  console.log("✅ Roles seeded successfully!");
+  console.log("✅ Roles seeded (idempotent)");
 };
 
+/* -------------------------------------------------- */
+/* Seed User Roles */
+/* -------------------------------------------------- */
+
 export const seedUserRoles = async () => {
-  console.log("🌱 Seeding User Roles...");
+  console.log("🌱 Seeding user roles...");
 
-  // Optional: Clear existing data
-  await db.delete(userRoles);
-
-  type UserRoleInsert = typeof userRoles.$inferInsert;
-
-  const emails = ["vincent373kon@gmail.com", "ferdinandluis88@gmail.com"];
+  if (process.env.NODE_ENV === "production") {
+    throw new Error("❌ Seeding user roles is disabled in production");
+  }
 
   const roleList = await db.select().from(roles);
-  const roleIds = roleList.map((row) => row.id);
 
-  for (const email of emails) {
+  for (const [email, roleNames] of Object.entries(USER_ROLE_MAP)) {
     const user = await db
       .select()
       .from(users)
@@ -43,17 +59,35 @@ export const seedUserRoles = async () => {
       .then((res) => res[0]);
 
     if (!user) {
-      console.warn(`⚠️ User with email ${email} not found, skipping...`);
+      console.warn(`⚠️ User not found: ${email} — skipping`);
       continue;
     }
 
-    const data: UserRoleInsert[] = roleIds.map((role) => ({
-      userId: user.id,
-      roleId: role,
-    }));
+    const inserts = roleNames.map((roleName) => {
+      const role = roleList.find((r) => r.name === roleName);
 
-    await db.insert(userRoles).values(data);
+      if (!role) {
+        throw new Error(`❌ Role "${roleName}" not found in roles table`);
+      }
+
+      return {
+        userId: user.id,
+        roleId: role.id,
+      };
+    });
+
+    if (!inserts.length) continue;
+
+    // Idempotent insert — no duplicate user-role pairs
+    await db
+      .insert(userRoles)
+      .values(inserts)
+      .onConflictDoNothing({
+        target: [userRoles.userId, userRoles.roleId],
+      });
+
+    console.log(`✅ Assigned roles to ${email}: ${roleNames.join(", ")}`);
   }
 
-  console.log("✅ User Roles seeded successfully!");
+  console.log("🎉 User roles seeded successfully");
 };

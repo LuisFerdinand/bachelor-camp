@@ -3,7 +3,7 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Users, Mail } from "lucide-react";
+import { user as users, Mail } from "lucide-react";
 
 // Team Section Interfaces
 interface TeamMember {

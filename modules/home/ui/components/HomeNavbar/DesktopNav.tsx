@@ -145,7 +145,7 @@ export default function DesktopNav({
               onMouseLeave={handleMouseLeave}
             >
               <button
-                className={`group relative flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-[15px] transition-all duration-300 overflow-hidden ${
+                className={`group relative flex items-center gap-2 px-3 py-2.5 rounded-lg font-semibold text-[15px] transition-all duration-300 overflow-hidden ${
                   isActive
                     ? "text-white shadow-lg shadow-brand/30"
                     : shouldUseSolidStyling
@@ -178,7 +178,9 @@ export default function DesktopNav({
 
                 {/* Border glow on hover */}
                 {!isActive && (
-                  <div className="absolute inset-0 rounded-lg border border-brand/0 group-hover:border-brand/20 transition-all duration-300" />
+                  <div
+                    className={`border-brand/0 group-hover:border-brand/20 absolute inset-0 rounded-lg  transition-all duration-300`}
+                  />
                 )}
 
                 <span className="relative z-10 tracking-wide">
@@ -366,7 +368,9 @@ export default function DesktopNav({
                       : "bg-white/10 backdrop-blur-sm opacity-0 group-hover:opacity-100"
                   }`}
                 />
-                <div className="absolute inset-0 rounded-lg border border-brand/0 group-hover:border-brand/20 transition-all duration-300" />
+                <div
+                  className={`absolute inset-0 rounded-lg border-brand/0 group-hover:border-brand/20 transition-all duration-300`}
+                />
               </>
             )}
 

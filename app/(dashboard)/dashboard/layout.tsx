@@ -1,18 +1,26 @@
-import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
-import { trpc } from "@/trpc/server";
+import { auth } from "@/lib/auth";
 import { DashboardLayout } from "@/modules/dashboard/ui/layouts/DashboardLayout";
+import { trpc } from "@/trpc/server";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+
+export const dynamic = "force-dynamic";
 
 export default async function Layout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { userId } = await auth();
-  if (!userId) redirect("/sign-in");
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
-  const user = await trpc.users.getUserWithRoles({ clerkId: userId });
+  if (!session) {
+    redirect("/sign-in");
+  }
+
+  const user = await trpc.users.getUserWithRoles();
   if (!user) redirect("/sign-in");
 
-  return <DashboardLayout user={user}>{children}</DashboardLayout>;
+  return <DashboardLayout>{children}</DashboardLayout>;
 }

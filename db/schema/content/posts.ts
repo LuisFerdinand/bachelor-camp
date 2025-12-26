@@ -9,7 +9,7 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 import { booleanTypeEnum, collectionTypeEnum, postStatusEnum } from "../enums";
-import { users } from "../users";
+import { user } from "../users";
 
 export const posts = pgTable("posts", {
   id: uuid("id").primaryKey(),
@@ -18,9 +18,10 @@ export const posts = pgTable("posts", {
   excerpt: text("excerpt"), // ringkasan singkat
   content: jsonb("content").notNull(), // Store editor JSON for flexibility
   coverImage: varchar("cover_image", { length: 255 }), // optional
-  authorId: uuid("author_id").references(() => users.id, {
-    onDelete: "set null",
-  }), // relasi ke user
+  authorId: text("author_id")
+  .notNull()
+  .references(() => user.id, { onDelete: "cascade" }),
+
   status: postStatusEnum("status").default("draft").notNull(),
   isPublished: booleanTypeEnum("is_published").default("false").notNull(),
   publishedAt: timestamp("published_at"), // kapan dipublish
@@ -69,9 +70,9 @@ export const postSeo = pgTable("post_seo", {
 
 export const userCollections = pgTable("user_collections", {
   id: uuid("id").primaryKey(),
-  userId: uuid("user_id")
-    .references(() => users.id, { onDelete: "cascade" })
-    .notNull(),
+userId: text("user_id")
+  .notNull()
+  .references(() => user.id, { onDelete: "cascade" }),
   name: varchar("name", { length: 100 }).notNull(),
   slug: varchar("slug", { length: 100 }).notNull().unique(),
   type: collectionTypeEnum("type").default("personal").notNull(),

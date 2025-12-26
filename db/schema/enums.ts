@@ -1,3 +1,20 @@
+import {
+  HomeIcon,
+  Tv2Icon,
+  Building2Icon,
+  CrownIcon,
+  Icon,
+  ShieldCheckIcon,
+  ShieldIcon,
+  AwardIcon,
+  UsersIcon,
+  PenToolIcon,
+  BedIcon,
+  GraduationCapIcon,
+  KeyIcon,
+  LayoutDashboardIcon,
+  LucideIcon,
+} from "lucide-react";
 import { pgEnum } from "drizzle-orm/pg-core";
 
 // Shared
@@ -110,6 +127,44 @@ export const ROLES = [
 ] as const;
 export type Role = (typeof ROLES)[number];
 export const roleEnum = pgEnum("role", ROLES);
+
+export const ROLE_CONFIG: Record<
+  Role,
+  { label: string; color: string; icon: LucideIcon }
+> = {
+  super_admin: {
+    label: "Super Admin",
+    color:
+      "bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300",
+    icon: CrownIcon,
+  },
+  admin: {
+    label: "Admin",
+    color: "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300",
+    icon: ShieldCheckIcon,
+  },
+  room_master: {
+    label: "Room Master",
+    color: "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300",
+    icon: KeyIcon,
+  },
+  teacher: {
+    label: "Teacher",
+    color:
+      "bg-orange-100 text-orange-700 dark:bg-orange-950 dark:text-orange-300",
+    icon: GraduationCapIcon,
+  },
+  accommodation_staff: {
+    label: "Accommodation Staff",
+    color: "bg-cyan-100 text-cyan-700 dark:bg-cyan-950 dark:text-cyan-300",
+    icon: BedIcon,
+  },
+  author: {
+    label: "Author",
+    color: "bg-pink-100 text-pink-700 dark:bg-pink-950 dark:text-pink-300",
+    icon: PenToolIcon,
+  },
+};
 
 export const SOCIAL_PLATFORMS = [
   "youtube",

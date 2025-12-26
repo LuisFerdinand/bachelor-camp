@@ -70,9 +70,9 @@ export const bannersRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      const { id: userId } = ctx.user;
+      const authUserId = ctx.session?.user.id!;
       const { type, isActive, searchQuery } = input;
-      await requireRole(userId, ["super_admin", "admin"]);
+      // await requireRole(authUserId, ["super_admin", "admin"]);
 
       // Build filters dynamically
       const filters = and(

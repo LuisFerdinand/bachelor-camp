@@ -1,4 +1,4 @@
-// import { db } from "@/db";
+
 import { clsx, type ClassValue } from "clsx";
 import { eq } from "drizzle-orm";
 import { twMerge } from "tailwind-merge";
@@ -21,6 +21,9 @@ import {
   Trophy,
   FileCheck,
 } from "lucide-react";
+import { Role, ROLE_CONFIG } from "@/db/schema/enums";
+import toast from "react-hot-toast";
+import { usePathname } from "next/navigation";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -414,3 +417,128 @@ export const getCourseLevelConfig = (level: string) => {
       };
   }
 };
+
+export const splitName = (name?: string | null) => {
+  if (!name) {
+    return { firstName: "", lastName: "" };
+  }
+
+  const parts = name.trim().split(/\s+/);
+
+  return {
+    firstName: parts[0] ?? "",
+    lastName: parts.length > 1 ? parts.slice(1).join(" ") : "",
+  };
+};
+
+export function maskEmail(email: string) {
+  const [name, domain] = email.split("@");
+  return `${name.slice(0, 2)}***@${domain}`;
+}
+
+export const formatRoleName = (roleName: string): string => {
+  return roleName
+    .replace(/_/g, " ")
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
+
+export const getRoleLabel = (role: Role | null) =>
+  role ? (ROLE_CONFIG[role]?.label ?? formatRoleName(role)) : "Personal";
+
+export const getRoleBadgeClass = (role: Role | null) => {
+  if (!role) {
+    return "bg-muted text-muted-foreground border border-border";
+  }
+
+  return ROLE_CONFIG[role]?.color ?? "bg-muted text-muted-foreground";
+};
+
+export function handleMutationError(
+  error: unknown,
+  fallback = "Something went wrong"
+) {
+  console.error(error);
+
+  if (typeof error === "object" && error !== null) {
+    if ("message" in error && typeof error.message === "string") {
+      toast.error(error.message);
+      return;
+    }
+  }
+
+  toast.error(fallback);
+}
+
+type ToastMutationOptions<T> = {
+  action: () => Promise<T>;
+  loading: string;
+  success: string | ((result: T) => string);
+  error?: string;
+  onSuccess?: (result: T) => void;
+};
+
+export async function toastMutation<T>({
+  action,
+  loading,
+  success,
+  error,
+  onSuccess,
+}: ToastMutationOptions<T>) {
+  const toastId = toast.loading(loading);
+
+  try {
+    const result = await action();
+
+    toast.success(typeof success === "function" ? success(result) : success, {
+      id: toastId,
+    });
+
+    onSuccess?.(result);
+    return result;
+  } catch (err) {
+    toast.dismiss(toastId);
+    handleMutationError(err, error);
+    throw err;
+  }
+}
+
+export function getActiveRoleFromPathname(pathname: string): Role | "personal" {
+  const segments = pathname.split("/").filter(Boolean);
+
+  // /dashboard → personal dashboard
+  if (segments.length === 1 && segments[0] === "dashboard2") {
+    return "personal";
+  }
+
+  // /dashboard/{role}
+  if (segments[0] === "dashboard2" && segments[1]) {
+    return segments[1] as Role;
+  }
+
+  return "personal";
+}
+
+export function resolveDashboardHref(
+  routeUrl: string,
+  activeRole: Role | "personal",
+  options?: {
+    roleScoped?: boolean; // default false
+  }
+) {
+  const roleScoped = options?.roleScoped ?? false;
+
+  // Global dashboard routes
+  if (!roleScoped) {
+    return routeUrl;
+  }
+
+  // Role-based dashboard routes
+  if (activeRole === "personal") {
+    return "/dashboard";
+  }
+
+  return `/dashboard/${activeRole}`;
+}
+

@@ -1,21 +1,25 @@
-import { ROLES } from "@/db/schema/enums";
-import UserDashboard from "@/modules/dashboard/ui/components/UserDashboard";
+import { AppSidebar } from "@/components/app-sidebar";
+import { ChartAreaInteractive } from "@/components/chart-area-interactive";
+import { DataTable } from "@/components/data-table";
+import { SectionCards } from "@/components/section-cards";
+import { SiteHeader } from "@/components/site-header";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+
 import { trpc } from "@/trpc/server";
-import { auth } from "@clerk/nextjs/server";
+import { authClient } from "@/lib/auth-client";
+import UserDashboard from "@/modules/dashboard/ui/components/UserDashboard";
 import { redirect } from "next/navigation";
 
-export default async function Dashboard() {
-  const { userId } = await auth();
-  if (!userId) redirect("/sign-in");
+export const dynamic = "force-dynamic";
 
-  const user = await trpc.users.getUserWithRoles({ clerkId: userId });
+export default async function Page() {
+  const { data: session, isPending: authLoading } = authClient.useSession();
 
-  if (!user) redirect("/sign-in");
+  const user = await trpc.users.getUserWithRoles();
 
   const roles = user.roles.map((r) => r.name);
   const last = user.lastActiveRole;
 
-  // 🟢 No roles → normal user dashboard
   if (roles.length === 0) {
     return <UserDashboard user={user} />;
   }

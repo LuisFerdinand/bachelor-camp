@@ -16,7 +16,7 @@ import { locationsRouter } from "@/modules/locations/server/procedures";
 import { coursesRouter } from "@/modules/courses/server/procedures";
 import { buildingsRouter } from "@/modules/buildings/server/procedures";
 import { courseBatchesRouter } from "@/modules/course-batches/server/procedures";
-import { usersRouter } from "@/modules/users/server/procedures";
+import {  usersRouter } from "@/modules/users/server/procedures";
 
 export const appRouter = createTRPCRouter({
   accreditations: accreditationsRouter,

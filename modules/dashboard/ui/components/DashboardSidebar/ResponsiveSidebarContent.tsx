@@ -12,46 +12,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import DottedSeparator from "@/components/ui/Separator/DottedSeparator";
-import {
-  Award,
-  BarChart3,
-  BedDouble,
-  BookOpen,
-  Boxes,
-  Building2,
-  CalendarDays,
-  CircuitBoard,
-  DatabaseBackup,
-  Edit,
-  FileClock,
-  FileText,
-  Flag,
-  FlaskConical,
-  FolderTree,
-  GraduationCap,
-  HeartHandshake,
-  HelpCircle,
-  House,
-  ImageIcon,
-  InboxIcon,
-  Landmark,
-  LayoutDashboard,
-  LayoutDashboardIcon,
-  LogOutIcon,
-  Mail,
-  MapPin,
-  MessageSquare,
-  Quote,
-  Scale,
-  SearchCheck,
-  Settings,
-  Share2,
-  Sparkles,
-  Tags,
-  Tent,
-  UserCog,
-  Users,
-} from "lucide-react";
+
 import clsx from "clsx";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
@@ -60,53 +21,22 @@ import { usePathname } from "next/navigation";
 import { trpc } from "@/trpc/client";
 import { NavigationSection } from "./Navigation";
 import { GradientSeparator } from "@/components/ui/Separator/SidebarSeparator";
-
-const contentRoutes = [
-  { label: "Accreditations", url: "/content/accreditations", icon: Award },
-  { label: "Banners", url: "/content/banners", icon: ImageIcon },
-  { label: "FAQs", url: "/content/faqs", icon: HelpCircle },
-  { label: "Highlights", url: "/content/highlights", icon: Sparkles },
-  { label: "Locations", url: "/content/locations", icon: MapPin },
-  { label: "Milestones", url: "/content/milestones", icon: Flag },
-  { label: "Pillars", url: "/content/pillars", icon: Landmark },
-  { label: "Principles", url: "/content/principles", icon: Scale },
-  { label: "Social Medias", url: "/content/social-medias", icon: Share2 },
-  { label: "Statistics", url: "/content/statistics", icon: BarChart3 },
-  { label: "Testimonials", url: "/content/testimonials", icon: Quote },
-  { label: "Team Members", url: "/content/team-members", icon: Users },
-];
-
-const servicesRoutes = [
-  { label: "Camps", url: "/services/camps", icon: Tent },
-  { label: "Courses", url: "/services/courses", icon: BookOpen },
-  { label: "Tests", url: "/services/tests", icon: FlaskConical },
-  { label: "Bundles", url: "/services/bundles", icon: Boxes },
-  { label: "Rooms", url: "/services/rooms", icon: BedDouble },
-  { label: "Facilities", url: "/services/facilities", icon: Building2 },
-  { label: "Schedules", url: "/services/schedules", icon: CalendarDays },
-];
-
-export const articlesRoutes = [
-  { label: "Posts", url: "/articles/posts", icon: FileText },
-  { label: "Categories", url: "/articles/categories", icon: FolderTree },
-  { label: "Tags", url: "/articles/tags", icon: Tags },
-  { label: "SEO", url: "/articles/seo", icon: SearchCheck },
-];
-
-export const engagementRoutes = [
-  { label: "Leads", url: "/engagement/leads", icon: Mail },
-];
-
-export const usersRoutes = [
-  { label: "Admins", url: "/users/admins", icon: UserCog },
-  { label: "Students", url: "/users/students", icon: GraduationCap },
-];
-
-export const systemRoutes = [
-  // { label: "Settings", url: "/system/settings", icon: Settings },
-  { label: "Logs", url: "/system/logs", icon: FileClock },
-  { label: "Backups", url: "/system/backups", icon: DatabaseBackup },
-];
+import {
+  CircuitBoardIcon,
+  HeartHandshakeIcon,
+  HouseIcon,
+  InboxIcon,
+  LayoutDashboardIcon,
+  LogOutIcon,
+  MailIcon,
+  TentIcon,
+} from "lucide-react";
+import {
+  contentRoutes,
+  engagementRoutes,
+  servicesRoutes,
+  systemRoutes,
+} from "@/constants";
 
 const ResponsiveSidebarContent = () => {
   const isMobile = useIsMobile();
@@ -143,7 +73,7 @@ const ResponsiveSidebarContent = () => {
                     {isActive && (
                       <span className="absolute left-0 top-0 h-full w-1.5 bg-blue-500" />
                     )}
-                    <LayoutDashboard className="size-5" />
+                    <LayoutDashboardIcon className="size-5" />
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -172,7 +102,7 @@ const ResponsiveSidebarContent = () => {
                     {isActive && (
                       <span className="absolute left-0 top-0 h-full w-1.5 bg-blue-500 rounded-r-sm" />
                     )}
-                    <Mail className="size-5" />
+                    <MailIcon className="size-5" />
                     {inboxCount > 0 && (
                       <span className="absolute top-2 right-1 h-1.5 w-1.5 rounded-full bg-red-500" />
                     )}
@@ -185,14 +115,14 @@ const ResponsiveSidebarContent = () => {
           {/* Logo Placeholder */}
           <NavigationSection
             title="Content Management"
-            sectionIcon={House}
+            sectionIcon={HouseIcon}
             routes={contentRoutes}
             collapsed={state === "collapsed"}
           />
           <GradientSeparator className="my-0.5 text-black"></GradientSeparator>
           <NavigationSection
             title="Services"
-            sectionIcon={Tent}
+            sectionIcon={TentIcon}
             routes={servicesRoutes}
             collapsed={state === "collapsed"}
           />
@@ -219,7 +149,7 @@ const ResponsiveSidebarContent = () => {
                     {isActive && (
                       <span className="absolute left-0 top-0 h-full w-1.5 bg-blue-500" />
                     )}
-                    <LayoutDashboard className="size-5" />
+                    <LayoutDashboardIcon className="size-5" />
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -228,14 +158,14 @@ const ResponsiveSidebarContent = () => {
           <GradientSeparator className="my-0.25 text-black"></GradientSeparator>
           <NavigationSection
             title="Engagement Management"
-            sectionIcon={HeartHandshake}
+            sectionIcon={HeartHandshakeIcon}
             routes={engagementRoutes}
             collapsed={state === "collapsed"}
           />
           <GradientSeparator className="my-0.25 text-black"></GradientSeparator>
           <NavigationSection
             title="System Management"
-            sectionIcon={CircuitBoard}
+            sectionIcon={CircuitBoardIcon}
             routes={systemRoutes}
             collapsed={state === "collapsed"}
           />
@@ -360,14 +290,14 @@ const ResponsiveSidebarContent = () => {
         {/* <CompanyNavigation /> */}
         <NavigationSection
           title="Content Management"
-          sectionIcon={House}
+          sectionIcon={HouseIcon}
           routes={contentRoutes}
         />
         <GradientSeparator className="my-0.25 text-black"></GradientSeparator>
 
         <NavigationSection
           title="Services Management"
-          sectionIcon={Tent}
+          sectionIcon={TentIcon}
           routes={servicesRoutes}
         />
         <GradientSeparator className="my-0.25 text-black"></GradientSeparator>
@@ -407,14 +337,14 @@ const ResponsiveSidebarContent = () => {
 
         <NavigationSection
           title="Engagement Management"
-          sectionIcon={HeartHandshake}
+          sectionIcon={HeartHandshakeIcon}
           routes={engagementRoutes}
         />
         <GradientSeparator className="my-0.25 text-black"></GradientSeparator>
 
         <NavigationSection
           title="System Management"
-          sectionIcon={CircuitBoard}
+          sectionIcon={CircuitBoardIcon}
           routes={systemRoutes}
         />
 

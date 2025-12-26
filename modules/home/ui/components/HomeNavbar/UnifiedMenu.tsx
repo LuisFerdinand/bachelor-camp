@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useUser, useClerk, SignInButton, SignUpButton } from "@clerk/nextjs";
+import { authClient } from "@/lib/auth-client";
 
 import {
   LogOut,
@@ -32,51 +32,7 @@ import {
   LogIn,
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-
-const roleConfig = {
-  super_admin: {
-    icon: Crown,
-    label: "Super Admin",
-    gradient: "from-yellow-400 to-yellow-600",
-    badgeColor: "bg-yellow-500",
-  },
-  admin_academic: {
-    icon: ShieldCheck,
-    label: "Admin Academic",
-    gradient: "from-brand-500 to-brand-700",
-    badgeColor: "bg-brand-600",
-  },
-  admin_room_master: {
-    icon: Shield,
-    label: "Room Master",
-    gradient: "from-brand-700 to-brand-900",
-    badgeColor: "bg-brand-800",
-  },
-  teacher: {
-    icon: Award,
-    label: "Teacher",
-    gradient: "from-emerald-400 to-emerald-600",
-    badgeColor: "bg-emerald-500",
-  },
-  accommodation_staff: {
-    icon: Users,
-    label: "Accommodation Staff",
-    gradient: "from-amber-400 to-amber-600",
-    badgeColor: "bg-amber-500",
-  },
-  author: {
-    icon: PenTool,
-    label: "Author",
-    gradient: "from-purple-400 to-purple-600",
-    badgeColor: "bg-purple-500",
-  },
-  student: {
-    icon: UserCircle,
-    label: "Student",
-    gradient: "from-slate-400 to-slate-600",
-    badgeColor: "bg-slate-500",
-  },
-};
+import Image from "next/image";
 
 interface UnifiedDesktopMenuProps {
   isOpen: boolean;
@@ -93,17 +49,14 @@ export const UnifiedDesktopMenu = ({
   shouldUseSolidStyling,
   isSignedIn,
 }: UnifiedDesktopMenuProps) => {
-  const { user } = useUser();
-  const { signOut } = useClerk();
+  const { data: session, isPending } = authClient.useSession();
+  const user = session?.user;
 
-  const userRole =
-    (user?.publicMetadata.role as keyof typeof roleConfig) || "student";
-  const roleInfo = roleConfig[userRole];
-  const RoleIcon = roleInfo?.icon || UserCircle;
+  const router = useRouter();
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
     closeMenus();
-    signOut();
+    await authClient.signOut();
   };
 
   const handleLinkClick = () => {
@@ -137,12 +90,37 @@ export const UnifiedDesktopMenu = ({
     },
   ];
 
+  const displayName = user?.name ?? "User";
+
+  const avatarSrc =
+    user?.image ??
+    `https://api.dicebear.com/7.x/initials/svg?seed=${displayName}`;
+
+  // Enhanced skeleton loader
+  if (isPending) {
+    return (
+      <div className="relative">
+        {/* Desktop Toggle Button Skeleton */}
+        <div
+          className={`hidden lg:flex p-3 md:py-2 md:px-3 border flex-row items-center gap-1 rounded-full shrink-0 animate-pulse ${
+            shouldUseSolidStyling
+              ? "border-neutral-200 bg-white"
+              : "border-white/30 bg-white/20 backdrop-blur-sm"
+          }`}
+        >
+          <div className="h-6 w-6 rounded bg-muted" />
+          <div className="hidden md:block h-6 w-6 rounded-full bg-muted" />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative">
       {/* Desktop Toggle Button */}
       <div
         onClick={toggle}
-        className={`hidden lg:flex p-3 md:py-2 md:px-3 border flex-row items-center gap-1 rounded-full cursor-pointer hover:shadow-md transition shrink-0 ${
+        className={`hidden lg:flex p-3 md:py-2 md:px-3 border flex-row items-center gap-1 rounded-full cursor-pointer hover:shadow-md transition shrink-0 text-gray-800 ${
           shouldUseSolidStyling
             ? "border-neutral-200 bg-white"
             : "border-white/30 bg-white/20 backdrop-blur-sm text-white"
@@ -174,11 +152,13 @@ export const UnifiedDesktopMenu = ({
           )}
         </svg>
         <div className="hidden md:block">
-          {isSignedIn && user?.imageUrl ? (
-            <img
-              className="rounded-full size-6 object-cover"
-              alt="Avatar"
-              src={user.imageUrl}
+          {isSignedIn && user?.image ? (
+            <Image
+              src={avatarSrc}
+              alt={user?.name ?? "Avatar"}
+              width={24}
+              height={24}
+              className="rounded-full shadow-md object-cover"
             />
           ) : (
             <div className="size-6 rounded-full bg-gray-300 flex items-center justify-center">
@@ -190,36 +170,30 @@ export const UnifiedDesktopMenu = ({
 
       {/* Desktop Dropdown Menu */}
       {isOpen && (
-        <div className="hidden lg:block absolute right-0 mt-3 w-80 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 overflow-hidden">
-          {isSignedIn ? (
+        <div className="hidden lg:block absolute right-0 mt-3 w-80 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 overflow-hidden animate-in fade-in-0 zoom-in-95 duration-200">
+          {isSignedIn && user ? (
             <>
               {/* User Info Header */}
               <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50 p-4 border-b border-gray-200">
                 <div className="flex items-center gap-3">
                   <div className="relative">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-brand-600 to-brand-800 flex items-center justify-center text-white font-bold text-lg shadow-md">
-                      {user?.fullName?.[0] || "U"}
-                    </div>
-                    <div
-                      className={`absolute -bottom-1 -right-1 p-1 ${roleInfo.badgeColor} rounded-full shadow-md ring-2 ring-white`}
-                    >
-                      <RoleIcon className="w-3 h-3 text-white" />
-                    </div>
+                    <Image
+                      src={avatarSrc}
+                      alt={user?.name ?? "Avatar"}
+                      width={48}
+                      height={48}
+                      className="rounded-full shadow-md object-cover ring-2 ring-white"
+                    />
+                    {/* Online indicator */}
+                    <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-white" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-bold text-sm text-gray-900 truncate">
-                      {user?.fullName || "User"}
+                      {user?.name || "User"}
                     </p>
                     <p className="text-xs text-gray-600 truncate">
-                      {user?.emailAddresses[0]?.emailAddress || ""}
+                      {user?.email || ""}
                     </p>
-                    <div
-                      className={`inline-flex mt-1 px-2 py-0.5 ${roleInfo.badgeColor} rounded-md`}
-                    >
-                      <span className="text-[10px] font-bold text-white">
-                        {roleInfo.label.toUpperCase()}
-                      </span>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -235,7 +209,7 @@ export const UnifiedDesktopMenu = ({
                     onClick={handleLinkClick}
                     className="group flex items-center gap-2.5 px-3 py-2 rounded-lg bg-white border border-gray-200 hover:border-emerald-500 hover:bg-emerald-50 transition-all"
                   >
-                    <div className="p-1.5 rounded-lg bg-gradient-to-br from-emerald-500 to-emerald-700">
+                    <div className="p-1.5 rounded-lg bg-gradient-to-br from-emerald-500 to-emerald-700 shadow-sm">
                       <svg
                         className="w-4 h-4 text-white"
                         fill="none"
@@ -261,7 +235,7 @@ export const UnifiedDesktopMenu = ({
                     onClick={handleLinkClick}
                     className="group flex items-center gap-2.5 px-3 py-2 rounded-lg bg-white border border-gray-200 hover:border-brand-600 hover:bg-blue-50 transition-all"
                   >
-                    <div className="p-1.5 rounded-lg bg-gradient-to-br from-brand-600 to-brand-800">
+                    <div className="p-1.5 rounded-lg bg-gradient-to-br from-brand-600 to-brand-800 shadow-sm">
                       <svg
                         className="w-4 h-4 text-white"
                         fill="none"
@@ -306,9 +280,9 @@ export const UnifiedDesktopMenu = ({
               <div className="p-3 border-t border-gray-200 bg-gray-50">
                 <button
                   onClick={handleSignOut}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-br from-red-500 to-red-700 text-white text-sm font-semibold hover:shadow-md transition-all group"
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-br from-red-500 to-red-700 text-white text-sm font-semibold hover:shadow-md hover:from-red-600 hover:to-red-800 transition-all group"
                 >
-                  <LogOut className="w-4 h-4" />
+                  <LogOut className="w-4 h-4 group-hover:scale-110 transition-transform" />
                   Sign Out
                 </button>
               </div>
@@ -338,7 +312,7 @@ export const UnifiedDesktopMenu = ({
                   onClick={handleLinkClick}
                   className="group flex items-center gap-2.5 px-3 py-2 rounded-lg border border-gray-200 hover:border-emerald-500 hover:bg-emerald-50 transition-all"
                 >
-                  <div className="p-1.5 rounded-lg bg-gradient-to-br from-emerald-500 to-emerald-700">
+                  <div className="p-1.5 rounded-lg bg-gradient-to-br from-emerald-500 to-emerald-700 shadow-sm">
                     <svg
                       className="w-4 h-4 text-white"
                       fill="none"
@@ -364,7 +338,7 @@ export const UnifiedDesktopMenu = ({
                   onClick={handleLinkClick}
                   className="group flex items-center gap-2.5 px-3 py-2 rounded-lg border border-gray-200 hover:border-brand-600 hover:bg-blue-50 transition-all"
                 >
-                  <div className="p-1.5 rounded-lg bg-gradient-to-br from-brand-600 to-brand-800">
+                  <div className="p-1.5 rounded-lg bg-gradient-to-br from-brand-600 to-brand-800 shadow-sm">
                     <svg
                       className="w-4 h-4 text-white"
                       fill="none"
@@ -388,43 +362,44 @@ export const UnifiedDesktopMenu = ({
 
               {/* Auth Buttons */}
               <div className="space-y-2 pt-2 border-t border-gray-200">
-                <SignInButton mode="modal">
-                  <button
-                    onClick={handleLinkClick}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-gradient-to-br from-brand-600 to-brand-800 text-white text-sm font-semibold hover:shadow-md transition-all"
-                  >
-                    <LogIn className="w-4 h-4" />
-                    Sign In
-                  </button>
-                </SignInButton>
-
-                <SignUpButton mode="modal">
-                  <button
-                    onClick={handleLinkClick}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg border-2 border-brand-600 text-brand-600 text-sm font-semibold hover:bg-blue-50 transition-all"
-                  >
-                    <Sparkles className="w-4 h-4" />
-                    Create Account
-                  </button>
-                </SignUpButton>
+                <button
+                  onClick={() => {
+                    handleLinkClick();
+                    router.push("/sign-in");
+                  }}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-gradient-to-br from-brand-600 to-brand-800 text-white text-sm font-semibold hover:shadow-md hover:from-brand-700 hover:to-brand-900 transition-all group"
+                >
+                  <LogIn className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                  Sign In
+                </button>
+                <button
+                  onClick={() => {
+                    handleLinkClick();
+                    router.push("/sign-up");
+                  }}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg border-2 border-brand-600 text-brand-600 text-sm font-semibold hover:bg-blue-50 transition-all group"
+                >
+                  <Sparkles className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                  Create Account
+                </button>
               </div>
 
               {/* Features */}
               <div className="mt-4 pt-4 border-t border-gray-200 space-y-2">
                 <div className="flex items-center gap-2 text-xs text-gray-600">
-                  <div className="p-1 rounded bg-amber-500">
+                  <div className="p-1 rounded bg-amber-500 shadow-sm">
                     <Sparkles className="w-3 h-3 text-white" />
                   </div>
                   <span>Access exclusive deals</span>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-gray-600">
-                  <div className="p-1 rounded bg-brand-600">
+                  <div className="p-1 rounded bg-brand-600 shadow-sm">
                     <Heart className="w-3 h-3 text-white" />
                   </div>
                   <span>Save and track favorites</span>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-gray-600">
-                  <div className="p-1 rounded bg-emerald-600">
+                  <div className="p-1 rounded bg-emerald-600 shadow-sm">
                     <Shield className="w-3 h-3 text-white" />
                   </div>
                   <span>Premium support & verified equipment</span>
@@ -457,10 +432,10 @@ export const UnifiedMobileMenu = ({
   isSignedIn,
   pathname,
 }: UnifiedMobileMenuProps) => {
-  const { user } = useUser();
+  const { data: session, isPending } = authClient.useSession();
+  const user = session?.user;
   const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
 
-  const { signOut } = useClerk();
   const router = useRouter();
 
   const productsDropdown = [
@@ -541,15 +516,15 @@ export const UnifiedMobileMenu = ({
     closeMenus();
   };
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
     closeMenus();
-    signOut();
+    await authClient.signOut();
   };
 
-  const userRole =
-    (user?.publicMetadata.role as keyof typeof roleConfig) || "student";
-  const roleInfo = roleConfig[userRole];
-  const RoleIcon = roleInfo?.icon || UserCircle;
+  const displayName = user?.name ?? "User";
+  const avatarSrc =
+    user?.image ??
+    `https://api.dicebear.com/7.x/initials/svg?seed=${displayName}`;
 
   return (
     <>
@@ -572,6 +547,7 @@ export const UnifiedMobileMenu = ({
               transition={{ type: "spring", damping: 35, stiffness: 350 }}
               className="fixed top-0 right-0 bottom-0 z-50 w-[85%] max-w-sm bg-white shadow-2xl lg:hidden overflow-hidden flex flex-col"
             >
+              {/* Header */}
               <div className="relative overflow-hidden flex-shrink-0">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#083cbc] via-[#1d4ed8] to-[#1e40af]" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
@@ -616,6 +592,7 @@ export const UnifiedMobileMenu = ({
                 <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
               </div>
 
+              {/* Navigation Links */}
               <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-2">
                 {navLinks.map((link) => {
                   const isActive = pathname === link.href;
@@ -660,7 +637,7 @@ export const UnifiedMobileMenu = ({
                           {isActive && (
                             <motion.div
                               layoutId="mobileActiveIndicator"
-                              className="absolute left-0 top-1  w-1 h-7 bg-brand-600 rounded-r-full"
+                              className="absolute left-0 top-1 w-1 h-7 bg-brand-600 rounded-r-full"
                               transition={{
                                 type: "spring",
                                 stiffness: 380,
@@ -711,9 +688,9 @@ export const UnifiedMobileMenu = ({
                                       </div>
 
                                       <div className="flex-1 min-w-0">
-                                        <div className="flex items-center mb-0.5  ">
+                                        <div className="flex items-center mb-0.5">
                                           <span
-                                            className={`font-semibold text-sm transition-colors  leading-none ${
+                                            className={`font-semibold text-sm transition-colors leading-none ${
                                               isItemActive
                                                 ? "text-brand-600"
                                                 : "text-gray-900"
@@ -744,7 +721,7 @@ export const UnifiedMobileMenu = ({
                                   initial={{ x: -10, opacity: 0 }}
                                   animate={{ x: 0, opacity: 1 }}
                                   transition={{ duration: 0.2, delay: 0.1 }}
-                                  className="group relative flex items-center justify-center gap-2 px-4 py-3 mt-2 bg-gradient-to-br from-brand-600 via-brand-700 to-brand-800 text-white text-sm font-bold rounded-xl   transition-all duration-200 overflow-hidden"
+                                  className="group relative flex items-center justify-center gap-2 px-4 py-3 mt-2 bg-gradient-to-br from-brand-600 via-brand-700 to-brand-800 text-white text-sm font-bold rounded-xl transition-all duration-200 overflow-hidden"
                                 >
                                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                                   <motion.div
@@ -801,7 +778,7 @@ export const UnifiedMobileMenu = ({
                       {isActive && (
                         <motion.div
                           layoutId="mobileActiveIndicator"
-                          className="absolute left-0 top-1  w-1 h-7 bg-brand-600 rounded-r-full"
+                          className="absolute left-0 top-1 w-1 h-7 bg-brand-600 rounded-r-full"
                           transition={{
                             type: "spring",
                             stiffness: 380,
@@ -812,6 +789,8 @@ export const UnifiedMobileMenu = ({
                     </a>
                   );
                 })}
+
+                {/* Quick Actions */}
                 <div className="space-y-2 pt-1">
                   <div className="flex items-center gap-2 px-1">
                     <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
@@ -826,7 +805,7 @@ export const UnifiedMobileMenu = ({
                     onClick={handleLinkClick}
                     className="group relative overflow-hidden flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-gradient-to-br from-emerald-600 to-emerald-700 text-white shadow-md hover:shadow-lg transition-all"
                   >
-                    <div className="p-1.5 rounded-lg bg-white/20 backdrop-blur-sm">
+                    <div className="p-1.5 rounded-lg bg-white/20 backdrop-blur-sm shadow-sm">
                       <svg
                         className="w-4 h-4"
                         fill="none"
@@ -857,7 +836,7 @@ export const UnifiedMobileMenu = ({
                     onClick={handleLinkClick}
                     className="group relative overflow-hidden flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-gradient-to-br from-brand-600 to-brand-800 text-white shadow-md hover:shadow-lg transition-all"
                   >
-                    <div className="p-1.5 rounded-lg bg-white/20 backdrop-blur-sm">
+                    <div className="p-1.5 rounded-lg bg-white/20 backdrop-blur-sm shadow-sm">
                       <svg
                         className="w-4 h-4"
                         fill="none"
@@ -885,36 +864,58 @@ export const UnifiedMobileMenu = ({
                 </div>
               </nav>
 
-              {/* Compact Auth Section */}
+              {/* Auth Section */}
               <div className="flex-shrink-0 border-t border-2 border-brand-600/20 bg-gradient-to-br from-blue-50 to-indigo-50">
-                {isSignedIn ? (
-                  <div className="p-3 space-y-2.5">
-                    {/* Compact User Card */}
-                    <div className="flex items-center gap-2.5 p-2.5 rounded-lg bg-white border border-brand-600">
-                      <div className="relative">
-                        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-brand-600 to-brand-800 flex items-center justify-center text-white font-bold text-sm">
-                          {user?.fullName?.[0] || "U"}
-                        </div>
+                {isPending ? (
+                  // Loading State
+                  <div className="p-3 space-y-2.5 animate-pulse">
+                    <div className="flex items-center gap-2.5 p-2.5 rounded-lg bg-white border border-gray-200">
+                      <div className="w-9 h-9 rounded-full bg-muted" />
+                      <div className="flex-1 space-y-1.5">
+                        <div className="h-3 w-20 bg-muted rounded" />
+                        <div className="h-2.5 w-32 bg-muted rounded" />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-3 gap-1.5">
+                      {[1, 2, 3].map((i) => (
                         <div
-                          className={`absolute -bottom-0.5 -right-0.5 p-0.5 ${roleInfo.badgeColor} rounded-full ring-1 ring-white`}
+                          key={i}
+                          className="flex flex-col items-center gap-1 p-2 rounded-lg bg-white border border-gray-200"
                         >
-                          <RoleIcon className="w-2.5 h-2.5 text-white" />
+                          <div className="w-6 h-6 rounded-md bg-muted" />
+                          <div className="h-2 w-12 bg-muted rounded" />
                         </div>
+                      ))}
+                    </div>
+                    <div className="w-full h-9 rounded-lg bg-muted" />
+                  </div>
+                ) : isSignedIn && user ? (
+                  // Signed In State
+                  <div className="p-3 space-y-2.5">
+                    {/* User Card */}
+                    <div className="flex items-center gap-2.5 p-2.5 rounded-lg bg-white border border-brand-600 shadow-sm">
+                      <div className="relative">
+                        <Image
+                          src={avatarSrc}
+                          alt={user?.name ?? "Avatar"}
+                          width={36}
+                          height={36}
+                          className="rounded-full object-cover ring-2 ring-white shadow-sm"
+                        />
+                        {/* Online indicator */}
+                        <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-white" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-semibold text-xs text-gray-900 truncate">
-                          {user?.fullName || "User"}
+                          {user?.name || "User"}
                         </p>
-                        <div className="flex items-center gap-1.5">
-                          <div
-                            className={`px-1.5 py-0.5 ${roleInfo.badgeColor} rounded text-[9px] font-bold text-white`}
-                          >
-                            {roleInfo.label.toUpperCase()}
-                          </div>
-                        </div>
+                        <p className="text-[10px] text-gray-600 truncate">
+                          {user?.email || ""}
+                        </p>
                       </div>
                     </div>
 
+                    {/* Quick Links Grid */}
                     <div className="grid grid-cols-3 gap-1.5">
                       {userMenuItems.map((item) => {
                         const Icon = item.icon;
@@ -923,10 +924,10 @@ export const UnifiedMobileMenu = ({
                             key={item.id}
                             href={item.path}
                             onClick={handleLinkClick}
-                            className="flex flex-col items-center gap-1 p-2 rounded-lg bg-white border border-brand-600/20 hover:border-brand-600 transition-colors"
+                            className="flex flex-col items-center gap-1 p-2 rounded-lg bg-white border border-brand-600/20 hover:border-brand-600 hover:shadow-sm active:scale-95 transition-all"
                           >
                             <div
-                              className={`p-1 rounded-md bg-gradient-to-br ${item.gradient}`}
+                              className={`p-1 rounded-md bg-gradient-to-br ${item.gradient} shadow-sm`}
                             >
                               <Icon className="w-3 h-3 text-white" />
                             </div>
@@ -938,18 +939,19 @@ export const UnifiedMobileMenu = ({
                       })}
                     </div>
 
-                    {/* Compact Sign Out */}
+                    {/* Sign Out Button */}
                     <button
                       onClick={handleSignOut}
-                      className="w-full rounded-lg bg-gradient-to-br from-brand-600 to-brand-800 py-2 flex items-center justify-center gap-1.5 text-white text-xs font-semibold hover:shadow-md transition-all"
+                      className="w-full rounded-lg bg-gradient-to-br from-brand-600 to-brand-800 py-2 flex items-center justify-center gap-1.5 text-white text-xs font-semibold hover:shadow-md hover:from-brand-700 hover:to-brand-900 active:scale-98 transition-all group"
                     >
-                      <LogOut className="w-3.5 h-3.5" />
+                      <LogOut className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
                       Sign Out
                     </button>
                   </div>
                 ) : (
+                  // Not Signed In State
                   <div className="p-3 space-y-2.5">
-                    {/* Compact Welcome */}
+                    {/* Welcome Section */}
                     <div className="text-center py-1.5">
                       <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-brand-600 to-brand-800 mb-2 shadow-md">
                         <UserCircle className="w-6 h-6 text-white" />
@@ -962,26 +964,28 @@ export const UnifiedMobileMenu = ({
                       </p>
                     </div>
 
-                    {/* Compact Auth Buttons */}
-                    <SignInButton mode="modal">
-                      <button
-                        className="w-full rounded-lg bg-gradient-to-br from-brand-600 to-brand-800 py-2.5 flex items-center justify-center gap-2 text-white text-sm font-semibold hover:shadow-md transition-all"
-                        onClick={handleLinkClick}
-                      >
-                        <LogIn className="w-4 h-4" />
-                        Sign In
-                      </button>
-                    </SignInButton>
+                    {/* Auth Buttons */}
+                    <button
+                      className="w-full rounded-lg bg-gradient-to-br from-brand-600 to-brand-800 py-2.5 flex items-center justify-center gap-2 text-white text-sm font-semibold hover:shadow-md hover:from-brand-700 hover:to-brand-900 active:scale-98 transition-all group"
+                      onClick={() => {
+                        handleLinkClick();
+                        router.push("/sign-in");
+                      }}
+                    >
+                      <LogIn className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                      Sign In
+                    </button>
 
-                    <SignUpButton mode="modal">
-                      <button
-                        className="w-full rounded-lg border-2 border-brand-600 py-2.5 flex items-center justify-center gap-2 text-brand-600 text-sm font-semibold hover:bg-blue-50 transition-all"
-                        onClick={handleLinkClick}
-                      >
-                        <Sparkles className="w-4 h-4" />
-                        Create Account
-                      </button>
-                    </SignUpButton>
+                    <button
+                      className="w-full rounded-lg border-2 border-brand-600 py-2.5 flex items-center justify-center gap-2 text-brand-600 text-sm font-semibold hover:bg-blue-50 active:scale-98 transition-all group"
+                      onClick={() => {
+                        handleLinkClick();
+                        router.push("/sign-up");
+                      }}
+                    >
+                      <Sparkles className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                      Create Account
+                    </button>
                   </div>
                 )}
               </div>

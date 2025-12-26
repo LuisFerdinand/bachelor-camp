@@ -1,7 +1,8 @@
+import "dotenv/config";
 import { clearTables } from "./utils";
 
 import { db } from "..";
-import { users } from "../schema/users";
+import { user as users } from "../schema/users";
 import { seedBanners } from "./banners.seed";
 import { seedPostCategories } from "./posts.seed";
 import { seedPillars } from "./pillars.seed";

@@ -1,5 +1,4 @@
-import React from "react";
-
+import React, { useEffect } from "react";
 import { HomeLayout } from "@/modules/home/ui/layouts/HomeLayout";
 
 interface LayoutProps {
@@ -7,11 +6,7 @@ interface LayoutProps {
 }
 
 const Layout = ({ children }: LayoutProps) => {
-  return (
-    <>
-      <HomeLayout>{children}</HomeLayout>
-    </>
-  );
+  return <HomeLayout>{children}</HomeLayout>;
 };
 
 export default Layout;

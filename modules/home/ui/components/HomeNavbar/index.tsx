@@ -3,21 +3,21 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { useAuth } from "@clerk/nextjs";
 import DesktopNav from "./DesktopNav";
 import { UnifiedDesktopMenu, UnifiedMobileMenu } from "./UnifiedMenu";
-import { MobileUnifiedMenu } from "./MobileUnifiedMenu";
 
 import Image from "next/image";
 import { LOGO_PRIMARY_FALLBACK, LOGO_SECONDARY_FALLBACK } from "@/constants";
-import { MobileNav } from "./MobileNav";
 import { Menu, MenuIcon, MenuSquare } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export const HomeNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
-  const { isSignedIn } = useAuth();
+  const { data: session, isPending } = authClient.useSession();
+  const isSignedIn = !!session?.user;
 
   // Scroll effect
   useEffect(() => {
@@ -40,7 +40,7 @@ export const HomeNavbar = () => {
     { href: "/about-us", label: "About" },
     { href: "/camp", label: "Camp" },
     { href: "/special-program", label: "Programs" },
-    { href: "/products", label: "Products" },
+    // { href: "/products", label: "Products" },
     { href: "/blog", label: "Blog" },
     { href: "/contact-us", label: "Contact" },
   ];
@@ -121,7 +121,11 @@ export const HomeNavbar = () => {
                 {/* Mobile Toggle Button (Hamburger) */}
                 <button
                   className={`lg:hidden p-2 rounded-lg transition-all duration-500 ease-in-out ${
-                    shouldUseSolidStyling ? "text-gray-700" : "text-white"
+                    shouldUseSolidStyling
+                      ? "text-gray-700"
+                      : isMenuOpen
+                        ? "text-gray-700"
+                        : "text-white"
                   }`}
                   onClick={toggleMobileMenu}
                   aria-label={isMenuOpen ? "Close menu" : "Open menu"}

@@ -1,4 +1,4 @@
-// db/seeds/testimonials.seed.ts
+
 import { db } from "..";
 import {
   testimonialCategories,

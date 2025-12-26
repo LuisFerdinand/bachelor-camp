@@ -5,6 +5,11 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "cdn.jsdelivr.net",
         pathname: "/npm/@phosphor-icons/core/**",
       },
@@ -37,7 +42,7 @@ const nextConfig: NextConfig = {
         hostname: "assets.example.com",
         pathname: "/account123/**",
       },
-      new URL('https://assets.example.com/account123/**')
+      new URL("https://assets.example.com/account123/**"),
     ],
   },
   typescript: {
@@ -47,6 +52,7 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   outputFileTracingRoot: __dirname,
+  productionBrowserSourceMaps: false,
 };
 
 export default nextConfig;

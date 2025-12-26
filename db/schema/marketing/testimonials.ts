@@ -10,13 +10,15 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 import { booleanTypeEnum, testimonialSourceEnum } from "../enums";
-import { users } from "../users";
+import { user } from "../users";
 import { InferSelectModel } from "drizzle-orm";
 import z from "zod";
 
 export const testimonials = pgTable("testimonials", {
   id: uuid("id").defaultRandom().primaryKey(),
-  userId: uuid("user_id").references(() => users.id),
+userId: text("user_id")
+  .references(() => user.id, { onDelete: "cascade" }),
+
   name: varchar("name", { length: 100 }).notNull(),
   role: varchar("role", { length: 255 }),
   source: testimonialSourceEnum("source").default("student").notNull(),

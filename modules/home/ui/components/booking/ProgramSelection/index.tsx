@@ -1,7 +1,7 @@
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Users, Clock, Star, CheckCircle, BookOpen } from "lucide-react";
+import { user as users, Clock, Star, CheckCircle, BookOpen } from "lucide-react";
 import type { Course, Building } from "@/app/util/bookingData";
 
 interface ProgramSelectionProps {

@@ -1,7 +1,6 @@
 import React from "react";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ClerkProvider } from "@clerk/nextjs";
 import { TRPCProvider } from "@/trpc/client";
 import { Toaster } from "react-hot-toast";
 
@@ -36,15 +35,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={inter.className}>
-          <TRPCProvider>
-            <Toaster position="bottom-right"></Toaster>
-            {children}
-          </TRPCProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className}>
+        <TRPCProvider>
+          <Toaster position="bottom-right"></Toaster>
+          {children}
+        </TRPCProvider>
+      </body>
+    </html>
   );
 }

@@ -10,11 +10,11 @@
 
   "vs-code-prettier-eslint.prettierLast": true,
 
-  "[typescript]": {
-    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+ "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
 
   "tabnine.disable": true,
@@ -27,6 +27,27 @@
   "**/build/**": true,
   "**/.git/**": true
 },
-   "typescript.tsserver.maxTsServerMemory": 2048,
-  "typescript.disableAutomaticTypeAcquisition": true
+  "search.exclude": {
+  "**/node_modules/**": true,
+  "**/.next/**": true,
+  "**/.turbo/**": true,
+  "**/dist/**": true,
+  "**/build/**": true,
+  "**/.git/**": true
+},
+   "typescript.tsserver.maxTsServerMemory": 1024,
+     "typescript.tsserver.useSeparateSyntaxServer": false,
+
+  "tailwindCSS.emmetCompletions": false,
+  "tailwindCSS.validate": false,
+
+  "typescript.disableAutomaticTypeAcquisition": true,
+    "editor.minimap.enabled": false,
+  "editor.stickyScroll.enabled": false,
+  "breadcrumbs.enabled": false,
+   "telemetry.telemetryLevel": "off",
+   "eslint.run": "onSave",
+"eslint.quiet": true,
+"typescript.preferences.includePackageJsonAutoImports": "off",
+"javascript.validate.enable": false
 }

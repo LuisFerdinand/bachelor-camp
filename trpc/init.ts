@@ -1,17 +1,21 @@
-import { users } from "@/db/schema";
-import { auth } from "@clerk/nextjs/server";
-import { initTRPC, TRPCError } from "@trpc/server";
+import { auth } from "@/lib/auth";
+import { db } from "@/db";
+import { user as users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { cache } from "react";
+import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 
-// import { ratelimit } from "@/lib/ratelimit";
-import { db } from "@/db";
+export const createTRPCContext = async (opts?: { headers?: Headers }) => {
+  const session = await auth.api.getSession({
+    headers: opts?.headers ?? new Headers(),
+  });
 
-export const createTRPCContext = cache(async () => {
-  const { userId } = await auth();
-  return { clerkUserId: userId };
-});
+  return {
+    session,
+    authUserId: session?.user.id ?? null,
+  };
+};
 
 export type Context = Awaited<ReturnType<typeof createTRPCContext>>;
 
@@ -22,36 +26,25 @@ const t = initTRPC.context<Context>().create({
 export const createTRPCRouter = t.router;
 export const createCallerFactory = t.createCallerFactory;
 export const baseProcedure = t.procedure;
-
-export const protectedProcedure = t.procedure.use(
-  async function isAuthed(opts) {
-    const { ctx } = opts;
-
-    if (!ctx.clerkUserId) {
-      throw new TRPCError({ code: "UNAUTHORIZED" });
-    }
-
-    const [existingUser] = await db
-      .select()
-      .from(users)
-      .where(eq(users.clerkId, ctx.clerkUserId))
-      .limit(1);
-
-    if (!existingUser) {
-      throw new TRPCError({ code: "UNAUTHORIZED" });
-    }
-
-    //   const { success } = await ratelimit.limit(existingUser.id);
-
-    //   if (!success) {
-    //     throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
-    //   }
-
-    return opts.next({
-      ctx: {
-        ...ctx,
-        user: existingUser,
-      },
-    });
+export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
+  if (!ctx.authUserId) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
   }
-);
+
+  const [user] = await db
+    .select()
+    .from(users)
+    .where(eq(users.id, ctx.authUserId))
+    .limit(1);
+
+  if (!user) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+
+  return next({
+    ctx: {
+      ...ctx,
+      user,
+    },
+  });
+});

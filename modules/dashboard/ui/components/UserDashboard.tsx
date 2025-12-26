@@ -11,15 +11,13 @@ type RoleType = {
 type UserDashboardProps = {
   user: {
     id: string;
-    clerkId: string;
     firstName: string | null;
     lastName: string | null;
-    avatarUrl: string | null;
+    image: string | null;
     email: string | null;
     phone: string | null;
-    lastActiveRole: string |  null,
+    lastActiveRole: string | null;
     roles: RoleType[];
-
   };
 };
 
@@ -32,7 +30,7 @@ export default function UserDashboard({ user }: UserDashboardProps) {
       {/* Header */}
       <div className="flex items-center gap-4">
         <Image
-          src={user.avatarUrl ?? "/avatar-placeholder.png"}
+          src={user.image ?? "/avatar-placeholder.png"}
           alt={fullName}
           width={64}
           height={64}

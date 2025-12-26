@@ -101,12 +101,6 @@ const roleConfig: Record<
     badgeColor: "bg-purple-500",
   },
 
-  student: {
-    icon: UserCircle,
-    label: "Student",
-    gradient: "from-slate-400 to-slate-600",
-    badgeColor: "bg-slate-500",
-  },
 };
 
 export const UserMenu = ({
